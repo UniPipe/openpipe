@@ -1,0 +1,10 @@
+start:
+    - insert:
+        - Good line 1
+        - Broken line
+        - Good line 2
+    - print:
+    - delete: $ "Broken" in _ $
+    - assert:
+        - Good line 1
+        - Good line 2

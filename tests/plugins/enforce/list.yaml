@@ -1,0 +1,5 @@
+start:
+  - insert: { name: ok }
+  - enforce list:
+        name
+  - assert: { name: [ 'ok' ] }

@@ -1,0 +1,24 @@
+start:
+    - insert:
+        - { name: Zap, color: red, hits: 10}
+        - { name: Pong, color: red, hits: 5}
+        - { name: Zap, color: red, hits: 20}
+
+    - group by:
+        stats: [ hits ]
+        keys: [ name ]
+
+    - assert:
+        -   hits_avg: 15.0
+            hits_count: 2
+            hits_max: 20
+            hits_min: 10
+            hits_sum: 30
+            name: Zap
+        -   hits_avg: 5.0
+            hits_count: 1
+            hits_max: 5
+            hits_min: 5
+            hits_sum: 5
+            name: Pong
+

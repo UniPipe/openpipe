@@ -1,0 +1,9 @@
+start:
+    - insert:
+        name: Tono
+    - join:
+        - { age: 14 }
+    - assert:
+        age: 14
+        name: 'Tono'
+

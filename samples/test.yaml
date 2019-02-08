@@ -1,0 +1,29 @@
+start:
+    - collect from clock:
+        interval: 5s
+
+    - copy to segment:
+        - parse_log_1
+
+parse_log_1:
+    - collect from glob: /tmp/iis*.log
+    - select: $ _[-1] $     # we care only about the last file (from list)
+    - print: Checking file $ _ $
+    - collect from file_delta:
+        path: $ _ $
+        headers_always: True
+
+    - parse line ms_iis_log:
+
+    - copy to segment:
+        - export_to_influx
+
+export_to_influx:
+    - export into influxdb:
+        url: http://localhost:8086/
+        measurement: iis_logs
+        tag_set: [cs-uri-stem]
+        field_set: [time-taken]
+        dbname: openpipe
+        buffer_size: 1
+        timestamp: timestamp

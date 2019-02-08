@@ -1,0 +1,6 @@
+start:
+    - collect from clock:
+        interval: 1s
+        max_count: 1
+    - insert: ok
+    - assert: ok

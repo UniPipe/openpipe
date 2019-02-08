@@ -1,0 +1,6 @@
+start:
+    - insert:   # Select from a list of dictionaries
+        { name: Rose, gender: female, age: 21}
+    - drop: age
+    - insert: $ 'age' in _ $
+    - assert: False

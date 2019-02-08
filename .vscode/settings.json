@@ -1,0 +1,47 @@
+{
+    "python.linting.pylintEnabled": false,
+    "editor.rulers": [
+        120
+    ],
+    "files.exclude": {
+        "**/__pycache__": true,
+        "**/.tox": true,
+        "**/*.egg-info": true
+    },
+    "cSpell.words": [
+        "astimezone",
+        "dinterpol",
+        "funcs",
+        "functools",
+        "influxdb",
+        "isdigit",
+        "isdir",
+        "isfile",
+        "ispkg",
+        "joão",
+        "khtml",
+        "openpipe",
+        "mdvl",
+        "nargs",
+        "noqa",
+        "parametrize",
+        "pformat",
+        "pkgutil",
+        "pprint",
+        "pycache",
+        "pytest",
+        "pytz",
+        "shutil",
+        "statbuf",
+        "strftime",
+        "strptime",
+        "swrite",
+        "tarfile",
+        "timegm",
+        "xmltodict"
+    ],
+    "markdownlint.ignore": [
+        "*/plugins/**.md"
+    ],
+    "python.linting.flake8Enabled": true
+}

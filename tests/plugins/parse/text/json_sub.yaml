@@ -1,0 +1,8 @@
+start:
+    - collect from file:
+        path: samples/test.json
+        full_content: True
+    - parse text json_sub:
+        name: .
+    - assert:
+        {'name': 'Zin'}

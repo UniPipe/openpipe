@@ -1,0 +1,11 @@
+start:
+    - collect from file:
+        path: samples/test.xml
+        full_content: True
+    - parse text xml:
+    - assert:
+        note:
+            to: Tove
+            from: Jani
+            heading: Reminder
+            body: Don't forget me this weekend!

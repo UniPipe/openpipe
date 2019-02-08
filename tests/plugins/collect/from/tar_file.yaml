@@ -1,0 +1,5 @@
+start:
+    - collect from tar_file: samples/test.tar
+    - assert:
+        name: samples/test.txt
+

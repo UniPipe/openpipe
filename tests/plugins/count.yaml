@@ -1,0 +1,10 @@
+start:
+    - count:
+    - assert: 1
+    - insert:
+        - abc
+        - xyz
+    - count:
+    - assert:
+        - 1
+        - 2

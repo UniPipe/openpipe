@@ -1,0 +1,11 @@
+start:
+    - insert: 12
+    - assert: 12
+    - insert: $ 5 * 5 $
+    - assert: 25
+    - insert:
+        color: blue
+        type: Z
+    - assert:
+        color: blue
+        type: Z

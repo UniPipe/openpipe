@@ -1,0 +1,15 @@
+start:
+    - insert: ok
+    - copy to segment:
+        - seg1
+    - assert: ok
+    - insert: other
+    - copy to segment:
+        - seg2
+
+seg1:
+    - assert: ok
+
+seg2:
+    - assert: other
+

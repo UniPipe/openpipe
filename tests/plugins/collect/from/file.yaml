@@ -1,0 +1,3 @@
+start:
+    - collect from file: samples/test.txt
+    - assert: Line in file
