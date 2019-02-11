@@ -3,7 +3,7 @@
 from .yaml import load_yaml, remove_line_info
 from sys import stderr
 
-SEGMENTS_DOC_URL = "http://www.openpipe.org/DataPipeline/LanguageV1/#segments"
+SEGMENTS_DOC_URL = "https://www.openpipe.org/OpenPipeLanguage#Segment"
 
 
 class PipelineDocument(object):
