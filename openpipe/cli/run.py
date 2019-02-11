@@ -6,20 +6,21 @@ from openpipe.engine import PipelineRuntime
 
 
 @click.command()
-@click.option('--local', '-l', is_flag=True, default=False)
+@click.option('--local-only', '-l', is_flag=True, default=False)
+@click.option('--start-segment', '-s', type=str, default="start")
 @click.argument('filename', type=click.Path(exists=False), required=True)
-def run(filename, local):
+def run(filename, local_only, start_segment):
     if filename.startswith('http:') or filename.startswith('https:'):
-        if local:
+        if local_only:
             print("ERROR: Attempting to load remote pipeline in !", file=stderr)
             exit(2)
         if filename.startswith('https://github.com'):
             filename += "?raw=1"
         local_filename, headers = urllib.request.urlretrieve(filename)
-        pipeline = PipelineRuntime(local_filename, local=local)
+        pipeline = PipelineRuntime(local_filename, local_only=local_only)
         os.unlink(local_filename)
     else:
-        pipeline = PipelineRuntime(filename, local=local)
+        pipeline = PipelineRuntime(filename, local_only=local_only, start_segment=start_segment)
     pipeline.load()
     pipeline.start()
     pipeline.create_links()

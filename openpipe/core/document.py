@@ -8,7 +8,7 @@ SEGMENTS_DOC_URL = "https://www.openpipe.org/OpenPipeLanguage#Segment"
 
 class PipelineDocument(object):
 
-    def __init__(self, filename=None, yaml_data=None, on_step_cb=None, load_libraries_cb=None):
+    def __init__(self, filename=None, yaml_data=None, start_segment='start', on_step_cb=None, load_libraries_cb=None):
         self.on_step_cb = on_step_cb
         self.load_libraries_cb = load_libraries_cb
         if filename:
@@ -16,6 +16,7 @@ class PipelineDocument(object):
                 self.yaml_data = data_file.read()
         else:
             self.yaml_data = yaml_data
+        self.start_segment = start_segment
 
     def load(self):  # NOQA: C901
         loaded_segments = []
@@ -43,18 +44,15 @@ class PipelineDocument(object):
         segment_names = list(python_data.keys())
 
         # A single segment was provided
-        if len(segment_names) == 1:
-            start_segment = segment_names[0]
-        else:
-            start_segment = 'start'
-            if start_segment not in python_data:
-                print(
-                    "Multiple segments are provided but no 'start' segment was found\n"
-                    "The following segment names were found:\n{}\n\n".format(segment_names) +
-                    "You can read more about pipeline segments at:\n"+SEGMENTS_DOC_URL,
-                    file=stderr
-                    )
-                exit(1)
+        start_segment = self.start_segment
+        if start_segment not in python_data:
+            print(
+                "Start segment '{}' was not found\n"
+                "The following segment names were found:\n{}\n\n".format(start_segment, segment_names) +
+                "You can read more about pipeline segments at:\n"+SEGMENTS_DOC_URL,
+                file=stderr
+                )
+            exit(1)
         referred_segments.append(start_segment)
         while len(referred_segments) > 0:
             segment_name = referred_segments.pop(0)
