@@ -1,7 +1,10 @@
 from dinterpol import Template
 from sys import stderr
+from os import environ
 from traceback import print_exc
 from pprint import pformat
+
+ODP_RUNTIME_DEBUG = environ.get('ODP_RUNTIME_DEBUG')
 
 
 class PluginRuntimeCore(object):
@@ -28,6 +31,8 @@ class PluginRuntimeCore(object):
         if item is None:
             on_complete_func = getattr(self, 'on_complete', None)
             if on_complete_func:
+                if ODP_RUNTIME_DEBUG:
+                    print("Stopping %s " % self.plugin_label)
                 on_complete_func()
             self.put(item)
         else:

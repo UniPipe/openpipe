@@ -36,7 +36,7 @@ class PipelineRuntimeCore(object):
                     continue
             else:
                 libpath = expanduser(libpath)
-            if environ.get('MDP_LIBS_DEBUG'):
+            if environ.get('ODP_LIBS_DEBUG'):
                 print("Adding library path", libpath)
             sys.path.append(normpath(libpath))
 

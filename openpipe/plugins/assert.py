@@ -27,6 +27,7 @@ from pprint import pprint
 class Plugin(PluginRuntime):
 
     def on_start(self, config):
+        self.start_config = config  # Typically on_complete does not use config
         self.never_called = True
         self.check_index = 0
 
@@ -43,8 +44,8 @@ class Plugin(PluginRuntime):
 
     def on_complete(self):
         if self.never_called:
-            raise Exception("Did not receive any item, expected:\n" + str(self.config))
-        if isinstance(self.config, list) and self.check_index < len(self.config):
+            raise Exception("Did not receive any item, expected:\n" + str(self.start_config))
+        if isinstance(self.config, list) and self.check_index < len(self.start_config):
             raise AssertionError("Test got less values than expected")
 
     def value_assert(self, item, assert_data):

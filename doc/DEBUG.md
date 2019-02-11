@@ -1,5 +1,9 @@
 # Debug capabilities
 The following environment variables can be set for debugging purposes
 
-## MDP_LIBS_DEBUG
+## ODP_LIBS_DEBUG
 Debug library loading
+
+
+## ODP_RUNTIME_DEBUG
+Debug runtime execution
