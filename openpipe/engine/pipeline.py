@@ -42,7 +42,7 @@ class PipelineRuntime(PipelineRuntimeCore):
                 on_start_func = getattr(step, 'on_start', None)
                 if on_start_func:
                     if ODP_RUNTIME_DEBUG:
-                        print("Starting %s " % step.plugin_label)
+                        print("on_start %s " % step.plugin_label)
                     try:
                         on_start_func(step.initial_config)
                     except:  # NOQA: E722

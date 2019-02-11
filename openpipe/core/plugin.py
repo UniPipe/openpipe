@@ -15,7 +15,7 @@ class PluginRuntimeCore(object):
         self.failed_count = 0
         self.init()
 
-    def _on_input(self, item):
+    def _on_input(self, item):  # NOQA: C901
         try:
             if item is not None:
                 self.config = self.config_template.render(item)
@@ -32,11 +32,13 @@ class PluginRuntimeCore(object):
             on_complete_func = getattr(self, 'on_complete', None)
             if on_complete_func:
                 if ODP_RUNTIME_DEBUG:
-                    print("Stopping %s " % self.plugin_label)
+                    print("on_complete %s " % self.plugin_label)
                 on_complete_func()
             self.put(item)
         else:
             try:
+                if ODP_RUNTIME_DEBUG:
+                    print("on_item %s: %s" % (self.plugin_label, item))
                 self.on_input(item)
             except SystemExit:
                 exit(1)

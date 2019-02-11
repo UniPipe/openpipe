@@ -40,9 +40,8 @@ class CoreLoader(object):
                 config = {**default_config, **config}
         else:
             if config is None:
-                plugin_doc = join(*plugin_filename.split('.'))+".md"
                 print("Missing configuration for", plugin_label, file=stderr)
-                print("You can find the plugin documentation at", plugin_doc)
+                print("You can get help that plugin with:\nopenpipe help %s" % name, file=stderr)
                 exit(3)
         instance = module.Plugin(config)
         instance.plugin_label = plugin_label
