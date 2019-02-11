@@ -2,6 +2,7 @@ import hashlib
 import os
 import zipfile
 import urllib.request
+from sys import stderr
 from glob import glob
 from os.path import expanduser, join, exists
 from urllib.parse import urlparse
@@ -26,7 +27,11 @@ def download_and_cache(url):
         except FileNotFoundError:
             pass
 
-        urllib.request.urlretrieve(url, zip_file_name)
+        try:
+            urllib.request.urlretrieve(url, zip_file_name)
+        except:  # NOQA: E722, we really don't care about the error details
+            print("WARNING: Unable to retrieve remote library: %s" % url, file=stderr)
+            return None
 
         with zipfile.ZipFile(zip_file_name) as zf:
             zf.extractall(cached_lib_name)

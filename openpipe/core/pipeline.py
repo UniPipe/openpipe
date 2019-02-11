@@ -29,6 +29,8 @@ class PipelineRuntimeCore(object):
         for libpath in libraries:
             if libpath.startswith('http:') or libpath.startswith('https:'):
                 libpath = download_and_cache(libpath)
+                if libpath is None:  # Remote file not found
+                    continue
             else:
                 libpath = expanduser(libpath)
             if environ.get('MDP_LIBS_DEBUG'):
