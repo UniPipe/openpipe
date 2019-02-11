@@ -13,8 +13,6 @@ def download_and_cache(url):
     if parsed_url.netloc == 'github.com':
         url += "/archive/master.zip"
 
-    print("URL", url)
-
     cache_dir = join(expanduser("~"), ".openpipe", "libraries_cache")
     if not exists(cache_dir):
         os.makedirs(cache_dir, 0o700)
