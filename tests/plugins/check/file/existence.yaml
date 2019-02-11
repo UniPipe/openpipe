@@ -1,0 +1,5 @@
+start:
+    - check file existence:
+        path: /etc/hosts
+    - print: File $_$ was found
+    #- assert: /etc/hosts
