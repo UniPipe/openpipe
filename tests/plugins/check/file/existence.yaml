@@ -8,6 +8,6 @@ start:
     - insert: Validation String 2
     - check file existence:
         path: /etc/hostsx
-        output_on: False
+        output_if: False
     - print: File was not found
     - assert: Validation String 2

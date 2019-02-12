@@ -29,12 +29,12 @@ class Plugin(PluginRuntime):
     __default_config__ = {
         "path": "$_$",
         "content": "$_$",
-        "output_on": True
+        "output_if": True
     }
 
     def on_input(self, item):
         check_condition = exists(self.config['path'])
-        if not self.config['output_on']:
+        if not self.config['output_if']:
             check_condition = not check_condition
         if check_condition:
             self.put(self.config['content'])

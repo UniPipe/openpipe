@@ -24,6 +24,7 @@ start:
 """
 from openpipe.engine import PluginRuntime
 from os.path import expanduser
+import json
 
 
 class Plugin(PluginRuntime):
@@ -49,7 +50,10 @@ class Plugin(PluginRuntime):
                 self.file.close()
             self.file = open(path, self.config['mode'])
             self.last_path = path
-        self.file.write(self.config['content'])
+        content = self.config['content']
+        if path.endswith('.json'):
+            content = json.dumps(content, indent=4)
+        self.file.write(content)
         if self.config['close_on_item']:
             self.file.close()
             self.file = None
