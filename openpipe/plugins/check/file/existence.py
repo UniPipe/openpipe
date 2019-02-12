@@ -10,7 +10,7 @@ Send content depending on file existence
 ## Configuration
     - [path: $_$]       - Filename to be checked
     - [content: $_$]    - Filename to be checked
-    - [send if: True]   - When to send content
+    - [output_on: True] - When to output the content
 
 ## Example
 ```yaml
@@ -21,6 +21,7 @@ start:
 ```
 """
 from openpipe.engine import PluginRuntime
+from os.path import exists
 
 
 class Plugin(PluginRuntime):
@@ -28,8 +29,12 @@ class Plugin(PluginRuntime):
     __default_config__ = {
         "path": "$_$",
         "content": "$_$",
-        "send if": True
+        "output_on": True
     }
 
     def on_input(self, item):
-        pass
+        check_condition = exists(self.config['path'])
+        if not self.config['output_on']:
+            check_condition = not check_condition
+        if check_condition:
+            self.put(self.config['content'])
