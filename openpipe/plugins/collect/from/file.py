@@ -44,6 +44,10 @@ class Plugin(PluginRuntime):
             full_content = self.config.get('full_content', False)
         path = expanduser(path)
         filename, file_extension = splitext(path)
+
+        if file_extension in ['.json', '.yaml']:
+            full_content = True
+
         open_func = self.ext_map.get(file_extension, self.ext_map['*'])
         with open_func(path) as file:
             if full_content:
