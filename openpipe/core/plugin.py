@@ -13,6 +13,7 @@ class PluginRuntimeCore(object):
         self.initial_config = config
         self.config_template = Template(config)
         self.failed_count = 0
+
         self.init()
 
     def _on_input(self, item):  # NOQA: C901

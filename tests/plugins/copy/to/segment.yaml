@@ -12,4 +12,3 @@ seg1:
 
 seg2:
     - assert: other
-

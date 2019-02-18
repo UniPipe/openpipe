@@ -96,5 +96,12 @@ class PipelineDocument(object):
                         if name not in loaded_segments and name not in referred_segments:
                             referred_segments.append(name)
 
+                if step_name == 'test':
+                    on_true_segment = step_config.get('on_true', [])
+                    on_false_segment = step_config.get('on_false', [])
+                    for name in [on_true_segment, on_false_segment]:
+                        if name not in loaded_segments and name not in referred_segments:
+                            referred_segments.append(name)
+
                 if self.on_step_cb:
                     self.on_step_cb(segment_name, step_name, step_config, step_line_nr)
