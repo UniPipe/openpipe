@@ -2,10 +2,17 @@ start:
     - insert:
         - bad mouse
         - good thing
+        - somethng else
+
     - test:
-        condition: $'good' in _$
-        on_true: test_good
-        on_false: test_bad
+        on_condition: $'good' in _$
+        send_to: test_good
+
+    - test:
+        on_condition: $'bad' in _$
+        send_to: test_bad
+
+    - assert: somethng else
 
 test_good:
     - assert: good thing
