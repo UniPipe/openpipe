@@ -54,6 +54,8 @@ class PipelineDocument(object):
 
         for segment_name in segment_names:
             step_list = python_data[segment_name]
+            if segment_name[0] == "_":
+                continue
 
             if not isinstance(step_list, list):
                 print(
