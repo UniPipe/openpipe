@@ -17,6 +17,5 @@ class PluginRuntime(PluginRuntimeCore):
         if self.next_step:
             self.next_step._on_input(item)
 
-        # Put on other other references
-        for next_step in self.extra_steps:
-            next_step._on_input(item)
+    def put_target(self, item, target):
+        target._on_input(item)

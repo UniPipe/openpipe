@@ -10,7 +10,7 @@ start:
 check_file_content:
 
     - collect from clock:
-        max_count: 2
+        max_count: 1
         interval: 1
 
     - collect from file:

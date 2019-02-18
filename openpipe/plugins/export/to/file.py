@@ -35,7 +35,7 @@ class Plugin(PluginRuntime):
         "close_on_item": False
     }
 
-    def on_start(self, config):
+    def on_start(self, config, segment_resolver):
         self.last_path = None
         self.file = None
 

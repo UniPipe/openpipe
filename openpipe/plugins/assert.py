@@ -26,7 +26,7 @@ from pprint import pprint
 
 class Plugin(PluginRuntime):
 
-    def on_start(self, config):
+    def on_start(self, config, segment_resolver):
         self.start_config = config  # Typically on_complete does not use config
         self.never_called = True
         self.check_index = 0

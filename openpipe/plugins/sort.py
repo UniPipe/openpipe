@@ -30,7 +30,7 @@ class Plugin(PluginRuntime):
 
     # By default sort full element
 
-    def on_start(self, config):
+    def on_start(self, config, segment_resolver):
         self.data = []
 
     def on_input(self, item):

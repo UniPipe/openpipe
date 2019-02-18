@@ -25,7 +25,7 @@ class Plugin(PluginRuntime):
 
     __default_config__ = "{}"
 
-    def on_start(self, config):
+    def on_start(self, config, segment_resolver):
         self.count = 0
         self.to_field = None
 

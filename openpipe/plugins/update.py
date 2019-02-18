@@ -48,7 +48,7 @@ class Plugin(PluginRuntime):
 
             self.put(new_item)
     """
-    def on_start(self, config):
+    def on_start(self, config, segment_resolver):
         if not isinstance(config, dict) or 'set' not in config:
             raise ValueError("The update plugin config must have a 'set' key ")
 

@@ -30,7 +30,7 @@ class Plugin(PluginRuntime):
         "ignore_errors": False,
         }
 
-    def on_start(self, config):
+    def on_start(self, config, segment_resolver):
         self.mapper = None
 
     def on_input(self, item):

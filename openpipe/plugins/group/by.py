@@ -28,7 +28,7 @@ from openpipe.engine import PluginRuntime
 
 class Plugin(PluginRuntime):
 
-    def on_start(self, config):
+    def on_start(self, config, segment_resolver):
         self.group_by = GroupBy(self, config)
 
     def on_input(self, item):

@@ -28,7 +28,7 @@ from openpipe.engine import PluginRuntime
 
 class Plugin(PluginRuntime):
 
-    def on_start(self, config):
+    def on_start(self, config, segment_resolver):
         self.persistent_state = config.get("persistent_state", False)
         self.prefix_with_path = config.get("prefix_with_path", False)
         self.default_line = config.get("default_line", None)

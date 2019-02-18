@@ -18,9 +18,7 @@ class PipelineDocument(object):
             self.yaml_data = yaml_data
         self.start_segment = start_segment
 
-    def load(self):  # NOQA: C901
-        loaded_segments = []
-        referred_segments = []
+    def load(self):
         python_data = load_yaml(self.yaml_data)
 
         if not isinstance(python_data, dict):
@@ -53,20 +51,9 @@ class PipelineDocument(object):
                 file=stderr
                 )
             exit(1)
-        referred_segments.append(start_segment)
-        while len(referred_segments) > 0:
-            segment_name = referred_segments.pop(0)
-            try:
-                step_list = python_data[segment_name]
-            except KeyError:
-                print(
-                    "A reference was found for segment '{}' which does not exist."
-                    "The following segment names were found:\n{}\n\n".format(segment_name, segment_names) +
-                    "You can read more about pipeline segments at:\n"+SEGMENTS_DOC_URL,
-                    file=stderr
-                    )
-                exit(2)
-            loaded_segments.append(segment_name)
+
+        for segment_name in segment_names:
+            step_list = python_data[segment_name]
 
             if not isinstance(step_list, list):
                 print(
@@ -89,19 +76,6 @@ class PipelineDocument(object):
                 step_name, step_config = list(step.items())[0]
                 step_line_nr = step['__line__']
                 remove_line_info(step_config)
-
-                if step_name == 'copy to segment':
-                    possible_segments = step_config
-                    for name in possible_segments:
-                        if name not in loaded_segments and name not in referred_segments:
-                            referred_segments.append(name)
-
-                if step_name == 'test':
-                    on_true_segment = step_config.get('on_true', [])
-                    on_false_segment = step_config.get('on_false', [])
-                    for name in [on_true_segment, on_false_segment]:
-                        if name not in loaded_segments and name not in referred_segments:
-                            referred_segments.append(name)
 
                 if self.on_step_cb:
                     self.on_step_cb(segment_name, step_name, step_config, step_line_nr)

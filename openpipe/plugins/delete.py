@@ -24,7 +24,7 @@ from openpipe.engine import PluginRuntime
 
 class Plugin(PluginRuntime):
 
-    def on_start(self, config):
+    def on_start(self, config, segment_resolver):
 
         if isinstance(config, dict):
             self.on_input = self.on_input_dict

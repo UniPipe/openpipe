@@ -6,6 +6,7 @@ from os import environ
 from time import time
 from ..core import PipelineRuntimeCore
 
+SEGMENTS_DOC_URL = "https://www.openpipe.org/OpenPipeLanguage#Segment"
 ODP_RUNTIME_DEBUG = environ.get('ODP_RUNTIME_DEBUG')
 
 
@@ -16,7 +17,6 @@ class PipelineRuntime(PipelineRuntimeCore):
         step_list = self.segments.setdefault(segment_name, [])
         comp_instance = self.load_plugin(step_name, step_config, step_line_nr)
         step_list.append(comp_instance)
-        comp_instance._segment_references = step_config if step_name == 'copy to segment' else []
 
     def create_links(self):
         """ Create links between consecutive steps and on segment references
@@ -28,13 +28,18 @@ class PipelineRuntime(PipelineRuntimeCore):
             for i, step in enumerate(step_list[:-1]):
                 step.next_step = step_list[i+1]
 
-        for key, value in self.segments.items():
-            step_list = value
-            for i, step in enumerate(step_list):
-                # print(step._segment_references)
-                for reference_item in step._segment_references:
-                    segment = self.segments[reference_item]
-                    step.extra_steps.append(segment[0])
+    def segment_resolver(self, segment_name):
+        try:
+            first_step = self.segments[segment_name][0]
+        except KeyError:
+            print(
+                "A reference was found for segment '{}' which does not exist."
+                "The following segment names were found:\n{}\n\n".format(segment_name, self.segments) +
+                "You can read more about pipeline segments at:\n"+SEGMENTS_DOC_URL,
+                file=stderr
+                )
+            exit(2)
+        return first_step
 
     def start(self):
         for segment_name, step_list in self.segments.items():
@@ -44,7 +49,7 @@ class PipelineRuntime(PipelineRuntimeCore):
                     if ODP_RUNTIME_DEBUG:
                         print("on_start %s " % step.plugin_label)
                     try:
-                        on_start_func(step.initial_config)
+                        on_start_func(step.initial_config, self.segment_resolver)
                     except:  # NOQA: E722
                         print("Failed starting", step.plugin_label, file=stderr)
                         raise

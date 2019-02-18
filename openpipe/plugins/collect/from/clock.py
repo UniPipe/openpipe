@@ -32,11 +32,13 @@ class Plugin(PluginRuntime):
         interval = self.config.get('interval', "0")
         interval = time2seconds(interval)
         count = self.config.get('max_count', 0)
+        start_wait = self.config.get('start_wait', True)
         repeat_forever = (count == 0)
 
-        self.put(start_time)
-        if not repeat_forever:
-            count -= 1
+        if not start_wait:
+            self.put(start_time)
+            if not repeat_forever:
+                count -= 1
         while repeat_forever or count > 0:
             if interval:
                 sleep(interval)

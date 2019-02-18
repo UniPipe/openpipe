@@ -28,7 +28,7 @@ class Plugin(PluginRuntime):
         "auto_number": True,
         }
 
-    def on_start(self, config):
+    def on_start(self, config, segment_resolver):
         self.sep = config['sep']
         self.maxsplit = config['maxsplit']
         self.field_list = config.get('field_list', None)
