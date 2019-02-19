@@ -21,11 +21,11 @@ class PluginRuntimeCore(object):
             if item is not None:
                 self.config = self.config_template.render(item)
         except:  # NOQA: E722
+            print("ITEM:\n" + pformat(item), file=stderr)
             print_exc(file=stderr)
             msg = (
                     "---------- Plugin %s dynamic config resolution failed ----------" % self.plugin_label)
             print(msg, file=stderr)
-            print(pformat(item), file=stderr)
             #  raise(
             self.failed_count += 1
             exit(1)
@@ -50,10 +50,10 @@ class PluginRuntimeCore(object):
                     exit(1)
 
     def _execution_error(self, item):
+        print("ITEM:\n"+pformat(item), file=stderr)
         print_exc(file=stderr)
         msg = (
             "---------- Plugin %s execution failed ----------, item content:"
             % (self.plugin_label))
         print(msg, file=stderr)
-        print(pformat(item), file=stderr)
         self.failed_count += 1

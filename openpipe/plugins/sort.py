@@ -32,13 +32,13 @@ class Plugin(PluginRuntime):
 
     def on_start(self, config, segment_resolver):
         self.data = []
+        self.descendent = config.get("descendent", False)
 
     def on_input(self, item):
         # we must copy because the item may be changed in the thread
         self.data.append((self.config['key'], item.copy()))
 
     def on_complete(self):
-        descendent = self.config.get("descendent", False)
-        self.data.sort(key=lambda x: x[0], reverse=descendent)
+        self.data.sort(key=lambda x: x[0], reverse=self.descendent)
         for key, item in self.data:
             self.put(item)
