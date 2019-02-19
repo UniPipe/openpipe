@@ -1,7 +1,5 @@
 start:
-    - copy to segment:
-        - check_file_content
-
+    - copy to segment: check_file_content
     - export to file:
             path: /tmp/test
             content: Hello World!

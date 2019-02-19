@@ -2,8 +2,7 @@ start:
     - collect from clock:
         interval: 5s
 
-    - copy to segment:
-        - parse_log_1
+    - copy to segment: parse_log_1
 
 parse_log_1:
     - collect from glob: /tmp/iis*.log

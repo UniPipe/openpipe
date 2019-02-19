@@ -4,9 +4,8 @@ start:
         - {id: anc}
         - {id: zin}
 
-    - copy to segment:
-        - sort_desc
-        - sort_asc
+    - copy to segment: sort_desc
+    - copy to segment: sort_asc
 
 sort_desc:
     - sort:

@@ -5,12 +5,12 @@ start:
         - somethng else
 
     - test:
-        on_condition: $'good' in _$
-        send_to: test_good
+        on condition: $'good' in _$
+        send to: test_good
 
     - test:
-        on_condition: $'bad' in _$
-        send_to: test_bad
+        on condition: $'bad' in _$
+        send to: test_bad
 
     - assert: somethng else
 

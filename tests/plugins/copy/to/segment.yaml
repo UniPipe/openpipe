@@ -1,11 +1,9 @@
 start:
     - insert: ok
-    - copy to segment:
-        - seg1
+    - copy to segment: seg1
     - assert: ok
     - insert: other
-    - copy to segment:
-        - seg2
+    - copy to segment: seg2
 
 seg1:
     - assert: ok
