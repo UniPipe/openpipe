@@ -43,5 +43,6 @@
     "markdownlint.ignore": [
         "*/plugins/**.md"
     ],
-    "python.linting.flake8Enabled": true
+    "python.linting.flake8Enabled": true,
+    "editor.minimap.enabled": false
 }

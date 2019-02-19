@@ -35,25 +35,13 @@ start:
 ```
 """
 from openpipe.engine import PluginRuntime
-from copy import deepcopy
 
 
 class Plugin(PluginRuntime):
-    """
-        def on_input(self, item):
 
-            # config becomes a merged dictionary with values from config replacing those from default_config
-            # https://stackoverflow.com/a/26853961
-            new_item = item.copy()
-            new_item.update(self.config)
-
-            self.put(new_item)
-    """
     def on_start(self, config, segment_resolver):
         if isinstance(config, dict) and 'set' in config:
             pass
-        elif isinstance(config, dict) and 'map' in config:
-            self.on_input = self.on_input_map
         else:
             raise ValueError("The update plugin config must have a 'set' key ")
 
@@ -73,14 +61,4 @@ class Plugin(PluginRuntime):
                     new_item[key] = value
             else:
                 new_item = self.config['else']
-        self.put(new_item)
-
-    def on_input_map(self, item):
-        new_item = deepcopy(item)
-        for target_field_name, target_rule in self.config['map'].items():
-            for source_field_name, source_map in target_rule.items():
-                for source_value, target_value in source_map.items():
-                    target_value = source_map.get(item[source_field_name])
-                    if target_value is not None:
-                        new_item[target_field_name] = target_value
         self.put(new_item)

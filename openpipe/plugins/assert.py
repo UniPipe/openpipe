@@ -34,10 +34,10 @@ class Plugin(PluginRuntime):
     def on_input(self, item):
         if isinstance(self.config, list):
             expected_count = len(self.config)
+            if self.check_index >= expected_count:
+                raise AssertionError("Test expected %d items, got %d" % (expected_count, self.check_index+1))
             self.value_assert(item, self.config[self.check_index])
             self.check_index += 1
-            if self.check_index > expected_count:
-                raise AssertionError("Test expected %d items, got %d" % (self.check_index, expected_count))
         else:
             self.value_assert(item, self.config)
         self.never_called = False

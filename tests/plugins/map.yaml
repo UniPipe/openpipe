@@ -1,0 +1,18 @@
+# Test regular field mapping
+start:
+
+    - insert:
+        - { color: RED }
+        - { color: BLUE }
+        - { color: ZEN }    # Values not found on map are kept unchanged
+
+    - map:
+        color:  # This is the target field name
+            color: {RED: PINK, BLUE: GRAY}  # This is the source field name and values mapping
+
+    - assert:
+        - {color: PINK}
+        - {color: GRAY}
+        - {color: ZEN}
+
+    - pprint:
