@@ -39,6 +39,7 @@ class PipelineRuntime(PipelineRuntimeCore):
                 file=stderr
                 )
             exit(2)
+        first_step.reference_count += 1
         return first_step
 
     def start(self):

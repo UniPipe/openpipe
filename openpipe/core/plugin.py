@@ -13,10 +13,10 @@ class PluginRuntimeCore(object):
         self.initial_config = config
         self.config_template = Template(config)
         self.failed_count = 0
-
+        self.reference_count = 1
         self.init()
 
-    def _on_input(self, item):  # NOQA: C901
+    def _on_input(self, item):
         try:
             if item is not None:
                 self.config = self.config_template.render(item)
@@ -30,12 +30,14 @@ class PluginRuntimeCore(object):
             self.failed_count += 1
             exit(1)
         if item is None:
-            on_complete_func = getattr(self, 'on_complete', None)
-            if on_complete_func:
-                if ODP_RUNTIME_DEBUG:
-                    print("on_complete %s " % self.plugin_label)
-                on_complete_func()
-            self.put(item)
+            self.reference_count -= 1
+            if self.reference_count == 0:
+                on_complete_func = getattr(self, 'on_complete', None)
+                if on_complete_func:
+                    if ODP_RUNTIME_DEBUG:
+                        print("on_complete %s " % self.plugin_label)
+                    on_complete_func()
+                self.put(item)
         else:
             try:
                 if ODP_RUNTIME_DEBUG:

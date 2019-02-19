@@ -8,8 +8,6 @@ class PluginRuntime(PluginRuntimeCore):
 
     def init(self):
         self.next_step = None
-        self.extra_steps = []
-        self.conditional_steps = []
 
     def put(self, item):
 

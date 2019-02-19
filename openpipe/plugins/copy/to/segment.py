@@ -27,16 +27,11 @@ from openpipe.engine import PluginRuntime
 class Plugin(PluginRuntime):
 
     def on_start(self, config, segment_resolver):
-        self.copy_targets = copy_targets = []
-        for item in config:
-            segment_start = segment_resolver(item)
-            copy_targets.append(segment_start)
+        self.target_segmment = segment_resolver(config)
 
     def on_input(self, item):
-        for target in self.copy_targets:
-            self.put_target(item, target)
+        self.put_target(item, self.target_segmment)
         self.put(item)
 
     def on_complete(self):
-        for target in self.copy_targets:
-            self.put_target(None, target)
+        self.put_target(None, self.target_segmment)
