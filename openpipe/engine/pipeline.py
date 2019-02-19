@@ -15,8 +15,8 @@ class PipelineRuntime(PipelineRuntimeCore):
     def add_step_cb(self, segment_name, step_name, step_config, step_line_nr):
         """ Create a single instance of a plugin and add it to the step_list """
         step_list = self.segments.setdefault(segment_name, [])
-        comp_instance = self.load_plugin(step_name, step_config, step_line_nr)
-        step_list.append(comp_instance)
+        plugin_instance = self.load_plugin(step_name, step_config, step_line_nr)
+        step_list.append(plugin_instance)
 
     def create_links(self):
         """ Create links between consecutive steps and on segment references
