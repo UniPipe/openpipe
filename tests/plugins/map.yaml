@@ -2,9 +2,9 @@
 start:
 
     - insert:
-        - { color: RED, size: L}
-        - { color: BLUE, size: S}
-        - { color: ZEN, size: M}    # Values not found on map are kept unchanged
+        - {color: RED, size: L}
+        - {color: BLUE, size: S}
+        - {color: ZEN, size: M}    # Values not found on map are kept unchanged
 
     - map:
         color:  # This is the target field name, we keep color because we want to replace
