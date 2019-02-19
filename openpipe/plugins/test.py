@@ -11,3 +11,6 @@ class Plugin(PluginRuntime):
             self.put_target(item, self.send_to_target)
         else:
             self.put(item)
+
+    def on_complete(self):
+        self.put_target(None, self.send_to_target)

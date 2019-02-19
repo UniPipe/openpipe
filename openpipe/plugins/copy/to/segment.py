@@ -36,3 +36,7 @@ class Plugin(PluginRuntime):
         for target in self.copy_targets:
             self.put_target(item, target)
         self.put(item)
+
+    def on_complete(self):
+        for target in self.copy_targets:
+            self.put_target(None, target)
