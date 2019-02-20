@@ -17,6 +17,7 @@ class PipelineRuntimeCore(object):
         self.segments = {}
         self.local_only = local_only
         self.filename = filename
+        self._start_segment = start_segment
         self.dpl_doc = PipelineDocument(filename, data, start_segment, self.add_step_cb, self.load_libraries_cb)
         self.plugin_loader = FilesystemLoader("openpipe/plugins")
 
@@ -42,8 +43,4 @@ class PipelineRuntimeCore(object):
 
     @property
     def start_segment(self):
-        if len(self.segments) == 1:
-            start_segment_name = next(iter(self.segments))
-        else:
-            start_segment_name = 'start'
-        return self.segments[start_segment_name]
+        return self.segments[self._start_segment]

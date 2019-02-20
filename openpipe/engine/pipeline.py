@@ -27,6 +27,7 @@ class PipelineRuntime(PipelineRuntimeCore):
             step_list = value
             for i, step in enumerate(step_list[:-1]):
                 step.next_step = step_list[i+1]
+                step_list[i+1].reference_count += 1
 
     def segment_resolver(self, segment_name):
         try:
@@ -56,6 +57,7 @@ class PipelineRuntime(PipelineRuntimeCore):
                         raise
 
     def activate(self):
+        self.start_segment[0].reference_count = 1
         self.start_segment[0]._on_input(time())  # Send current time to the firs step to activate it
         self.start_segment[0]._on_input(None)    # Send end-of-input «None» to trigger on_finnish()
         return 0, None
