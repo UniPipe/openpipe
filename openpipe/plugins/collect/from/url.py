@@ -21,6 +21,8 @@ start:
 from openpipe.engine import PluginRuntime
 import urllib.request as urlreq
 from urllib.error import HTTPError
+from os.path import splitext
+import zlib
 
 
 def lower(some_dict):
@@ -57,9 +59,14 @@ class Plugin(PluginRuntime):
                 return
             raise
         use_splitlines = self.config['split_lines']
-        if url.split('.')[-1] in ['json', 'xml']:
+        filename, file_extension = splitext(url)
+        content_raw = reply.read()
+        if file_extension == '.gz':
+            content_raw = zlib.decompress(content_raw, 16+zlib.MAX_WBITS)
+            filename, file_extension = splitext(filename)
+        if file_extension in ['json', 'xml']:
             use_splitlines = False
-        content_data = reply.read().decode('utf-8')
+        content_data = content_raw.decode('utf-8')
         if use_splitlines:
             content_data = content_data.splitlines()
         if self.config['content_only']:
