@@ -1,0 +1,10 @@
+start:
+    - insert:
+        size: 12
+        color: [red, blue, brown]
+    - iterate: color
+    - print: $_$
+    - assert:
+        - {size: 12, color: red}
+        - {size: 12, color: blue}
+        - {size: 12, color: brown}

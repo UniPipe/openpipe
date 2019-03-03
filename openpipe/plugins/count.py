@@ -32,7 +32,7 @@ class Plugin(PluginRuntime):
         self.count += 1
         if self.config:
             new_item = item.copy()
-            new_item[self.to_field] = self.count
+            new_item[self.config] = self.count
             self.put(new_item)
         else:
             self.put(self.count)
