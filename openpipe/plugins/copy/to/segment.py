@@ -30,8 +30,8 @@ class Plugin(PluginRuntime):
         self.target_segmment = segment_resolver(config)
 
     def on_input(self, item):
-        self.put_target(item, self.target_segmment)
         self.put(item)
+        self.put_target(item, self.target_segmment)
 
     def on_complete(self):
         self.put_target(None, self.target_segmment)

@@ -23,19 +23,16 @@ from openpipe.engine import PluginRuntime
 
 class Plugin(PluginRuntime):
 
-    __default_config__ = "{}"
+    __default_config__ = None
 
     def on_start(self, config, segment_resolver):
         self.count = 0
-        self.to_field = None
 
     def on_input(self, item):
-        if isinstance(self.config, dict):
-            self.to_field = self.config.get("to_field", None)
-
         self.count += 1
-        if self.to_field:
-            item[self.to_field] = self.count
-            self.put(item)
+        if self.config:
+            new_item = item.copy()
+            new_item[self.to_field] = self.count
+            self.put(new_item)
         else:
             self.put(self.count)

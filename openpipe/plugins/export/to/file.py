@@ -58,6 +58,7 @@ class Plugin(PluginRuntime):
             self.file.close()
             self.file = None
             self.last_path = None
+        self.put(item)
 
     def on_complete(self):
         if self.file:
