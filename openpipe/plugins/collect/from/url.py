@@ -66,6 +66,9 @@ class Plugin(PluginRuntime):
             filename, file_extension = splitext(filename)
         if file_extension in ['json', 'xml']:
             use_splitlines = False
+        content_type = reply.getheader('Content-Type')
+        if 'application/json' in content_type:
+            use_splitlines = False
         content_data = content_raw.decode('utf-8')
         if use_splitlines:
             content_data = content_data.splitlines()
