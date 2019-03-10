@@ -2,15 +2,15 @@
 # check file existence
 
 ## Purpose
-Send content depending on file existence
+Produces content depending on file existence
 
 ## Trigger
     - Input item is received
 
 ## Configuration
     - [path: $_$]       - Filename to be checked
-    - [content: $_$]    - Filename to be checked
-    - [output_on: True] - When to output the content
+    - [content: $_$]    - Content to be produced
+    - [output on: True] - When to output the content
 
 ## Example
 ```yaml
@@ -29,12 +29,12 @@ class Plugin(PluginRuntime):
     __default_config__ = {
         "path": "$_$",
         "content": "$_$",
-        "output_if": True
+        "output on": True
     }
 
     def on_input(self, item):
         check_condition = exists(self.config['path'])
-        if not self.config['output_if']:
+        if not self.config['output on']:
             check_condition = not check_condition
         if check_condition:
             self.put(self.config['content'])

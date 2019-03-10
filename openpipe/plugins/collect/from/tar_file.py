@@ -17,6 +17,7 @@ start:
 
 from openpipe.engine import PluginRuntime
 import tarfile
+from io import BytesIO
 
 
 class Plugin(PluginRuntime):
@@ -24,8 +25,13 @@ class Plugin(PluginRuntime):
     __default_config__ = "$_$"
 
     def on_input(self, item):
-        filename = self.config
-        with tarfile.open(filename) as tar:
+        name = self.config
+        if name == '-':
+            name = None
+            fileobj = BytesIO(item)
+        else:
+            fileobj = None
+        with tarfile.open(name=name, fileobj=fileobj) as tar:
             while True:
                 file_info = tar.next()
                 if file_info is None:   # Reached end of archive

@@ -64,12 +64,15 @@ class Plugin(PluginRuntime):
         if file_extension == '.gz':
             content_raw = zlib.decompress(content_raw, 16+zlib.MAX_WBITS)
             filename, file_extension = splitext(filename)
-        if file_extension in ['json', 'xml']:
+        if file_extension in ['.json', '.xml', '.tar']:
             use_splitlines = False
         content_type = reply.getheader('Content-Type')
         if 'application/json' in content_type:
             use_splitlines = False
-        content_data = content_raw.decode('utf-8')
+        if file_extension in ['.json', '.xml']:
+            content_data = content_raw.decode('utf-8')
+        else:
+            content_data = content_raw
         if use_splitlines:
             content_data = content_data.splitlines()
         if self.config['content_only']:

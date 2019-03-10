@@ -30,8 +30,8 @@ class Plugin(PluginRuntime):
     __default_config__ = "$_$"
 
     ext_map = {
-        '.gz': lambda x: gzip.open(x, 'rt'),
-        '.bz': lambda x: bz2.open(x, 'rt'),
+        '.gz': lambda x: gzip.open(x, 'r'),
+        '.bz': lambda x: bz2.open(x, 'r'),
         '*': lambda x: open(x),
         }
 
