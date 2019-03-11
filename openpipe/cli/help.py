@@ -2,7 +2,7 @@ import os
 import re
 import click
 from sys import stderr
-from os.path import join
+from os.path import join, abspath, expanduser
 from mdvl import render
 from importlib import import_module
 
@@ -23,7 +23,30 @@ def help(plugin):
         print("You can get a list of plugins with:")
         print("openpipe help")
         exit(2)
-    markdown = plugin_module.__doc__.replace("```yaml", "```")
+    plugin_purpose = plugin_module.__doc__
+    triggers = ''
+    if hasattr(plugin_module.Plugin, 'on_input'):
+        triggers += "- Input item is received\n"
+    if hasattr(plugin_module.Plugin, 'on_complete'):
+        triggers += "- Input is closed\n"
+    if hasattr(plugin_module.Plugin, 'default_config'):
+        config_string = plugin_module.Plugin.default_config
+        default_config_md = "# Configuration\n" + config_string.rstrip(' \t\r\n')
+    else:
+        default_config_md = ''
+    test_file = abspath(join(__file__, '..', '..', 'tests', 'plugins', os.sep.join(plugin)))+".yaml"
+    user_home_dir = expanduser('~')
+    if test_file.startswith(user_home_dir):
+        test_file = '$HOME' + test_file[len(user_home_dir):]
+    markdown = """# Purpose\
+    {}
+# Trigger(s)
+{}
+{}
+
+# Example(s)
+{}
+    """.format(plugin_purpose, triggers, default_config_md, test_file)
     render(markdown, cols=80)
 
 

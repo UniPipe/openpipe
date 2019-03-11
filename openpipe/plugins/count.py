@@ -1,29 +1,14 @@
 """
-# count
-
-## Purpose
 Produce the count of input elements
-
-## Trigger
-    - Input item is received
-
-## Example
-```yaml
-start:
-    - insert:
-        - abc
-        - xyz
-    - print:
-```
 """
-
-
 from openpipe.engine import PluginRuntime
 
 
 class Plugin(PluginRuntime):
 
-    __default_config__ = None
+    default_config = """
+    ""   # The field name to store the count value
+    """
 
     def on_start(self, config, segment_resolver):
         self.count = 0

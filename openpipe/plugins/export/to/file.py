@@ -1,26 +1,5 @@
 """
-# export to file
-
-## Purpose
 Export content to file
-
-## Trigger
-    - Input item is received
-    - Input ends
-
-## Configuration
-    - path:                     - Filename of the file to be created/overwritted/appended
-    - [content: $_$]            - Content to be written to the file
-    - [mode: "w"]               - Open file mode (write/append)
-    - [on_item_close: False]    - Force file close after each received item
-
-## Example
-```yaml
-start:
-    - export to file:
-        path: /tmp/test
-        content: Hello World!
-```
 """
 from openpipe.engine import PluginRuntime
 from os.path import expanduser
@@ -29,11 +8,14 @@ import json
 
 class Plugin(PluginRuntime):
 
-    __default_config__ = {
-        "mode": "w",
-        "content": "$_$",
-        "close_on_item": False
-    }
+    default_config = """
+    path:                   # Filename of the file to creat/overwrite/append
+    content: $_$            # Content to be written to the file
+    mode: "w"               # Open file mode (write/append)
+    on_item_close: False    # Force file close after each received item
+
+    # If a single string item is provided, it will be used as the path
+    """
 
     def on_start(self, config, segment_resolver):
         self.last_path = None

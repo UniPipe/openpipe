@@ -1,24 +1,5 @@
 """
-# check file existence
-
-## Purpose
-Produces content depending on file existence
-
-## Trigger
-    - Input item is received
-
-## Configuration
-    - [path: $_$]       - Filename to be checked
-    - [content: $_$]    - Content to be produced
-    - [output on: True] - When to output the content
-
-## Example
-```yaml
-start:
-    - check file existence:
-        path: /etc/hosts
-    - print: File $_$ was found
-```
+Produce content depending on file existence
 """
 from openpipe.engine import PluginRuntime
 from os.path import exists
@@ -26,11 +7,11 @@ from os.path import exists
 
 class Plugin(PluginRuntime):
 
-    __default_config__ = {
-        "path": "$_$",
-        "content": "$_$",
-        "output on": True
-    }
+    default_config = """
+    path: $_$         # Path of the file to be checked
+    content: $_$      # Content to be produced
+    output on: True   # When to output the content
+    """
 
     def on_input(self, item):
         check_condition = exists(self.config['path'])

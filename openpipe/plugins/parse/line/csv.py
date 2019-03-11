@@ -1,20 +1,5 @@
 """
-# parse line csv
-
-## Purpose
-Produce dictionary from CSV line based input data
-
-## Trigger
-    - Input item is received
-
-## Example
-```yaml
-start:
-    - collect from url:
-        https://raw.githubusercontent.com/openmundi/world.csv/master/countries(249)_alpha2.csv
-    - parse line csv:
-    - pprint:
-```
+Produce dictionary items from CSV line based input data
 """
 import sys
 import csv
@@ -23,12 +8,12 @@ from openpipe.engine import PluginRuntime
 
 class Plugin(PluginRuntime):
 
-    __default_config__ = {
-        "delimiter": ",",
-        "quotechar": '"',
-        "auto_number": True,
-        "ignore_errors": False,
-        }
+    default_config = """
+    delimiter: ","          # Char used as  field delimiter
+    quotechar: '"'          # Char used for quoting strings
+    ignore_errors: False    # Ignore numer of fields mismatch errors
+    field_list: []          # List of fields names
+    """
 
     def on_start(self, config, segment_resolver):
         self.mapper = None

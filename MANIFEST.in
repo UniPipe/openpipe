@@ -1,9 +1,8 @@
 include README.md
 include LICENSE
+recursive-include tests * *.yaml
 recursive-include openpipe *
 recursive-include docs *
 recursive-include samples *
-#recursive-exclude * __pycache__
 recursive-exclude * *.py[co]
-#recursive-exclude tests *.py[co]
 

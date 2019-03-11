@@ -1,32 +1,16 @@
 """
-# parse line split
-
-## Purpose
-Produce dictionary items by using split on line based input items
-
-## Trigger
-    - Input item is received
-
-## Example
-```yaml
-start:
-    - collect from file: /etc/passwd
-    - parse line split:
-        sep: ':'
-        field_list: [username, password, uid, gid, gecos, home, shell]
-    - pprint:
-```
+Produce ditcionary items by splitting lines by char
 """
 from openpipe.engine import PluginRuntime
 
 
 class Plugin(PluginRuntime):
 
-    __default_config__ = {
-        "sep": ",",
-        "maxsplit": -1,
-        "auto_number": True,
-        }
+    default_config = """
+    sep: ","            # Separator char for split
+    maxsplit: $_$       # Max number of split operations
+    auto_number: True   # Attempt to convert values to numbers
+    """
 
     def on_start(self, config, segment_resolver):
         self.sep = config['sep']

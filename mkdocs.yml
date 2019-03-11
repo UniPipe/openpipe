@@ -1,0 +1,37 @@
+# Project information
+site_name: OpenPipe
+site_description: An open source data integration framework
+site_author: João Pinto
+site_url: https://www.openpipe.org/
+
+# Repository
+repo_name: The OpenPipe Tool
+repo_url: https://github.com/OpenPipe/openpipe/
+
+# Repository
+copyright: This site content is licensed under a <A HREF="https://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</A>
+
+theme:
+    name: material
+    language: en
+    palette:
+        primary: 'blue'
+        accent: 'green'
+
+# Disable edit uri to get a cleaner view
+edit_uri: ''
+
+extra_css:
+    - css/extra.css
+
+extra_javascript:
+    - js/autoexpand.js
+
+nav:
+    - Welcome: index.md
+    # - Software:
+    #     - Data Visualization: software/data_visualization.md
+    #     - DevOps: software/devops.md
+    #     - Machine Learning: software/machine_learning.md
+    # - Services: services.md
+    # - Business: business.md
