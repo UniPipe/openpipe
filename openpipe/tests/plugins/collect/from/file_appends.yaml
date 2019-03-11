@@ -1,0 +1,6 @@
+start:
+    - directory: tmp/
+    - insert: Line 1
+    - export to file:
+        path: test.txt
+    - print: Needs more plugins to be properly tested

@@ -1,0 +1,19 @@
+start:
+    # Insert sample data
+    - insert:
+        - Good line 1
+        - Broken line
+        - Good line 2
+    # Remove lines with "Broken"
+    - filter:
+        out: $ "Broken" in _ $
+    - assert:
+        - Good line 1
+        - Good line 2
+    - print: "After filter out: $_$"
+    # Select lines with "1"
+    - filter:
+        in: $ "1" in _ $
+    - assert:
+        - Good line 1
+    - print: "After filter in : $_$"

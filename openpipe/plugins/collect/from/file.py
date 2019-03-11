@@ -1,5 +1,5 @@
 """
-Produce content of a file
+Insert content of a file, full content or line-by-line
 """
 import gzip
 import bz2

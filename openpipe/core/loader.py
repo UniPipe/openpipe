@@ -6,7 +6,7 @@ from sys import stderr
 from importlib import import_module
 from traceback import format_exc
 from os.path import join, normpath
-from .config import parse_default_config
+from .config import validated_config
 
 
 class CoreLoader(object):
@@ -32,8 +32,8 @@ class CoreLoader(object):
             exit(2)
         has_default_config = hasattr(module.Plugin, 'default_config')
         if has_default_config:
-            default_config_attr = getattr(module.Plugin, 'default_config')
-            default_config = parse_default_config(default_config_attr)
+            default_config_attr = getattr(module.Plugin, 'default_config',)
+            default_config = validated_config(config, default_config_attr, plugin_label)
             if config is None:
                 config = default_config
             elif isinstance(config, dict) and isinstance(default_config, dict):

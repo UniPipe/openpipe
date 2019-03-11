@@ -10,12 +10,13 @@ class Plugin(PluginRuntime):
     sep: ","            # Separator char for split
     maxsplit: $_$       # Max number of split operations
     auto_number: True   # Attempt to convert values to numbers
+    field_list: []      # List of field names
     """
 
     def on_start(self, config, segment_resolver):
         self.sep = config['sep']
         self.maxsplit = config['maxsplit']
-        self.field_list = config.get('field_list', None)
+        self.field_list = config['field_list']
 
         if self.field_list:
             self.expected_len = len(self.field_list)

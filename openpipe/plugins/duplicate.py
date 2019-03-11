@@ -1,5 +1,5 @@
 """
-Duplicate the input items into one or more segments
+Duplicate input item to another segment
 """
 
 from openpipe.engine import PluginRuntime

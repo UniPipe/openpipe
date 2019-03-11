@@ -1,7 +1,6 @@
 start:
     - collect from file:
         path: samples/test.xml
-        full_content: True
     - parse text xml:
     - assert:
         note:

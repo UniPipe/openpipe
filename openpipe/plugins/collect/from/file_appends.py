@@ -1,5 +1,5 @@
 """
-Produce text file changes between consecutive executions
+Insert text file line appends between consecutive executions
 """
 
 from glob import glob
@@ -18,12 +18,10 @@ class Plugin(PluginRuntime):
         self.max_delta_time = config.get("max_delta_time", False)
         self._state = {}
         self.first_run = True
-        if config.get("headers_always"):
-            self.on_input = self.on_first
-        else:
+        if not config.get("headers_always"):
             self.on_input = self.on_input_delta
 
-    def on_first(self, item):
+    def on_input(self, item):
         if self.config.get("headers_always"):
             path = self._get_path(item)
             # On the first run, if "headers_always", we read and produce the headers

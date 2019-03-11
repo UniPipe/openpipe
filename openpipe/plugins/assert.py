@@ -4,7 +4,6 @@ Abort execution if input does not match expected values
 
 import sys
 from openpipe.engine import PluginRuntime
-from pprint import pprint
 
 
 class Plugin(PluginRuntime):
@@ -50,6 +49,4 @@ class Plugin(PluginRuntime):
             except AssertionError:
                 print("AssertionError: Expected %s, got %s" % (str(assert_data), str(item)), file=sys.stderr)
                 raise
-            else:
-                pprint(item)
         self.put(item)

@@ -1,3 +1,4 @@
 start:
-    - collect from file: samples/test.txt
+    - collect from file:
+        path: samples/test.txt
     - assert: Line in file

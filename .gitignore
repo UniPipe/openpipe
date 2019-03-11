@@ -71,3 +71,4 @@ target/
 
 # gh-pages publishing
 site/
+tmp/
