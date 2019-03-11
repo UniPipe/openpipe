@@ -1,5 +1,5 @@
 """
-Produce the system clock time at regular intervals
+Produce system clock time at regular intervals
 """
 from time import time, sleep
 from openpipe.engine import PluginRuntime

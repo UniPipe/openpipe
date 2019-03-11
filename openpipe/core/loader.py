@@ -30,12 +30,10 @@ class CoreLoader(object):
             print("Module {} does not provide a Plugin class!".format(module), file=stderr)
             print('Required for step:', plugin_label, file=stderr)
             exit(2)
-        #  has_default_config = hasattr(module.Plugin, '__default_config__')
         has_default_config = hasattr(module.Plugin, 'default_config')
         if has_default_config:
             default_config_attr = getattr(module.Plugin, 'default_config')
             default_config = parse_default_config(default_config_attr)
-            #  default_config = getattr(module.Plugin, '__default_config__')
             if config is None:
                 config = default_config
             elif isinstance(config, dict) and isinstance(default_config, dict):

@@ -1,5 +1,5 @@
 start:
-    - copy to segment: test_dict_update
+    - duplicate: test_dict_update
 
     - insert:   # Select from a list of dictionaries
         - bad word

@@ -1,5 +1,5 @@
 """
-Produce path status information
+Produce a path status information
 """
 from openpipe.engine import PluginRuntime
 from os import stat

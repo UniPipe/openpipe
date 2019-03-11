@@ -1,5 +1,5 @@
 """
-Export content to file
+Export input content to file
 """
 from openpipe.engine import PluginRuntime
 from os.path import expanduser

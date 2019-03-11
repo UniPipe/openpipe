@@ -1,5 +1,5 @@
 """
-Retrieve a file from an HTTP/HTTPS URL
+Produce properties and content of a file obtained from an HTTP/HTTPS URL
 """
 
 from openpipe.engine import PluginRuntime
@@ -9,30 +9,25 @@ from os.path import splitext
 import zlib
 
 
-def lower(some_dict):
-    new_dict = {}
-    for key, value in some_dict.items():
-        key = key.lower()
-        new_dict[key] = value
-    return new_dict
-
-
 class Plugin(PluginRuntime):
 
-    __default_config__ = {
-        "ua": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36",  # NOQA: E501
-        "timeout": 30,
-        "path": "$_$",
-        "content_only": True,
-        "split_lines": True,
-        }
+    default_config = """
+    url: $_$           # URL of the resource to be retrieved
+
+    # If a single string item is provided, it will be used as the url
+
+    content_only: True  # Produce the content only
+    split_lines": True  # Produce content line-by-line
+    timeout: 30,        # Maximum time (in seconds) allowed for the operation
+    ua: curl/7.64.0     # User-agent to use on requests
+
+    """
+
+    def on_start(self, config):
+        self.url = self.config if isinstance(self.config, str) else None
 
     def on_input(self, item):
-        if isinstance(self.config, str):
-            url = self.config
-            self.config = self.__default_config__
-        else:
-            url = self.config['url']
+        url = self.url or self.config['url']
         timeout = self.config['timeout']
         req = urlreq.Request(url)
         req.add_header('User-Agent', self.config['ua'])
@@ -72,3 +67,11 @@ class Plugin(PluginRuntime):
             new_item['url'] = url = reply.geturl()
             new_item['content'] = content_data
             self.put(new_item)
+
+
+def lower(some_dict):
+    new_dict = {}
+    for key, value in some_dict.items():
+        key = key.lower()
+        new_dict[key] = value
+    return new_dict

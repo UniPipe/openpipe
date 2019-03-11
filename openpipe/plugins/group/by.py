@@ -1,5 +1,5 @@
 """
-Produce statistics by grouping input items by parts
+Produce statistics by grouping input items by keys
 """
 from openpipe.engine import PluginRuntime
 

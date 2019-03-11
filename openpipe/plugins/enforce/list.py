@@ -1,5 +1,5 @@
 """
-If input part is not a list, transform it into a single item list
+If an input field is not a list, transform it into a single item list
 """
 from openpipe.engine import PluginRuntime
 

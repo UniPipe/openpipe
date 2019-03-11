@@ -1,5 +1,5 @@
 """
-Retrieve files from a TAR archive
+Produce file properties and content from a TAR archive
 """
 
 from openpipe.engine import PluginRuntime
@@ -9,7 +9,9 @@ from io import BytesIO
 
 class Plugin(PluginRuntime):
 
-    __default_config__ = "$_$"
+    default_config = """
+    $_$     # The path to to the tar file, "-" to use the input item
+    """
 
     def on_input(self, item):
         name = self.config

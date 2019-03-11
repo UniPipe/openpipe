@@ -42,6 +42,7 @@
         "termios",
         "timegm",
         "tiocgwinsz",
+        "wbits",
         "xmltodict"
     ],
     "markdownlint.ignore": [

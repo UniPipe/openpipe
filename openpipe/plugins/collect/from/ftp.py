@@ -1,5 +1,5 @@
 """
-Retrieve a file from a FTP server
+Retrieve a file from a FTP server into a local destination
 """
 from openpipe.engine import PluginRuntime
 from urllib.request import urlretrieve
