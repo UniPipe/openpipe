@@ -2,7 +2,7 @@ import os
 import re
 import click
 from sys import stderr
-from os.path import join, abspath, expanduser
+from os.path import join, abspath
 from mdvl import render
 from importlib import import_module
 
@@ -35,9 +35,9 @@ def help(plugin):
     else:
         default_config_md = ''
     test_file = abspath(join(__file__, '..', '..', 'tests', 'plugins', os.sep.join(plugin)))+".yaml"
-    user_home_dir = expanduser('~')
-    if test_file.startswith(user_home_dir):
-        test_file = '$HOME' + test_file[len(user_home_dir):]
+
+    cols, _ = os.get_terminal_size(0)
+
     markdown = """# Purpose\
     {}
 # Trigger(s)
@@ -47,7 +47,7 @@ def help(plugin):
 # Example(s)
 {}
     """.format(plugin_purpose, triggers, default_config_md, test_file)
-    render(markdown, cols=80)
+    render(markdown, cols=cols)
 
 
 def print_list_of_plugins():
@@ -76,12 +76,12 @@ def print_list_of_plugins():
         filename = available_plugins[name]
         with open(filename) as module_file:
             filedata = module_file.read()
-            purpose = re.findall('## Purpose[\r\n]+([^\r\n]+)', filedata)
-            if len(purpose) == 1:
-                purpose = '# '+purpose[0]
-            else:
-                purpose = ''
-        print(name, purpose)
+            purpose = re.findall('"""\n([^\n]*)', filedata)
+            if not purpose or '#' in purpose[0]:
+                print("Error on", filename)
+                exit(1)
+            purpose = '# '+purpose[0] if purpose else ''
+        print('{:30}  {:>12}'.format(name, purpose))
 
     print("-------------------------------------\n")
     print("You can get help for a plugin with:\nopenpipe help <plugin_name>")

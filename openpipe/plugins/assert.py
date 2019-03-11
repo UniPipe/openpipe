@@ -1,22 +1,5 @@
 """
-# assert
-
-## Purpose
-Validate that input matches the config item
-
-## Trigger
-    - Input item is received
-    - Input is terminated
-
-## Default
-Validate that a config item is provided
-
-## Example
-```yaml
-start:
-    - insert: $2 + 3$
-    - assert: 5
-```
+Abort execution if input does not match expected values
 """
 
 import sys

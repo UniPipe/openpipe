@@ -1,27 +1,5 @@
 """
-# group by
-
-## Purpose
 Produce statistics by grouping input items by parts
-
-## Trigger
-    - Input item is received
-    - Input is terminated
-
-## Example
-```yaml
-start:
-    - insert:
-        - { name: Zap, color: red, hits: 10}
-        - { name: Pong, color: red, hits: 5}
-        - { name: Zap, color: red, hits: 20}
-
-    - group by:
-        stats: [ hits ]
-        keys: [ name ]
-
-    - print:
-```
 """
 from openpipe.engine import PluginRuntime
 

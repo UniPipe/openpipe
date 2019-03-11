@@ -1,24 +1,5 @@
 """
-# collect from clock
-
-## Purpose
 Produce the system clock time at regular intervals
-
-## Triggers
-    - Input item is received
-
-## Default
-Produce the system clock time every second
-
-## Example
-```yaml
-start:
-    - print: Now
-    - collect from clock:
-        interval: 5s
-        max_count: 1
-    - print: 5 seconds later...
-```
 """
 from time import time, sleep
 from openpipe.engine import PluginRuntime

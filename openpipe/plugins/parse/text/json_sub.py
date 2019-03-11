@@ -1,26 +1,5 @@
 """
-# parse text json_sub
-
-## Purpose
 Produce dictionary items from a subset of JSON input items
-
-## Trigger
-    - Input item is received
-
-## Default
-Parse the input item
-
-## Example
-```yaml
-start:
-    - collect from url:
-        url: https://www.justice.gov/api/v1/blog_entries.json?amp%3Bpagesize=2
-        only_content_lines: False
-    - insert: $content$
-    - parse text json_sub:
-        metadata: .
-    - pprint:
-```
 """
 from openpipe.engine import PluginRuntime
 from collections import OrderedDict

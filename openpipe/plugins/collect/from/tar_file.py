@@ -1,18 +1,5 @@
 """
-# collect from tar_file
-
-## Purpose
 Retrieve files from a TAR archive
-
-## Trigger
-    - Input item is received
-
-## Example
-```yaml
-start:
-    - collect from tar_file: samples/test.tar
-    - print: $name$
-```
 """
 
 from openpipe.engine import PluginRuntime

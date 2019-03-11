@@ -1,24 +1,5 @@
 """
-# parse text xml_sub
-
-## Purpose
 Produce ordered dictionary items from a subset of XML input items
-
-## Trigger
-    - Input item is received
-
-## Default
-Parse the input item
-
-## Example
-```yaml
-start:
-    - collect from url: https://www.w3schools.com/xml/note.xml
-    - parse text xml_sub:
-        note:
-            body: .
-    - pprint:
-```
 """
 
 from openpipe.engine import PluginRuntime

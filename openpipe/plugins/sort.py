@@ -1,27 +1,5 @@
 """
-# sort
-
-## Purpose
 Sort input items by key
-
-## Trigger
-    - Input item is received
-    - Input terminates
-
-## Default
-Sort by item value, descendent
-
-## Example
-```yaml
-start:
-    - insert:
-        - {id: zok}
-        - {id: anc}
-        - {id: zin}
-    - sort:
-        key: $id$
-    - print:
-```
 """
 from openpipe.engine import PluginRuntime
 

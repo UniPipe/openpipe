@@ -1,24 +1,5 @@
 """
-# iterate
-
-## Purpose
-Procude items by iterating over the content of a field
-
-## Trigger
-    - Input item is received
-
-## Configuration
-    Simple: name of the input field to be iterated
-
-## Example
-```yaml
-start:
-    - insert:
-        size: 12
-        color: [red, blue, brown]
-    - iterate: color
-    - print: $_$
-```
+Produce items by iterating over the content of a field
 """
 
 from openpipe.engine import PluginRuntime

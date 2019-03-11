@@ -1,23 +1,5 @@
 """
-# collect from file
-
-## Purpose
 Produce the content of a file
-
-## Trigger
-    - Input item is received
-
-## Default
-Use input item for the path filename
-
-## Example
-```yaml
-start:
-    # Print each line from /etc/hosts prefixed with '>'
-    - collect from file:
-        path: /etc/hosts
-    - print: "> $_$"
-```
 """
 import gzip
 import bz2

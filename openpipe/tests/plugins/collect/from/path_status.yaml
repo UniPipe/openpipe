@@ -1,0 +1,12 @@
+start:
+    # Check for non existing file
+    - collect from path_status: /etc/hostsx
+    - assert: {}
+
+    # Check for existing file
+    - collect from path_status: /etc/hosts
+    - assert:
+        uid: 0
+
+    - print: "*** Showing the status for $abspath$ ***"
+    - pprint:

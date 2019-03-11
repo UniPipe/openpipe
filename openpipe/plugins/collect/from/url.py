@@ -1,21 +1,5 @@
 """
-# collect from url
-
-## Purpose
 Retrieve a file from an HTTP/HTTPS URL
-
-## Trigger
-    - Input item is received
-
-
-## Example
-```yaml
-start:
-    # Check for changes every 5s
-    - collect from url:
-        url: https://raw.githubusercontent.com/OpenPipe/openpipe/master/LICENSE
-    - pprint:
-```
 """
 
 from openpipe.engine import PluginRuntime

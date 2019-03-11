@@ -1,20 +1,5 @@
 """
-# insert
-
-## Purpose
 Insert an item in the output stream
-
-## Trigger
-    - Input item is received
-
-## Example
-```yaml
-start:
-    - insert:
-        name: John
-        message: This will create a new dict item
-    - pprint:   # Output: {'message': 'This will create a new dict item', 'name': 'John'}
-```
 """
 from openpipe.engine import PluginRuntime
 

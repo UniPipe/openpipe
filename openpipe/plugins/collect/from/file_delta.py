@@ -1,22 +1,5 @@
 """
-# collect from file_delta
-
-## Purpose
 Produce text file changes between consecutive executions
-
-## Trigger
-    - Input item is received
-
-## Example
-``
-start:
-    # Check for changes every 5s
-    - collect from clock:
-        interval: 5s
-    - collect from file_delta:
-        path: access_log
-    - print: "Got line: $_$"
-```
 """
 
 from glob import glob

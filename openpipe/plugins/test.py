@@ -1,3 +1,6 @@
+"""
+Send item to different pipeline depending on condition value
+"""
 from openpipe.engine import PluginRuntime
 
 

@@ -1,20 +1,5 @@
 """
-# drop
-
-## Purpose
 Remove some part from the input item
-
-## Trigger
-    - Input item is received
-
-## Example
-```yaml
-start:
-    - insert:   # Select from a list of dictionaries
-        { name: Rose, gender: female, age: 21}
-    - drop: age
-    - pprint:
-```
 """
 
 from openpipe.engine import PluginRuntime

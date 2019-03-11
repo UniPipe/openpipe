@@ -11,6 +11,8 @@
     "cSpell.words": [
         "astimezone",
         "dinterpol",
+        "fcntl",
+        "fileno",
         "funcs",
         "functools",
         "influxdb",
@@ -20,10 +22,10 @@
         "ispkg",
         "joão",
         "khtml",
-        "openpipe",
         "mdvl",
         "nargs",
         "noqa",
+        "openpipe",
         "parametrize",
         "pformat",
         "pkgutil",
@@ -37,7 +39,9 @@
         "strptime",
         "swrite",
         "tarfile",
+        "termios",
         "timegm",
+        "tiocgwinsz",
         "xmltodict"
     ],
     "markdownlint.ignore": [
