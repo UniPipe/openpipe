@@ -12,6 +12,7 @@
         "astimezone",
         "chdir",
         "dinterpol",
+        "docstring",
         "fcntl",
         "fileno",
         "funcs",
