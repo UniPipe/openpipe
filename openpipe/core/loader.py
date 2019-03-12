@@ -6,7 +6,7 @@ from sys import stderr
 from importlib import import_module
 from traceback import format_exc
 from os.path import join, normpath
-from .config import validated_config
+from .plugin_config import validated_config
 
 
 class CoreLoader(object):

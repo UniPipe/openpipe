@@ -43,7 +43,7 @@ start:
 
 ## Plugin Configuration Schema
 
-A plugin may require or may support optional configuration options. The plugin configuration schema is defined by the `required_config` and `optional_config` class attributes as described in this section.
+A plugin can have required and optional configuration options. The plugin configuration schema is defined by the `required_config` and `optional_config` class attributes as described in this section.
 
 The `required_config` when provided sets the following rules:
 - must be a string containing valid YAML

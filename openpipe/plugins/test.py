@@ -6,6 +6,10 @@ from openpipe.engine import PluginRuntime
 
 class Plugin(PluginRuntime):
 
+    required_config = """
+        send to:    # Name of the segment
+    """
+
     def on_start(self, config, segment_resolver):
         self.send_to_target = segment_resolver(config['send to'])
 
