@@ -6,7 +6,7 @@ from openpipe.engine import PluginRuntime
 
 class Plugin(PluginRuntime):
 
-    default_config = """
+    optional_config = """
     sep: ","            # Separator char for split
     maxsplit: $_$       # Max number of split operations
     auto_number: True   # Attempt to convert values to numbers

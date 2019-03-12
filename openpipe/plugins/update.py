@@ -1,31 +1,26 @@
 """
-Update parts of input item
+Update item fields
 """
 from openpipe.engine import PluginRuntime
 
 
 class Plugin(PluginRuntime):
 
-    def on_start(self, config, segment_resolver):
-        if isinstance(config, dict) and 'set' in config:
-            pass
-        else:
-            raise ValueError("The update plugin config must have a 'set' key ")
+    required_config = """
+    set:            # Dictionary with keys/values to be updated
+    """
+    optional_config = """
+    where:  True    # Expression to select items to be updated
+    else:   {}      # Dictionary with keys/values to be updated when 'where' is False
+    """
 
-    # Output the configuration item
     def on_input(self, item):
         new_item = item
-        where = self.config.get('where', True)
+        where = self.config['where']
         if where is True:
-            if isinstance(self.config['set'], dict):
-                for key, value in self.config['set'].items():
-                    new_item[key] = value
-            else:
-                new_item = self.config['set']
-        if where is False and 'else' in self.config:
-            if isinstance(self.config['else'], dict):
-                for key, value in self.config['else'].items():
-                    new_item[key] = value
-            else:
-                new_item = self.config['else']
+            for key, value in self.config['set'].items():
+                new_item[key] = value
+        if where is False:
+            for key, value in self.config['else'].items():
+                new_item[key] = value
         self.put(new_item)

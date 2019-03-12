@@ -8,7 +8,7 @@ from openpipe.engine import PluginRuntime
 
 class Plugin(PluginRuntime):
 
-    default_config = """
+    optional_config = """
     delimiter: ","          # Char used as  field delimiter
     quotechar: '"'          # Char used for quoting strings
     ignore_errors: False    # Ignore numer of fields mismatch errors

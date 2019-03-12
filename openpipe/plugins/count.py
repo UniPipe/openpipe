@@ -6,7 +6,7 @@ from openpipe.engine import PluginRuntime
 
 class Plugin(PluginRuntime):
 
-    default_config = """
+    optional_config = """
     ""   # The field name to store the count value
     """
 

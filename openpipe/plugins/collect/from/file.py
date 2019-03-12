@@ -9,7 +9,7 @@ from os.path import splitext, expanduser
 
 class Plugin(PluginRuntime):
 
-    default_config = """
+    optional_config = """
     path: $_$               # Path of the file to be produced
 
     # If a single string item is provided, it will be used as the path

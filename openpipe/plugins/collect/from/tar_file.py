@@ -9,7 +9,7 @@ from io import BytesIO
 
 class Plugin(PluginRuntime):
 
-    default_config = """
+    optional_config = """
     $_$     # The path to to the tar file, "-" to use the input item
     """
 

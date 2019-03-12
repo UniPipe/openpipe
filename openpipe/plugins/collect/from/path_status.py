@@ -8,7 +8,7 @@ from os.path import abspath
 
 class Plugin(PluginRuntime):
 
-    default_config = """
+    optional_config = """
     $_$         # Path of the file to be checked
     """
 

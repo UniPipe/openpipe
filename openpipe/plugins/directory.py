@@ -8,13 +8,13 @@ from openpipe.engine import PluginRuntime
 
 class Plugin(PluginRuntime):
 
-    default_config = """
-    ""      # Name of the directory to create (if not found) and change to
+    required_config = """
+        path:    # Name of the directory to create (if not found) and change to
     """
 
     def on_input(self, item):
         self.cwd = getcwd()
-        dir_name = self.config
+        dir_name = self.config['path']
         if not exists(dir_name):
             makedirs(dir_name)
         chdir(dir_name)

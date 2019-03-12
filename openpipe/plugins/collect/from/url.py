@@ -11,20 +11,20 @@ import zlib
 
 class Plugin(PluginRuntime):
 
-    default_config = """
-    url: $_$           # URL of the resource to be retrieved
+    optional_config = """
+    path: $_$           # Local path or HTTP,HTTPS,FTP url
 
-    # If a single string item is provided, it will be used as the url
+    # If a single string item is provided, it will be used as the path
 
     content_only: True  # Produce the content only
-    split_lines": True  # Produce content line-by-line
+    split_lines: True  # Produce content line-by-line
     timeout: 30,        # Maximum time (in seconds) allowed for the operation
     ua: curl/7.64.0     # User-agent to use on requests
 
     """
 
     def on_start(self, config):
-        self.url = self.config if isinstance(self.config, str) else None
+        self.path = self.config if isinstance(self.config, str) else None
 
     def on_input(self, item):
         url = self.url or self.config['url']

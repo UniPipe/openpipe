@@ -30,21 +30,7 @@ class CoreLoader(object):
             print("Module {} does not provide a Plugin class!".format(module), file=stderr)
             print('Required for step:', plugin_label, file=stderr)
             exit(2)
-        has_default_config = hasattr(module.Plugin, 'default_config')
-        if has_default_config:
-            default_config_attr = getattr(module.Plugin, 'default_config',)
-            default_config = validated_config(config, default_config_attr, plugin_label)
-            if config is None:
-                config = default_config
-            elif isinstance(config, dict) and isinstance(default_config, dict):
-                # config becomes a merged dictionary with values from config replacing those from default_config
-                # https://stackoverflow.com/a/26853961
-                config = {**default_config, **config}
-        else:
-            if config is None:
-                print("Missing configuration for", plugin_label, file=stderr)
-                print("You can get help that plugin with:\nopenpipe help %s" % name, file=stderr)
-                exit(3)
+        config = validated_config(module.Plugin, plugin_label, config)
         instance = module.Plugin(config)
         instance.plugin_label = plugin_label
         instance.plugin_filename = plugin_filename

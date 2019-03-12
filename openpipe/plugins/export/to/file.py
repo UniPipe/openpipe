@@ -1,5 +1,5 @@
 """
-Export input content to file
+Export content to file
 """
 from openpipe.engine import PluginRuntime
 from os.path import expanduser
@@ -8,14 +8,18 @@ import json
 
 class Plugin(PluginRuntime):
 
-    default_config = """
+    required_config = """
     path:                   # Filename of the file to create/overwrite/append
+    """
+
+    optional_config = """
     content: $_$            # Content to be written to the file
     mode: "w"               # Open file mode (write/append)
-    on item close: False    # Force file close after each received item
+    close on item: False    # Force file close after each received item
     """
 
     def on_start(self, config, segment_resolver):
+        self.path = self.config if isinstance(self.config, str) else None
         self.last_path = None
         self.file = None
 
@@ -31,7 +35,7 @@ class Plugin(PluginRuntime):
         if path.endswith('.json'):
             content = json.dumps(content, indent=4)
         self.file.write(content)
-        if self.config['on item close']:
+        if self.config['close on item']:
             self.file.close()
             self.file = None
             self.last_path = None

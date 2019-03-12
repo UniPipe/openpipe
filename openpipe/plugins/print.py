@@ -6,7 +6,7 @@ from openpipe.engine import PluginRuntime
 
 class Plugin(PluginRuntime):
 
-    default_config = """
+    optional_config = """
     $_$     # The content to be printed, default is the input item
     """
 

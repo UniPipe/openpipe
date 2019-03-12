@@ -1,19 +1,4 @@
 start:
-    - duplicate: test_dict_update
-
-    - insert:   # Select from a list of dictionaries
-        - bad word
-        - good word
-    - update:
-        where: $ 'bad' in _ $
-        set: "very good word"
-    - print:
-
-    - assert:
-        - very good word
-        - good word
-
-test_dict_update:
     - insert:   # Select from a list of dictionaries
         - { name: "Rose", gender: female, age: 17}
         - { name: "Bob", gender: male, age: 75 }

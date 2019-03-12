@@ -8,7 +8,7 @@ from os.path import expanduser
 
 class Plugin(PluginRuntime):
 
-    default_config = """
+    optional_config = """
     $_$     # The path pattern to list
     """
 

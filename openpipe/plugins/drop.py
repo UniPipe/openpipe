@@ -7,7 +7,7 @@ from openpipe.engine import PluginRuntime
 
 class Plugin(PluginRuntime):
 
-    default_config = """
+    optional_config = """
     []  # List of keys for the fields to be removed
     """
 
