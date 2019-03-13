@@ -1,5 +1,5 @@
 """
-Produce file properties and content from a TAR archive
+Produce file metadata and content from a TAR archive
 """
 
 from openpipe.engine import PluginRuntime

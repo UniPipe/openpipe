@@ -18,7 +18,7 @@ class Plugin(PluginRuntime):
     close_on_item: False    # Force file close after each received item
     """
 
-    def on_start(self, config, segment_resolver):
+    def on_start(self, config):
         self.path = config['path']
         self.last_path = None
         self.file = None
@@ -41,6 +41,6 @@ class Plugin(PluginRuntime):
             self.last_path = None
         self.put(item)
 
-    def on_complete(self):
+    def on_finish(self, reason):
         if self.file:
             self.file.close()

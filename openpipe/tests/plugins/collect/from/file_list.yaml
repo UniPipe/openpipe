@@ -1,4 +1,4 @@
 start:
-    - collect from glob: samples/*.txt
+    - collect from file_list: samples/*.txt
     - assert:
             - ["samples/test.txt"]

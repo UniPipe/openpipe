@@ -10,7 +10,7 @@ class Plugin(PluginRuntime):
     ""   # The field name to store the count value
     """
 
-    def on_start(self, config, segment_resolver):
+    def on_start(self, config):
         self.count = 0
 
     def on_input(self, item):

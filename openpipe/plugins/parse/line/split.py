@@ -1,5 +1,5 @@
 """
-Produce ditcionary items by splitting lines by char
+Produce dictionary items by splitting lines by char
 """
 from openpipe.engine import PluginRuntime
 
@@ -13,7 +13,7 @@ class Plugin(PluginRuntime):
     field_list: []      # List of field names
     """
 
-    def on_start(self, config, segment_resolver):
+    def on_start(self, config):
         self.sep = config['sep']
         self.maxsplit = config['maxsplit']
         self.field_list = config['field_list']

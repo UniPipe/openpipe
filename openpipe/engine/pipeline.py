@@ -51,7 +51,8 @@ class PipelineRuntime(PipelineRuntimeCore):
                     if ODP_RUNTIME_DEBUG:
                         print("on_start %s " % step.plugin_label)
                     try:
-                        on_start_func(step.initial_config, self.segment_resolver)
+                        step.segment_resolver = self.segment_resolver
+                        on_start_func(step.initial_config)
                     except:  # NOQA: E722
                         print("Failed starting", step.plugin_label, file=stderr)
                         raise

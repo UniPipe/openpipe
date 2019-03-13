@@ -20,5 +20,5 @@ class Plugin(PluginRuntime):
         chdir(dir_name)
         self.put(item)
 
-    def on_complete(self):
+    def on_finish(self, reason):
         chdir(self.cwd)

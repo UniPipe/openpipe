@@ -1,5 +1,0 @@
-start:
-    - collect from file:
-        path: samples/test.json
-    - assert:
-        {'name': 'Zin'}

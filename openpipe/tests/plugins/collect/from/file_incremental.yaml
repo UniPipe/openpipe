@@ -31,7 +31,7 @@ start:
     - print: Full file content is ok
 
 check_file_content:
-    - collect from file_appends:
+    - collect from file_incremental:
         path: test.txt
     - assert: Line 2
     - print: "Found second line: $_$"

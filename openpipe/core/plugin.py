@@ -32,11 +32,11 @@ class PluginRuntimeCore(object):
         if item is None:
             self.reference_count -= 1
             if self.reference_count == 0:
-                on_complete_func = getattr(self, 'on_complete', None)
-                if on_complete_func:
+                on_finish_func = getattr(self, 'on_finish', None)
+                if on_finish_func:
                     if ODP_RUNTIME_DEBUG:
-                        print("on_complete %s " % self.plugin_label)
-                    on_complete_func()
+                        print("on_finish %s " % self.plugin_label)
+                    on_finish_func(True)
                 self.put(item)
         else:
             try:

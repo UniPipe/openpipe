@@ -15,13 +15,13 @@ class Plugin(PluginRuntime):
     sorted_fields: []               # When these fields change, perform sort
     """
 
-    def on_start(self, config, segment_resolver):
+    def on_start(self, config):
         self.group_by = GroupBy(self, config)
 
     def on_input(self, item):
         self.group_by.add(item)
 
-    def on_complete(self):
+    def on_finish(self, reason):
         self.group_by.send_group_results()
 
 

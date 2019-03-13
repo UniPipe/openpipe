@@ -3,6 +3,13 @@ from sys import stderr
 from pprint import pformat
 
 
+def delete_line_info(some_dict):
+    del some_dict['__line__']
+    for value in some_dict.values():
+        if isinstance(value, dict):
+            delete_line_info(value)
+
+
 def validate_required_config(module_plugin, plugin_label, provided_config):
     """ """
     required_config_str = getattr(module_plugin, 'required_config', None)
@@ -13,7 +20,7 @@ def validate_required_config(module_plugin, plugin_label, provided_config):
 
     # Required config must be a dict
     assert(isinstance(required_config, dict))
-    del required_config['__line__']
+    delete_line_info(required_config)
 
     # all the _dict_ values must be set to None
     for key, value in required_config.items():
@@ -32,6 +39,11 @@ def validate_required_config(module_plugin, plugin_label, provided_config):
             del provided_config[key]
     else:
         if len(list(required_config.keys())) == 1:
+            if provided_config is None:
+                print("Invalid configuration for", plugin_label, file=stderr)
+                print("The required field '%s' is missing" % key, plugin_label, file=stderr)
+                print("The following configuration is required:", required_config_str, file=stderr)
+                exit(22)
             config[next(iter(required_config))] = provided_config
         else:
             print("Invalid configuration for", plugin_label, file=stderr)
@@ -47,7 +59,7 @@ def validate_optional_config(required_config, module_plugin, plugin_label, provi
     if optional_config_str is not None:
         optional_config = load_yaml(optional_config_str)
         if isinstance(optional_config, dict):
-            del optional_config['__line__']
+            delete_line_info(optional_config)
 
             for key, value in optional_config.items():
                 assert(' ' not in key)  # Spaces are not allowed in required key names
@@ -84,7 +96,7 @@ def validate_optional_config(required_config, module_plugin, plugin_label, provi
         if provided_config:
             print("Unexpected config for", plugin_label, file=stderr)
             print("Got", type(provided_config), pformat(provided_config), file=stderr)
-            print("The plugin doet not support any kind of configuration", file=stderr)
+            print("The plugin does not support any kind of configuration", file=stderr)
             exit(20)
         return required_config
 

@@ -11,11 +11,11 @@ class Plugin(PluginRuntime):
     optional_config = """
     delimiter: ","          # Char used as  field delimiter
     quotechar: '"'          # Char used for quoting strings
-    ignore_errors: False    # Ignore numer of fields mismatch errors
+    ignore_errors: False    # Ignore number of fields mismatch errors
     field_list: []          # List of fields names
     """
 
-    def on_start(self, config, segment_resolver):
+    def on_start(self, config):
         self.mapper = None
 
     def on_input(self, item):

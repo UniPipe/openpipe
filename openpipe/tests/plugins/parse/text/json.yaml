@@ -1,5 +1,19 @@
 start:
     - collect from file:
         path: samples/test.json
-    - assert:
-        {'name': 'Zin', 'size': 12}
+        auto_parse: False   # We want to take control of parsing
+
+    - duplicate:
+        - parse_json_full
+        - parse_json_sub
+
+parse_json_full:
+    - parse text json: $_$
+    - print: Full parsing is $_$
+
+parse_json_sub:
+    - parse text json:
+        content: $_$
+        subset:
+            name: selected_name
+    - print: Subset parsing is $_$

@@ -1,5 +1,5 @@
 """
-Insert text file line appends between consecutive executions
+Insert lines appended to file between consecutive executions
 """
 
 from glob import glob
@@ -23,7 +23,7 @@ class Plugin(PluginRuntime):
                                 # used for ms_iis_logs parsing, to get header field names
     """
 
-    def on_start(self, config, segment_resolver):
+    def on_start(self, config):
         self._state = {}
         self.first_run = True
         self.on_input_delta = self.on_input

@@ -14,7 +14,7 @@ class Plugin(PluginRuntime):
     descendent: False       # Use descendent order ?
     """
 
-    def on_start(self, config, segment_resolver):
+    def on_start(self, config):
         self.data = []
         self.descendent = config['descendent']
 
@@ -22,7 +22,7 @@ class Plugin(PluginRuntime):
         # we must copy because the item may be changed in the thread
         self.data.append((self.config['key'], item.copy()))
 
-    def on_complete(self):
+    def on_finish(self, reason):
         self.data.sort(key=lambda x: x[0], reverse=self.descendent)
         for key, item in self.data:
             self.put(item)

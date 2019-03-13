@@ -17,6 +17,7 @@
         "fileno",
         "funcs",
         "functools",
+        "getcwd",
         "influxdb",
         "isdigit",
         "isdir",
