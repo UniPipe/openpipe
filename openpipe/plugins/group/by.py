@@ -6,6 +6,15 @@ from openpipe.engine import PluginRuntime
 
 class Plugin(PluginRuntime):
 
+    required_config = """
+    keys:         # List of keys to be used for grouping
+    """
+
+    optional_config = """
+    stats: [sum, count, max, min]   # List of stats to obtain []
+    sorted_fields: []               # When these fields change, perform sort
+    """
+
     def on_start(self, config, segment_resolver):
         self.group_by = GroupBy(self, config)
 
@@ -45,8 +54,8 @@ class GroupBy(object):
     def __init__(self, plugin, config):
         self.config = config
         self.last_sorted_value = None
-        self.sorted_fields = config.get('sorted_fields')
-        self.stats_fields = config.get('stats')
+        self.sorted_fields = config['sorted_fields']
+        self.stats_fields = config['stats']
         self.plugin = plugin
         self.aggregated_stats = {}
 

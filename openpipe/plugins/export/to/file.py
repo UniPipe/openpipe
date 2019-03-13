@@ -19,7 +19,7 @@ class Plugin(PluginRuntime):
     """
 
     def on_start(self, config, segment_resolver):
-        self.path = self.config if isinstance(self.config, str) else None
+        self.path = config['path']
         self.last_path = None
         self.file = None
 

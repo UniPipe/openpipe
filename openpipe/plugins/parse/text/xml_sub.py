@@ -15,6 +15,10 @@ import json
 
 class Plugin(PluginRuntime):
 
+    required_some_config = """
+    A dict with the part to be selected must be provided
+    """
+
     def on_input(self, item):
         new_item = self.parse(item, self.config)
         self.put(new_item)
