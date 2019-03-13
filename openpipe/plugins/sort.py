@@ -6,11 +6,17 @@ from openpipe.engine import PluginRuntime
 
 class Plugin(PluginRuntime):
 
-    # By default sort full element
+    required_config = """
+    key:                    # Expression to be used as the group key
+    """
+
+    optional_config = """
+    descendent: False       # Use descendent order ?
+    """
 
     def on_start(self, config, segment_resolver):
         self.data = []
-        self.descendent = config.get("descendent", False)
+        self.descendent = config['descendent']
 
     def on_input(self, item):
         # we must copy because the item may be changed in the thread

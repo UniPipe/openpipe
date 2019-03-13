@@ -6,6 +6,10 @@ from openpipe.engine import PluginRuntime
 
 class Plugin(PluginRuntime):
 
+    optional_config = """
+    dictionary  # Dictionary to be used for the mapping
+    """
+
     def on_input(self, item):
         # Config starts with target key names, and source map rules
         for target_key_name, source_map_rule in self.config.items():

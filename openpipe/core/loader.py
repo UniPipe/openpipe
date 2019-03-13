@@ -6,7 +6,7 @@ from sys import stderr
 from importlib import import_module
 from traceback import format_exc
 from os.path import join, normpath
-from .plugin_config import validated_config
+from .config_validation import validate_config
 
 
 class CoreLoader(object):
@@ -30,7 +30,7 @@ class CoreLoader(object):
             print("Module {} does not provide a Plugin class!".format(module), file=stderr)
             print('Required for step:', plugin_label, file=stderr)
             exit(2)
-        config = validated_config(module.Plugin, plugin_label, config)
+        config = validate_config(module.Plugin, plugin_label, config)
         instance = module.Plugin(config)
         instance.plugin_label = plugin_label
         instance.plugin_filename = plugin_filename

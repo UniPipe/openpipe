@@ -4,6 +4,7 @@ start:
         - good thing
         - somethng else
 
+
     - test:
         on condition: $'good' in _$
         send to: test_good

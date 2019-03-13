@@ -8,7 +8,7 @@ class Plugin(PluginRuntime):
 
     optional_config = """
     sep: ","            # Separator char for split
-    maxsplit: $_$       # Max number of split operations
+    maxsplit: -1        # Max number of split operations
     auto_number: True   # Attempt to convert values to numbers
     field_list: []      # List of field names
     """

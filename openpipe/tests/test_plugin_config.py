@@ -1,16 +1,36 @@
 from openpipe.engine import PluginRuntime
-from openpipe.core.plugin_config import validated_config
+from openpipe.core.config_validation import validate_config
 
 
-# Test a plugin which does not support any config
+def test_missing_required_some_config():
+
+    class Plugin(PluginRuntime):
+        required_some_config = """ YES """
+    try:
+        validate_config(Plugin, "", None)
+    except SystemExit as ex:
+        assert(ex.code == 25)
+    else:
+        raise
+
+
+def test_required_some_config():
+
+    class Plugin(PluginRuntime):
+        required_some_config = """ YES """
+
+    result = validate_config(Plugin, "", "plain")
+    assert(result == "plain")
+
+
 def test_zero_config():
 
     class Plugin(PluginRuntime):
         pass
 
-    validated_config(Plugin, "", None)
+    validate_config(Plugin, "", None)
     try:
-        validated_config(Plugin, "", "Something")
+        validate_config(Plugin, "", "Something")
     except SystemExit as ex:
         assert(ex.code == 20)
     else:
@@ -22,7 +42,7 @@ def test_required_is_not_dict():
     class Plugin(PluginRuntime):
         required_config = ""
     try:
-        validated_config(Plugin, "", None)
+        validate_config(Plugin, "", None)
     except AssertionError:
         pass
     else:
@@ -36,7 +56,7 @@ def test_required_contains_default():
         key1: 12
         """
     try:
-        validated_config(Plugin, "", None)
+        validate_config(Plugin, "", None)
     except AssertionError:
         pass
     else:
@@ -51,7 +71,7 @@ def test_required_multi_dict_with_non_dict_config():
         key2:
         """
     try:
-        validated_config(Plugin, "", "someone")
+        validate_config(Plugin, "", "someone")
     except SystemExit as ex:
         assert(ex.code == 21)
     else:
@@ -64,7 +84,7 @@ def test_required_single_dict_with_non_dict_config():
         required_config = """
         key1:
         """
-    result = validated_config(Plugin, "", "someone")
+    result = validate_config(Plugin, "", "someone")
     assert(result == {"key1": "someone"})
 
 
@@ -75,7 +95,7 @@ def test_required_single_dict_with_missing_config():
         key1:
         """
     try:
-        validated_config(Plugin, "", {"some": "value"})
+        validate_config(Plugin, "", {"some": "value"})
     except SystemExit as ex:
         assert(ex.code == 22)
     else:
@@ -90,7 +110,7 @@ def test_optional_non_dict_with_required_config():
         """
         optional_config = "some"
     try:
-        validated_config(Plugin, "", "ok")
+        validate_config(Plugin, "", "ok")
     except AssertionError:
         pass
     else:
@@ -102,11 +122,11 @@ def test_optional_non_dict_with_non_dict_provided():
     class Plugin(PluginRuntime):
         optional_config = "some"
 
-    result = validated_config(Plugin, "", None)
+    result = validate_config(Plugin, "", None)
     assert(result == "some")
-    result = validated_config(Plugin, "", "from_user")
+    result = validate_config(Plugin, "", "from_user")
     assert(result == "from_user")
-    result = validated_config(Plugin, "", ["ok"])
+    result = validate_config(Plugin, "", ["ok"])
     assert(result == ["ok"])
 
 
@@ -115,7 +135,7 @@ def test_optional_non_dict_with_dict_provided():
     class Plugin(PluginRuntime):
         optional_config = "some"
 
-    result = validated_config(Plugin, "", {"just": "one"})
+    result = validate_config(Plugin, "", {"just": "one"})
     assert(result == {"just": "one"})
 
 
@@ -126,7 +146,7 @@ def test_optional_dict_with_non_dict_provided():
         key1: simple
         """
     try:
-        validated_config(Plugin, "", "ahaha")
+        validate_config(Plugin, "", "ahaha")
     except SystemExit as ex:
         assert(ex.code == 23)
     else:
@@ -140,7 +160,7 @@ def test_optional_dict_with_non_supported():
         key1: simple
         """
     try:
-        validated_config(Plugin, "", {"key2": 12})
+        validate_config(Plugin, "", {"key2": 12})
     except SystemExit as ex:
         assert(ex.code == 24)
     else:
@@ -153,19 +173,20 @@ def test_optional_dict_with_user_valid():
         optional_config = """
         key1: simple
         """
-    result = validated_config(Plugin, "", None)
+    result = validate_config(Plugin, "", None)
     assert(result == {"key1": "simple"})
-    result = validated_config(Plugin, "", {"key1": "better"})
+    result = validate_config(Plugin, "", {"key1": "better"})
     assert(result == {"key1": "better"})
 
-def test_optional_dict_with_user_valid():
+
+def test_optional_dict_with_user_valid_part():
 
     class Plugin(PluginRuntime):
         optional_config = """
         key1: simple
         key2: more
         """
-    result = validated_config(Plugin, "", None)
-    assert(result == {"key1": "simple", {"key2": "more"}})
-    result = validated_config(Plugin, "", {"key1": "better"})
-    assert(result == {"key1": "better", {"key2": "more"}})
+    result = validate_config(Plugin, "", None)
+    assert(result == {"key1": "simple", "key2": "more"})
+    result = validate_config(Plugin, "", {"key1": "better"})
+    assert(result == {"key1": "better", "key2": "more"})

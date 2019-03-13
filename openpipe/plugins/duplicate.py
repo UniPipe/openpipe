@@ -7,16 +7,11 @@ from openpipe.engine import PluginRuntime
 class Plugin(PluginRuntime):
 
     required_config = """
-    segment:        # Name of the segment to receive the item
-    """
-
-    optional_config = """
-    when:   True    # Expression 
-    else:   ''      # 
+    segment name:   # Name of the segment to receive the item
     """
 
     def on_start(self, config, segment_resolver):
-        self.target_segment = segment_resolver(config['to segment'])
+        self.target_segment = segment_resolver(config['segment name'])
 
     def on_input(self, item):
         if isinstance(item, (list, dict)):

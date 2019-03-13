@@ -6,8 +6,8 @@ from openpipe.engine import PluginRuntime
 
 class Plugin(PluginRuntime):
 
-    optional_config = """
-    $_$     # The item to be inserted, default is the input item
+    required_some_config = """
+    item # The item to be inserted, default is the input item
     """
 
     # Output the configuration item

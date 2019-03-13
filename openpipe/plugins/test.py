@@ -7,7 +7,8 @@ from openpipe.engine import PluginRuntime
 class Plugin(PluginRuntime):
 
     required_config = """
-        send to:    # Name of the segment
+    on condition:   # Expression to be evaluated
+    send to:        # Name of segment to receive the item if `on condition` is True
     """
 
     def on_start(self, config, segment_resolver):

@@ -18,7 +18,6 @@ def validate_required_config(module_plugin, plugin_label, provided_config):
     # all the _dict_ values must be set to None
     for value in required_config.values():
         assert(value is None)
-
     config = {}
     if isinstance(provided_config, dict):
         for key in required_config:
@@ -49,7 +48,7 @@ def validate_optional_config(required_config, module_plugin, plugin_label, provi
         if isinstance(optional_config, dict):
             del optional_config['__line__']
             for value in optional_config.values():
-                # Optional config values can not be none
+                # Optional config values can not be None
                 assert(value is not None)
             merged_config = {**required_config, **optional_config}
             if provided_config is None:
@@ -77,17 +76,25 @@ def validate_optional_config(required_config, module_plugin, plugin_label, provi
             print("Got", type(provided_config), pformat(provided_config), file=stderr)
             print("The plugin doet not support any kind of configuration", file=stderr)
             exit(20)
+        return required_config
 
 
-def validated_config(module_plugin, plugin_label, provided_config):
+def validate_config(module_plugin, plugin_label, provided_config):
     """ Validate that the provided_config is valid per the plugin config schema """
-    required_config = validate_required_config(module_plugin, plugin_label, provided_config)
 
+    if hasattr(module_plugin, "required_some_config"):
+        if provided_config is None:
+            print("Missing config for", plugin_label, file=stderr)
+            print("The plugin requires configuration parameters", file=stderr)
+            exit(25)
+        else:
+            return provided_config
+
+    required_config = validate_required_config(module_plugin, plugin_label, provided_config)
     # A single required item is required, a single item was provided, no optional config
     if len(required_config) == 1 and not isinstance(provided_config, dict) \
             and not hasattr(module_plugin, 'optional_config'):
         return required_config
 
     config = validate_optional_config(required_config, module_plugin, plugin_label, provided_config)
-
     return config

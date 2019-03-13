@@ -11,6 +11,10 @@ from openpipe.engine import PluginRuntime
 
 class Plugin(PluginRuntime):
 
+    required_config = """
+    
+    """
+
     def on_start(self, config, segment_resolver):
         self.persistent_state = config.get("persistent_state", False)
         self.prefix_with_path = config.get("prefix_with_path", False)

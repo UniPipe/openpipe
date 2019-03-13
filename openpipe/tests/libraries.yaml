@@ -2,5 +2,5 @@ libraries:
     - openpipe/tests/lib     # This library provides the "sample" plugin
 
 start:
-    - sample: 12
+    - sample:
 

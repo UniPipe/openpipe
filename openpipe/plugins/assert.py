@@ -8,6 +8,9 @@ from openpipe.engine import PluginRuntime
 
 class Plugin(PluginRuntime):
 
+    required_some_config = """
+    """
+
     def on_start(self, config, segment_resolver):
         self.start_config = config  # Typically on_complete does not use config
         self.never_called = True

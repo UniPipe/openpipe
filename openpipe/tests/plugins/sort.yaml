@@ -7,7 +7,7 @@ start:
     - duplicate: sort_desc
     - duplicate: sort_asc
 
-sort_desc:
+sort_asc:
     - sort:
         key: $id$
     - assert:
@@ -15,7 +15,7 @@ sort_desc:
         - {id: zin}
         - {id: zok}
 
-sort_asc:
+sort_desc:
     - sort:
         key: $id$
         descendent: True

@@ -12,7 +12,7 @@ class Plugin(PluginRuntime):
     """
 
     def on_input(self, item):
-        original_iterator = self.config
+        original_iterator = item[self.config]
         for iter_item in original_iterator:
             item[self.config] = iter_item
             self.put(item)
