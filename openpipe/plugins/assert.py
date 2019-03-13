@@ -2,7 +2,7 @@
 Abort execution if input does not match expected values
 """
 
-import sys
+from sys import stderr
 from openpipe.engine import PluginRuntime
 
 
@@ -29,8 +29,10 @@ class Plugin(PluginRuntime):
 
     def on_complete(self):
         if self.never_called:
+            print("Failed on_complete", self.plugin_label, file=stderr)
             raise Exception("Did not receive any item, expected:\n" + str(self.start_config))
         if isinstance(self.config, list) and self.check_index < len(self.start_config):
+            print("Failed on_complete", self.plugin_label, file=stderr)
             raise AssertionError("Test got less values than expected")
 
     def value_assert(self, item, assert_data):
@@ -43,13 +45,13 @@ class Plugin(PluginRuntime):
                 except AssertionError:
                     print(
                             "AssertionError: Expected %s on field '%s', got %s" %
-                            (str(value), str(key), str(item_value)), file=sys.stderr
+                            (str(value), str(key), str(item_value)), file=stderr
                         )
                     raise
         else:
             try:
                 assert(item == assert_data)
             except AssertionError:
-                print("AssertionError: Expected %s, got %s" % (str(assert_data), str(item)), file=sys.stderr)
+                print("AssertionError: Expected %s, got %s" % (str(assert_data), str(item)), file=stderr)
                 raise
         self.put(item)

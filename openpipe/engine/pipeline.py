@@ -34,8 +34,8 @@ class PipelineRuntime(PipelineRuntimeCore):
             first_step = self.segments[segment_name][0]
         except KeyError:
             print(
-                "A reference was found for segment '{}' which does not exist."
-                "The following segment names were found:\n{}\n\n".format(segment_name, self.segments) +
+                "A reference was found for segment '{}' which does not exist.\n"
+                "The following segment names were found:\n{}\n\n".format(segment_name, list(self.segments.keys())) +
                 "You can read more about pipeline segments at:\n"+SEGMENTS_DOC_URL,
                 file=stderr
                 )

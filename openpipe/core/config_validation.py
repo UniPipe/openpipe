@@ -58,6 +58,10 @@ def validate_optional_config(required_config, module_plugin, plugin_label, provi
             if provided_config is None:
                 return merged_config
 
+            if required_config and len(list(required_config.keys())) == 1 \
+                    and not isinstance(provided_config, dict):
+                return merged_config
+
             if not isinstance(provided_config, dict):
                 print("Invalid configuration for", plugin_label, file=stderr)
                 print("Got", type(provided_config), pformat(provided_config), file=stderr)

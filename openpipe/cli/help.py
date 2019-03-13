@@ -26,12 +26,17 @@ def help(plugin):
     plugin_purpose = plugin_module.__doc__
     triggers = ''
     if hasattr(plugin_module.Plugin, 'on_input'):
-        triggers += "- Input item is received\n"
+        triggers += "- Input item is received\t"
     if hasattr(plugin_module.Plugin, 'on_complete'):
         triggers += "- Input is closed\n"
+    if hasattr(plugin_module.Plugin, 'required_config'):
+        config_string = plugin_module.Plugin.required_config
+        required_config_md = "# Required Configuration\n" + config_string.lstrip('\r\n').rstrip(' \r\n')
+    else:
+        required_config_md = ''
     if hasattr(plugin_module.Plugin, 'optional_config'):
         config_string = plugin_module.Plugin.optional_config
-        optional_config_md = "# Configuration\n" + config_string.rstrip(' \t\r\n')
+        optional_config_md = "# Optional Configuration\n" + config_string.lstrip('\r\n').rstrip(' \r\n')
     else:
         optional_config_md = ''
     test_file = abspath(join(__file__, '..', '..', 'tests', 'plugins', os.sep.join(plugin)))+".yaml"
@@ -42,11 +47,14 @@ def help(plugin):
     {}
 # Trigger(s)
 {}
+
+{}
+
 {}
 
 # Example(s)
 {}
-    """.format(plugin_purpose, triggers, optional_config_md, test_file)
+    """.format(plugin_purpose, triggers, required_config_md, optional_config_md, test_file)
     render(markdown, cols=cols)
 
 

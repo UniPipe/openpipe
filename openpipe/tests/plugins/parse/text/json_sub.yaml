@@ -1,7 +1,5 @@
 start:
     - collect from file:
         path: samples/test.json
-    - parse text json_sub:
-        name: .
     - assert:
         {'name': 'Zin'}

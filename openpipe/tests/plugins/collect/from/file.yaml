@@ -1,4 +1,32 @@
 start:
-    - collect from file:
-        path: samples/test.txt
-    - assert: Line in file
+    - duplicate:
+        - test_local_json_file
+        - test_http_json_file
+        - test_ftp_json_file
+    - collect from file: samples/test.txt
+    - assert:
+        - Line in file
+        - One more line
+
+# Test automatic parsing of local json file
+test_local_json_file:
+    - collect from file: samples/test.json
+    - assert:
+        name: "Zin"
+        size: 12
+
+# Test automatic parsing of remote json data
+test_http_json_file:
+    - collect from file: https://api.exchangeratesapi.io/latest
+    - assert:
+        base: 'EUR'
+    - pprint:
+
+test_ftp_json_file:
+    - collect from file: ftp://ftp.ebi.ac.uk/pub/databases/genenames/new/json/alternative_loci_chr_1.json
+    - insert:
+        result: $ 'responseHeader' in  _ $
+    - assert:
+        result: True
+    - print: "OK"
+    - pprint:

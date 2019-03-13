@@ -1,6 +1,5 @@
 start:
     - collect from file:
         path: samples/test.json
-    - parse text json:
     - assert:
         {'name': 'Zin', 'size': 12}
