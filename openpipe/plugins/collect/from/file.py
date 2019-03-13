@@ -5,6 +5,7 @@ import gzip
 import bz2
 import zlib
 import urllib.request as urlreq
+import xmltodict
 from urllib.error import HTTPError
 from os.path import splitext, expanduser
 from json import loads
@@ -48,6 +49,7 @@ class Plugin(PluginRuntime):
     def put_or_parse(self, data, file_extension):
         auto_parse_map = {
             '.json': lambda x: loads(x),
+            '.xml': lambda x: xmltodict.parse(x),
             '*': lambda x: x,
             }
         if not self.config['auto_parse']:
@@ -103,7 +105,7 @@ class Plugin(PluginRuntime):
         content_raw = reply.read()
         filename, file_extension = splitext(url)
         if hasattr(reply, "getheader"):  # FTPs do not provide headers
-            content_type = reply.getheader('Content-Type')
+            content_type = reply.getheader('Content-Type').split(';', 1)[0]
             if content_type == 'application/x-gzip':
                 content_raw = zlib.decompress(content_raw, 16+zlib.MAX_WBITS)
             if content_type == 'application/json':

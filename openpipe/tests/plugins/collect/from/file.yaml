@@ -2,6 +2,7 @@ start:
     - duplicate:
         - test_local_json_file
         - test_http_json_file
+        - test_http_xml_file
         - test_ftp_json_file
     - collect from file: samples/test.txt
     - assert:
@@ -30,3 +31,11 @@ test_ftp_json_file:
         result: True
     - print: "OK"
     - pprint:
+
+# Test automatic parsing of remote json data
+test_http_xml_file:
+    - collect from file: http://data.consumerfinance.gov/api/views.xml
+    - insert:
+        result: $'response' in _.keys()$
+    - assert:
+        result: True

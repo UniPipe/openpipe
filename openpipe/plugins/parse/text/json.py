@@ -13,15 +13,9 @@ class Plugin(PluginRuntime):
     content:        # Content to be parsed to json
     """
 
-    optional_config = """
-    subset: {}     # A dict representing the sub_set of data to be selected
-    """
-
     def on_input(self, item):
         json_content = loads(self.config['content'])
-        subset = self.config['subset']
-        new_item = json_content if len(subset) == 0 else self.sub_select(json_content, subset)
-        self.put(new_item)
+        self.put(json_content)
 
     def sub_select(self, content, subset):    # NOQA: C901
         current_dict = dict()

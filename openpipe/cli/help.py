@@ -7,6 +7,15 @@ from mdvl import render
 from importlib import import_module
 
 
+def config_markdown(config_string):
+    config_string = config_string.lstrip('\r\n').rstrip(' ')
+    markdown = ''
+    for line in config_string.splitlines():
+        markdown += line
+        markdown += '\n'
+    return markdown
+
+
 @click.command()
 @click.argument('plugin', nargs=-1, required=False)
 def help(plugin):
@@ -31,12 +40,14 @@ def help(plugin):
         triggers += "- Input is closed\n"
     if hasattr(plugin_module.Plugin, 'required_config'):
         config_string = plugin_module.Plugin.required_config
-        required_config_md = "\n# Required Configuration\n" + (config_string.lstrip('\r\n')).rstrip(' ')
+        config_string = config_markdown(config_string)
+        required_config_md = "\n# Required Configuration\n" + config_string + "\n"
     else:
         required_config_md = ''
     if hasattr(plugin_module.Plugin, 'optional_config'):
         config_string = plugin_module.Plugin.optional_config
-        optional_config_md = "\n# Optional Configuration\n" + (config_string.lstrip('\r\n')).rstrip(' ')
+        config_string = config_markdown(config_string)
+        optional_config_md = "\n# Optional Configuration\n" + config_string + "\n"
     else:
         optional_config_md = ''
     test_file = abspath(join(__file__, '..', '..', 'tests', 'plugins', os.sep.join(plugin)))+".yaml"
