@@ -5,7 +5,7 @@ start:
     - insert: "Line 1\n"
     - export to file:
         path: test.txt
-        close on item: True
+        close_on_item: True
 
     # Check file content, on first run
     - duplicate: check_file_content
@@ -15,7 +15,7 @@ start:
     - export to file:
         path: test.txt
         mode: a # Append
-        close on item: True
+        close_on_item: True
     - duplicate: check_file_content
     - collect from file:
         path: test.txt

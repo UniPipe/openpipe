@@ -16,7 +16,8 @@ def validate_required_config(module_plugin, plugin_label, provided_config):
     del required_config['__line__']
 
     # all the _dict_ values must be set to None
-    for value in required_config.values():
+    for key, value in required_config.items():
+        assert(' ' not in key)  # Spaces are not allowed in required key names
         assert(value is None)
     config = {}
     if isinstance(provided_config, dict):
@@ -26,7 +27,7 @@ def validate_required_config(module_plugin, plugin_label, provided_config):
             except KeyError:
                 print("Invalid configuration for", plugin_label, file=stderr)
                 print("The required field '%s' is missing" % key, plugin_label, file=stderr)
-                print("The following configurations is required:", required_config_str, file=stderr)
+                print("The following configuration is required:", required_config_str, file=stderr)
                 exit(22)
             del provided_config[key]
     else:
@@ -47,17 +48,22 @@ def validate_optional_config(required_config, module_plugin, plugin_label, provi
         optional_config = load_yaml(optional_config_str)
         if isinstance(optional_config, dict):
             del optional_config['__line__']
-            for value in optional_config.values():
+
+            for key, value in optional_config.items():
+                assert(' ' not in key)  # Spaces are not allowed in required key names
                 # Optional config values can not be None
                 assert(value is not None)
+
             merged_config = {**required_config, **optional_config}
             if provided_config is None:
                 return merged_config
+
             if not isinstance(provided_config, dict):
                 print("Invalid configuration for", plugin_label, file=stderr)
                 print("Got", type(provided_config), pformat(provided_config), file=stderr)
                 print("Expected dictionary with fields", optional_config_str, file=stderr)
                 exit(23)
+
             for key in provided_config:
                 if key not in optional_config:
                     print("The provide field '%s' is not supported" % key, plugin_label, file=stderr)

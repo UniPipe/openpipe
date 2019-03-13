@@ -15,7 +15,7 @@ class Plugin(PluginRuntime):
     optional_config = """
     content: $_$            # Content to be written to the file
     mode: "w"               # Open file mode (write/append)
-    close on item: False    # Force file close after each received item
+    close_on_item: False    # Force file close after each received item
     """
 
     def on_start(self, config, segment_resolver):
@@ -35,7 +35,7 @@ class Plugin(PluginRuntime):
         if path.endswith('.json'):
             content = json.dumps(content, indent=4)
         self.file.write(content)
-        if self.config['close on item']:
+        if self.config['close_on_item']:
             self.file.close()
             self.file = None
             self.last_path = None

@@ -13,13 +13,13 @@ class Plugin(PluginRuntime):
 
     optional_config = """
     path: $_$                   # Name of file to be checked for changes
-    mark line: ""               # If set, send this line on every run
+    mark_line: ""               # If set, send this line on every run
                                 # usefull to distinguish groups between iterations
     persistent_state: False     # Store the last file position in an sqlite db
-    prefix path: False          # Prefix lines with the file name
-    prefix timestamp: False     # Prefix lines with timestamp
-    max delta time: 0           # Don't send lines whentime delta > max delta time
-    head comments: False        # On first run allways send heading comments
+    prefix_path: False          # Prefix lines with the file name
+    prefix_timestamp: False     # Prefix lines with timestamp
+    max_delta_time: 0           # Don't send lines whentime delta > max delta time
+    head_comments: False        # On first run allways send heading comments
                                 # used for ms_iis_logs parsing, to get header field names
     """
 
@@ -27,7 +27,7 @@ class Plugin(PluginRuntime):
         self._state = {}
         self.first_run = True
         self.on_input_delta = self.on_input
-        if config["head comments"]:
+        if config["head_comments"]:
             self.on_input = self.on_input_head
 
     def on_input_head(self, item):
@@ -53,7 +53,7 @@ class Plugin(PluginRuntime):
         statbuf = stat(path)
         current_mod_time, current_size = int(statbuf.st_mtime), statbuf.st_size
 
-        max_delta_time = self.config['max delta time']
+        max_delta_time = self.config['max_delta_time']
         if max_delta_time and saved_mod_time and current_mod_time - saved_mod_time > max_delta_time:
             # If modified time is too old, ignore saved time
             saved_mod_time = None
@@ -63,8 +63,8 @@ class Plugin(PluginRuntime):
             self._set_last_run_info(path, current_mod_time, current_size)
             return
 
-        if self.config['mark line']:
-            self.put(path + " " + self.config['mark line'])
+        if self.config['mark_line']:
+            self.put(path + " " + self.config['mark_line'])
 
         file_was_changed = (current_mod_time != saved_mod_time or current_size != saved_last_size)
 
@@ -77,7 +77,7 @@ class Plugin(PluginRuntime):
             saved_last_size = 0
         line_prefix = None
 
-        if self.config['prefix timestamp']:
+        if self.config['prefix_timestamp']:
             line_prefix = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
 
         with open(path) as data_file:
@@ -91,7 +91,7 @@ class Plugin(PluginRuntime):
                 # Refresh the current size after the the data is read
                 line = str(line).strip('\r\n')
                 # Skip to saved_last_size when "collecting_headers" and a non comment line was found
-                if self.config["prefix path"]:
+                if self.config["prefix_path"]:
                     line = path + " " + line
                 if line_prefix:
                     line = line_prefix + " " + line

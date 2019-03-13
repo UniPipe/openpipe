@@ -2,7 +2,7 @@ start:
     - export to file:
         path: /tmp/test
         content: Hello World!
-        close on item: True
+        close_on_item: True
 
     - collect from file:
         path: /tmp/test
