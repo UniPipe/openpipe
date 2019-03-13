@@ -1,0 +1,9 @@
+start:
+    - insert: [community, core, extra]
+    - insert:
+    - collect from url:
+        https://mirrors.edge.kernel.org/archlinux/$_$/os/x86_64/$_$.db.tar.gz
+    - collect from tar_file: "-"
+    - print: $content.decode('utf-8')$
+
+
