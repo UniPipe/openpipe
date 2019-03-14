@@ -27,8 +27,8 @@ class Plugin(PluginRuntime):
     # The following option is only relevant for local files
     auto_expand_home: True      # Expand '~' on path to user home dir
 
-    # The following options are only relevant for HTTP(S) paths
-    timeout: 30                 # Maximum time (in seconds) allowed for the operation
+    # The following options are only relevant for HTTP/HTTPS/FTP paths
+    timeout: 30                 # Global timeout (in secs) for the operation
     ignore_http_errors: False   # Ignore HTTP errors replies
     user-agent: curl/7.64.0     # User-agent to use on HTTP requests
     """

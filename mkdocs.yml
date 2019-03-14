@@ -28,10 +28,17 @@ extra_javascript:
     - js/autoexpand.js
 
 nav:
-    - Welcome: index.md
+    - OPL Language: 1.0/language.md
+    - OpenPipe Tool: 1.0/tool.md
     # - Software:
     #     - Data Visualization: software/data_visualization.md
     #     - DevOps: software/devops.md
     #     - Machine Learning: software/machine_learning.md
     # - Services: services.md
     # - Business: business.md
+
+markdown_extensions:
+    - codehilite:   # This adds the "Copy to clipboard"
+    - admonition:
+    - pymdownx.details:
+    - pymdownx.superfences:
