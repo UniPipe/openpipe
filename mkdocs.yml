@@ -28,14 +28,10 @@ extra_javascript:
     - js/autoexpand.js
 
 nav:
-    - OPL Language: 1.0/language.md
-    - OpenPipe Tool: 1.0/tool.md
-    # - Software:
-    #     - Data Visualization: software/data_visualization.md
-    #     - DevOps: software/devops.md
-    #     - Machine Learning: software/machine_learning.md
-    # - Services: services.md
-    # - Business: business.md
+    - Language: 1.0/language.md
+    - Tool: 1.0/tool.md
+    - Plugin Development: 1.0/plugin-devel.md
+
 
 markdown_extensions:
     - codehilite:   # This adds the "Copy to clipboard"
