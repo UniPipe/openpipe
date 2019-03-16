@@ -1,5 +1,5 @@
 start:
-    - directory: tmp/
+    - change to directory: tmp/
 
     # Create file with a single line
     - insert: "Line 1\n"
