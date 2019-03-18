@@ -114,7 +114,7 @@ def print_list_of_plugins():
                 print("Error on", filename)
                 exit(1)
             purpose = purpose[0] if purpose else ''
-            # actions decriptions with a leading _ means it should be hidden
+            # actions descriptions with a leading _ means it should be hidden
             # from the actions list (for internal actions)
             if purpose and purpose[0] == '_':
                 continue
