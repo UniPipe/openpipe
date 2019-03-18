@@ -1,5 +1,5 @@
 """
-Count the number of input elements received since start
+Produce the count of input elements received since start
 """
 from openpipe.engine import PluginRuntime
 

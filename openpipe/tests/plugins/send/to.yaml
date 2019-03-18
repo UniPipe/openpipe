@@ -4,13 +4,13 @@ start:
         - good thing
         - somethng else
 
-    - test:
+    - send to:
+        segment: test_good
         on_condition: $'good' in _$
-        send_to: test_good
 
-    - test:
+    - send to:
+        segment: test_bad
         on_condition: $'bad' in _$
-        send_to: test_bad
 
     - assert: somethng else
 

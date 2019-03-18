@@ -1,5 +1,5 @@
 """
-Send item to different pipeline depending on values
+Send item to other pipeline depending on a condition
 """
 from openpipe.engine import PluginRuntime
 
@@ -7,12 +7,12 @@ from openpipe.engine import PluginRuntime
 class Plugin(PluginRuntime):
 
     required_config = """
+    segment:        # Name of segment to receive the item if `on_condition` is True
     on_condition:   # Expression to be evaluated
-    send_to:        # Name of segment to receive the item if `on_condition` is True
     """
 
     def on_start(self, config):
-        self.send_to_target = self.segment_resolver(config['send_to'])
+        self.send_to_target = self.segment_resolver(config['segment'])
 
     def on_input(self, item):
         if self.config['on_condition']:

@@ -1,5 +1,5 @@
 """
-Filter in/out items using expressions
+Produce selected input items based on in/out conditions
 """
 from openpipe.engine import PluginRuntime
 

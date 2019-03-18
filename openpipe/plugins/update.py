@@ -1,5 +1,5 @@
 """
-Update item fields
+Produce input item after updating values
 """
 from openpipe.engine import PluginRuntime
 

@@ -1,9 +1,9 @@
 start:
     - insert: ok
-    - duplicate: seg1
+    - duplicate to: seg1
     - assert: ok
     - insert: other
-    - duplicate: seg2
+    - duplicate to: seg2
 
 seg1:
     - assert: ok

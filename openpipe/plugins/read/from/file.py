@@ -1,5 +1,5 @@
 """
-Insert metadata/content from local or remote file
+Produce metadata or content from a local or remote file
 """
 import gzip
 import bz2

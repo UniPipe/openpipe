@@ -1,5 +1,5 @@
 start:
-    - duplicate:
+    - duplicate to:
         - test_local_json_file
         - test_http_json_file
         - test_http_xml_file

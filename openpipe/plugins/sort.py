@@ -1,5 +1,5 @@
 """
-Sort input items by key
+Produce input items sorted by keys
 """
 from openpipe.engine import PluginRuntime
 

@@ -1,5 +1,5 @@
 """
-Insert an item
+Produce an item supplied as parameter
 """
 from openpipe.engine import PluginRuntime
 

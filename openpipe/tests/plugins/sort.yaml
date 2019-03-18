@@ -4,8 +4,8 @@ start:
         - {id: anc}
         - {id: zin}
 
-    - duplicate: sort_desc
-    - duplicate: sort_asc
+    - duplicate to: sort_desc
+    - duplicate to: sort_asc
 
 sort_asc:
     - sort:

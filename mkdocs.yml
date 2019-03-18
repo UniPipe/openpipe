@@ -28,6 +28,7 @@ extra_javascript:
     - js/autoexpand.js
 
 nav:
+    - Home: index.md
     - Language: 1.0/language.md
     - Tool: 1.0/tool.md
     - Plugin Development: 1.0/plugin-devel.md

@@ -1,5 +1,5 @@
 """
-Extend input item with config item
+Produce dictionary with input joined to config
 """
 
 from openpipe.engine import PluginRuntime
