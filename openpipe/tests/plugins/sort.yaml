@@ -4,8 +4,10 @@ start:
         - {id: anc}
         - {id: zin}
 
-    - duplicate to: sort_desc
-    - duplicate to: sort_asc
+    - send to:
+        segment:
+            - sort_desc
+            - sort_asc
 
 sort_asc:
     - sort:

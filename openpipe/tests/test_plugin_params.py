@@ -40,7 +40,7 @@ def test_zero_params():
 def test_required_is_not_dict():
 
     class Plugin(PluginRuntime):
-        requiredl_params = ""
+        required_params = ""
     try:
         validate_params(Plugin, "", None)
     except AssertionError:
@@ -52,7 +52,7 @@ def test_required_is_not_dict():
 def test_required_contains_default():
 
     class Plugin(PluginRuntime):
-        requiredl_params = """
+        required_params = """
         key1: 12
         """
     try:
@@ -66,7 +66,7 @@ def test_required_contains_default():
 def test_required_multi_dict_with_non_dict_params():
 
     class Plugin(PluginRuntime):
-        requiredl_params = """
+        required_params = """
         key1:
         key2:
         """
@@ -81,7 +81,7 @@ def test_required_multi_dict_with_non_dict_params():
 def test_required_single_dict_with_non_dict_params():
 
     class Plugin(PluginRuntime):
-        requiredl_params = """
+        required_params = """
         key1:
         """
     result = validate_params(Plugin, "", "someone")
@@ -91,7 +91,7 @@ def test_required_single_dict_with_non_dict_params():
 def test_required_single_dict_with_missing_params():
 
     class Plugin(PluginRuntime):
-        requiredl_params = """
+        required_params = """
         key1:
         """
     try:
@@ -105,7 +105,7 @@ def test_required_single_dict_with_missing_params():
 def test_optional_non_dict_with_requiredl_params():
 
     class Plugin(PluginRuntime):
-        requiredl_params = """
+        required_params = """
         key1:
         """
         optional_params = "some"

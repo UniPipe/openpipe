@@ -6,7 +6,7 @@ from openpipe.engine import PluginRuntime
 
 class Plugin(PluginRuntime):
 
-    requiredl_params = """
+    required_params = """
     set:            # Dictionary with keys/values to be updated
     """
     optional_params = """

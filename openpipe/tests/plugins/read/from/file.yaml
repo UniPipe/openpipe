@@ -1,16 +1,20 @@
 start:
-    - duplicate to:
-        - test_local_json_file
-        - test_http_json_file
-        - test_http_xml_file
-        - test_ftp_json_file
-    - read from file: samples/test.txt
-    - assert:
-        - Line in file
-        - One more line
+    - print: Sending
+    - send to:
+        segment:
+            - test_local_json_file
+            - test_http_json_file
+            #- test_http_xml_file
+            #- test_ftp_json_file
+            #- test_tar_file
+    #- read from file: samples/test.txt
+    #- assert:
+    #    - Line in file
+    #    - One more line
 
 # Test automatic parsing of local json file
 test_local_json_file:
+    - print: Zzzzs
     - read from file: samples/test.json
     - assert:
         name: "Zin"
@@ -39,3 +43,8 @@ test_http_xml_file:
         result: $'response' in _.keys()$
     - assert:
         result: True
+
+test_tar_file:
+    - read from file: samples/test.tar
+    - assert:
+        - name: samples/test.json

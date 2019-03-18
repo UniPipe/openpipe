@@ -6,7 +6,7 @@ from openpipe.engine import PluginRuntime
 
 class Plugin(PluginRuntime):
 
-    requiredl_params = """
+    required_params = """
     segment:            # Name or list of of segments to receive the item
     """
 
@@ -35,10 +35,8 @@ class Plugin(PluginRuntime):
             self.on_input = self.on_input_conditional
 
     def on_input(self, item):
-        if self.params['on_condition']:
-            self.put_target(item, self.send_to_target)
-        else:
-            self.put(item)
+        self.send_to_all_targets(item)
+        self.put(item)
 
     def on_input_conditional(self, item):
         if self.params['on_condition']:
@@ -51,6 +49,7 @@ class Plugin(PluginRuntime):
 
     def send_to_all_targets(self, item):
         for target_segment in self.target_segments:
+            print("Sending to", target_segment)
             if isinstance(item, (list, dict)):
                 new_item = item.copy()
             else:

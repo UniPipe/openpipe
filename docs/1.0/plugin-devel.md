@@ -34,7 +34,7 @@ An openpipe plugin is a regular Python module with the following requirements:
 - Must provide a class named `Plugin`, which:
     - Must be derived from the `PluginRuntime` class
     - May provide the following class attributes to be handled by the pipeline engine:
-        - `requiredl_params`: string with YAML describing required parameters
+        - `required_params`: string with YAML describing required parameters
         - `optional_params`: string with YAML describing optional parameters
     - May provide the following class methods to be invoked by the pipeline engine:
         - `on_start(self, params)`: invoked when the pipeline is started

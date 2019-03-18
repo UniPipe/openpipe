@@ -12,23 +12,23 @@ def delete_line_info(some_dict):
 
 def validate_requiredl_params(module_plugin, plugin_label, provided_params):
     """ """
-    requiredl_params_str = getattr(module_plugin, 'requiredl_params', None)
+    requiredl_params_str = getattr(module_plugin, 'required_params', None)
     if requiredl_params_str is None:
         return {}
 
-    requiredl_params = load_yaml(requiredl_params_str)
+    required_params = load_yaml(requiredl_params_str)
 
     # Required params must be a dict
-    assert(isinstance(requiredl_params, dict))
-    delete_line_info(requiredl_params)
+    assert(isinstance(required_params, dict))
+    delete_line_info(required_params)
 
     # all the _dict_ values must be set to None
-    for key, value in requiredl_params.items():
+    for key, value in required_params.items():
         assert(' ' not in key)  # Spaces are not allowed in required key names
         assert(value is None)
     params = {}
     if isinstance(provided_params, dict):
-        for key in requiredl_params:
+        for key in required_params:
             try:
                 params[key] = provided_params[key]
             except KeyError:
@@ -38,13 +38,13 @@ def validate_requiredl_params(module_plugin, plugin_label, provided_params):
                 exit(22)
             del provided_params[key]
     else:
-        if len(list(requiredl_params.keys())) == 1:
+        if len(list(required_params.keys())) == 1:
             if provided_params is None:
                 print("Invalid parameters for", plugin_label, file=stderr)
                 print("The required field '%s' is missing" % key, plugin_label, file=stderr)
                 print("The following parameters are required:", requiredl_params_str, file=stderr)
                 exit(22)
-            params[next(iter(requiredl_params))] = provided_params
+            params[next(iter(required_params))] = provided_params
         else:
             print("Invalid parameters for", plugin_label, file=stderr)
             print("Got", type(provided_params), pformat(provided_params), file=stderr)
@@ -53,7 +53,7 @@ def validate_requiredl_params(module_plugin, plugin_label, provided_params):
     return params
 
 
-def validate_optional_params(requiredl_params, module_plugin, plugin_label, provided_params):
+def validate_optional_params(required_params, module_plugin, plugin_label, provided_params):
     """ validate optional params and return the complete params """
     optional_params_str = getattr(module_plugin, 'optional_params', None)
     if optional_params_str is not None:
@@ -66,11 +66,11 @@ def validate_optional_params(requiredl_params, module_plugin, plugin_label, prov
                 # Optional params values can not be None
                 assert(value is not None)
 
-            merged_params = {**requiredl_params, **optional_params}
+            merged_params = {**required_params, **optional_params}
             if provided_params is None:
                 return merged_params
 
-            if requiredl_params and len(list(requiredl_params.keys())) == 1 \
+            if required_params and len(list(required_params.keys())) == 1 \
                     and not isinstance(provided_params, dict):
                 return merged_params
 
@@ -89,7 +89,7 @@ def validate_optional_params(requiredl_params, module_plugin, plugin_label, prov
             return final_params
         else:
             # optional params can only be a non dict if required params is void
-            assert(len(requiredl_params) == 0)
+            assert(len(required_params) == 0)
             return provided_params or optional_params
         return optional_params
     else:
@@ -98,7 +98,7 @@ def validate_optional_params(requiredl_params, module_plugin, plugin_label, prov
             print("Got", type(provided_params), pformat(provided_params), file=stderr)
             print("The plugin does not support any kind of configuration", file=stderr)
             exit(20)
-        return requiredl_params
+        return required_params
 
 
 def validate_params(module_plugin, plugin_label, provided_params):
@@ -112,11 +112,11 @@ def validate_params(module_plugin, plugin_label, provided_params):
         else:
             return provided_params
 
-    requiredl_params = validate_requiredl_params(module_plugin, plugin_label, provided_params)
+    required_params = validate_requiredl_params(module_plugin, plugin_label, provided_params)
     # A single required item is required, a single item was provided, no optional params
-    if len(requiredl_params) == 1 and not isinstance(provided_params, dict) \
+    if len(required_params) == 1 and not isinstance(provided_params, dict) \
             and not hasattr(module_plugin, 'optional_params'):
-        return requiredl_params
+        return required_params
 
-    params = validate_optional_params(requiredl_params, module_plugin, plugin_label, provided_params)
+    params = validate_optional_params(required_params, module_plugin, plugin_label, provided_params)
     return params

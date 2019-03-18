@@ -51,12 +51,12 @@ def help(plugin):
         triggers += "- Input item is received\n"
     if hasattr(plugin_module.Plugin, 'on_finish'):
         triggers += "- Input is closed\n"
-    if hasattr(plugin_module.Plugin, 'requiredl_params'):
-        config_string = plugin_module.Plugin.requiredl_params
+    if hasattr(plugin_module.Plugin, 'required_params'):
+        config_string = plugin_module.Plugin.required_params
         config_string = config_markdown(config_string)
-        requiredl_params_md = "\n# Required Parameters\n" + config_string + "\n"
+        required_params_md = "\n# Required Parameters\n" + config_string + "\n"
     else:
-        requiredl_params_md = ''
+        required_params_md = ''
     if hasattr(plugin_module.Plugin, 'optional_params'):
         config_string = plugin_module.Plugin.optional_params
         config_string = config_markdown(config_string)
@@ -74,7 +74,7 @@ def help(plugin):
     markdown = """# Purpose\
     {}
 {}{}{}
-    """.format(plugin_purpose, requiredl_params_md, optional_params_md, example_md)
+    """.format(plugin_purpose, required_params_md, optional_params_md, example_md)
 
     render(markdown, cols=cols)
 

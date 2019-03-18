@@ -6,7 +6,7 @@ from openpipe.engine import PluginRuntime
 
 class Plugin(PluginRuntime):
 
-    requiredl_params = """
+    required_params = """
     key:                    # Expression to be used as the group key
     """
 

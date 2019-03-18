@@ -75,7 +75,7 @@ Action plugins should be observed as independent processing units, the following
 - Output Item: output data produced by the action execution
 
 !!! Information "Output -> Input"
-    As a general rule the output item of a step will be the input item of the next step in the same segment, with the exception of the `test` and `duplicate` actions that can deliver items to the first step of other segments.
+    As a general rule the output item of a step will be the input item of the next step in the same segment, with the exception of the `send to` action that can deliver items to the first step of other segments.
 
 !!! Information "Last Step Output Items"
     Output items from the last step in a segment will be silently discarded.

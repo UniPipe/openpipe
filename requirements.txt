@@ -5,3 +5,4 @@ xmltodict
 mdvl
 pygments
 terminaltables
+blinker

@@ -8,7 +8,7 @@ import json
 
 class Plugin(PluginRuntime):
 
-    requiredl_params = """
+    required_params = """
     path:                   # Filename of the file to create/overwrite/append
     """
 

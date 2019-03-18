@@ -7,7 +7,7 @@ from openpipe.engine import PluginRuntime
 
 class Plugin(PluginRuntime):
 
-    requiredl_params = """
+    required_params = """
     key:    # A key name from the input item to be iterated
             # The output will be produced for each iteration item
     """
