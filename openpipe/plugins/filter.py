@@ -1,5 +1,5 @@
 """
-Filter in/out items from the stream using expressions
+Filter in/out items using expressions
 """
 from openpipe.engine import PluginRuntime
 

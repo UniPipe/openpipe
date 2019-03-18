@@ -1,0 +1,6 @@
+start:
+    - insert: [1, 10]
+    - assert: [1, 10]
+
+    # The next will fail
+    - assert: [2, 10]

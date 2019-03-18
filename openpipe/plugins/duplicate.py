@@ -1,5 +1,5 @@
 """
-Duplicate input item to another segment
+Duplicate input item to other segments
 """
 from openpipe.engine import PluginRuntime
 
@@ -7,7 +7,7 @@ from openpipe.engine import PluginRuntime
 class Plugin(PluginRuntime):
 
     required_some_config = """
-    Requires a segment name, or list of segment names
+    Requires a segment name, or a list of segment names
     """
 
     def on_start(self, config):

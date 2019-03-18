@@ -1,5 +1,5 @@
 start:
-    - collect from clock:
+    - read from clock:
         interval: 1s
         max_count: 1
     - insert: ok

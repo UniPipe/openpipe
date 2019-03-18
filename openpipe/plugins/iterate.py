@@ -1,5 +1,5 @@
 """
-Produce items by iterating over the content of a field
+Produce items by iterating over an input key
 """
 
 from openpipe.engine import PluginRuntime
@@ -7,12 +7,14 @@ from openpipe.engine import PluginRuntime
 
 class Plugin(PluginRuntime):
 
-    optional_config = """
-    $_$     # Item to be iterated
+    required_config = """
+    key:    # A key name from the input item to be iterated
+            # The output will be produced for each iteration item
     """
 
     def on_input(self, item):
-        original_iterator = item[self.config]
+        key = self.config['key']
+        original_iterator = item[key]
         for iter_item in original_iterator:
-            item[self.config] = iter_item
+            item[key] = iter_item
             self.put(item)

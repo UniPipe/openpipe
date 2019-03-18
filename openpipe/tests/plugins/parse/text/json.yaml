@@ -1,6 +1,0 @@
-start:
-    - collect from file:
-        path: samples/test.json
-        auto_parse: False   # We want to take control of parsing
-    - parse text json: $_$
-    - print: Full parsing is $_$

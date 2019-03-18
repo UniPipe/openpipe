@@ -1,5 +1,5 @@
 """
-Insert item in the pipeline
+Insert an item
 """
 from openpipe.engine import PluginRuntime
 

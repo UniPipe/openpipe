@@ -1,4 +1,0 @@
-start:
-    - collect from file_list: samples/*.txt
-    - assert:
-            - ["samples/test.txt"]

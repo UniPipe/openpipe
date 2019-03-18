@@ -2,9 +2,13 @@ import os
 import re
 import click
 from sys import stderr
-from os.path import join, abspath
+from os.path import join, exists
 from mdvl import render
 from importlib import import_module
+from terminaltables import SingleTable
+from pygments import highlight
+from pygments.formatters import TerminalTrueColorFormatter
+from pygments.lexers import YamlLexer
 
 
 def config_markdown(config_string):
@@ -13,6 +17,13 @@ def config_markdown(config_string):
     for line in config_string.splitlines():
         markdown += line
         markdown += '\n'
+    return markdown
+
+
+def example_markdown(example_string):
+    markdown = ''
+    for line in example_string.splitlines():
+        markdown += "    "+line+"\n"
     return markdown
 
 
@@ -32,6 +43,8 @@ def help(plugin):
         print("You can get a list of plugins with:")
         print("openpipe help")
         exit(2)
+
+    examples_filename = plugin_module.__file__.rsplit('.', 1)[0] + "_examples.yaml"
     plugin_purpose = plugin_module.__doc__
     triggers = ''
     if hasattr(plugin_module.Plugin, 'on_input'):
@@ -50,23 +63,28 @@ def help(plugin):
         optional_config_md = "\n# Optional Configuration\n" + config_string + "\n"
     else:
         optional_config_md = ''
-    test_file = abspath(join(__file__, '..', '..', 'tests', 'plugins', os.sep.join(plugin)))+".yaml"
 
     cols, _ = os.get_terminal_size(0)
 
+    if exists(examples_filename):
+        example_md = "# Example(s)"
+    else:
+        example_md = ''
+
     markdown = """# Purpose\
     {}
-# Trigger(s)
 {}{}{}
-# Example(s)
-{}
-    """.format(plugin_purpose, triggers, required_config_md, optional_config_md, test_file)
+    """.format(plugin_purpose, required_config_md, optional_config_md, example_md)
+
     render(markdown, cols=cols)
+
+    if exists(examples_filename):
+        with open(examples_filename) as yaml_content:
+            print(highlight(yaml_content.read(), YamlLexer(), TerminalTrueColorFormatter()))
 
 
 def print_list_of_plugins():
     available_plugins = {}  # When running from source, the same module with be found in multiple paths
-    print("---- List of available plugins ----")
     import openpipe.plugins
     for path in openpipe.plugins.__path__:
         for root, dirs, files in os.walk(path, topdown=True):
@@ -86,6 +104,7 @@ def print_list_of_plugins():
                     continue
                 available_plugins[plugin_fullname] = plugin_filename
 
+    table_data = [["Action", "Description"]]
     for name in sorted(available_plugins.keys()):
         filename = available_plugins[name]
         with open(filename) as module_file:
@@ -94,8 +113,13 @@ def print_list_of_plugins():
             if not purpose or '#' in purpose[0]:
                 print("Error on", filename)
                 exit(1)
-            purpose = '# '+purpose[0] if purpose else ''
-        print('{:30}  {:>12}'.format(name, purpose))
-
-    print("-------------------------------------\n")
-    print("You can get help for a plugin with:\nopenpipe help <plugin_name>")
+            purpose = purpose[0] if purpose else ''
+            # actions decriptions with a leading _ means it should be hidden
+            # from the actions list (for internal actions)
+            if purpose and purpose[0] == '_':
+                continue
+            table_data.append([name, purpose])
+    table = SingleTable(table_data)
+    print(table.table)
+    # print("-------------------------------------\n")
+    # print("You can get help for a plugin with:\nopenpipe help <plugin_name>")

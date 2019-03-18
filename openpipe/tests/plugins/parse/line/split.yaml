@@ -1,7 +1,0 @@
-start:
-    - insert: abc,678,ok
-    - parse line split:
-        field_list: [ desc, count, status ]
-    - assert:
-        {'count': 678, 'desc': 'abc', 'status': 'ok'}
-

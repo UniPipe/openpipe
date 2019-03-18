@@ -1,10 +1,10 @@
 start:
-    - export to file:
+    - write to file:
         path: /tmp/test
         content: Hello World!
         close_on_item: True
 
-    - collect from file:
+    - read from file:
         path: /tmp/test
 
     - assert: Hello World!

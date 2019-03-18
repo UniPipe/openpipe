@@ -1,5 +1,5 @@
 """
-Send item to different pipeline depending on_condition value
+Send item to different pipeline depending on values
 """
 from openpipe.engine import PluginRuntime
 

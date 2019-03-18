@@ -26,7 +26,7 @@ Using your preferred text editor, create a file named `pipeline.yaml` with the f
 ```yaml
 # This is a simple example that pretty prints the content of a remote JSON file
 start:
-    - collect from file: https://api.exchangeratesapi.io/latest
+    - read from file: https://api.exchangeratesapi.io/latest
     - pprint:
 ```
 
@@ -50,9 +50,9 @@ openpipe help plugin name
 
 Example:
 ```bash
-openpipe help collect from file
+openpipe help read from file
 ```
-![collect from file](img/help/openpipe_collect_from_file.png)
+![read from file](img/help/openpipe_collect_from_file.png)
 
 
 

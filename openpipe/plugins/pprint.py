@@ -1,5 +1,5 @@
 """
-Pretty print some content
+Pretty print an item
 """
 
 from openpipe.engine import PluginRuntime

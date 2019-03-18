@@ -71,7 +71,7 @@ In DPL any kind of workflow managed data is referred as an _item_, in openpipe _
 Action plugins should be observed as independent processing units, the following items will be available to them:
 
 - Config Item: action parameters for the step «provided in the pipeline document»
-- Input Item: input data provided for the action execution
+- Input Item: input data provided to the action
 - Output Item: output data produced by the action execution
 
 !!! Information "Output -> Input"

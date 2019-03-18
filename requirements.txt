@@ -1,0 +1,7 @@
+dinterpol
+pyyaml
+click
+xmltodict
+mdvl
+pygments
+terminaltables
