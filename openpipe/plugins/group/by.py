@@ -6,17 +6,17 @@ from openpipe.engine import PluginRuntime
 
 class Plugin(PluginRuntime):
 
-    required_config = """
+    requiredl_params = """
     keys:         # List of keys to be used for grouping
     """
 
-    optional_config = """
+    optional_params = """
     stats: [sum, count, max, min]   # List of stats to obtain []
     sorted_fields: []               # When these fields change, perform sort
     """
 
-    def on_start(self, config):
-        self.group_by = GroupBy(self, config)
+    def on_start(self, params):
+        self.group_by = GroupBy(self, params)
 
     def on_input(self, item):
         self.group_by.add(item)
@@ -51,18 +51,18 @@ STATS_FUNCS = {
 
 class GroupBy(object):
 
-    def __init__(self, plugin, config):
-        self.config = config
+    def __init__(self, plugin, params):
+        self.params = params
         self.last_sorted_value = None
-        self.sorted_fields = config['sorted_fields']
-        self.stats_fields = config['stats']
+        self.sorted_fields = params['sorted_fields']
+        self.stats_fields = params['stats']
         self.plugin = plugin
         self.aggregated_stats = {}
 
     def add(self, item):
 
-        # Create composed aggregation with the values of config fields
-        group_key = '\n'.join(item[x] for x in self.config['keys'])
+        # Create composed aggregation with the values of params fields
+        group_key = '\n'.join(item[x] for x in self.params['keys'])
 
         # if using "sorted_fields", sent results when the result key changes
         if self.sorted_fields:
@@ -103,7 +103,7 @@ class GroupBy(object):
 
             # Add the group_by field values
             group_values = group_key.split('\n')
-            for i, field_name in enumerate(self.config['keys']):
+            for i, field_name in enumerate(self.params['keys']):
                 new_item[field_name] = group_values[i]
 
             # Add stats results

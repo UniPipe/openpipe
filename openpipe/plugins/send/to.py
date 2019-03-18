@@ -6,11 +6,11 @@ from openpipe.engine import PluginRuntime
 
 class Plugin(PluginRuntime):
 
-    required_config = """
+    requiredl_params = """
     segment:            # Name or list of of segments to receive the item
     """
 
-    optional_config = """
+    optional_params = """
     on_condition:   ""  # An expression that should result in a boolean
 
     # If `on_condition` is set, item will only be copied to the segment(s)
@@ -18,10 +18,10 @@ class Plugin(PluginRuntime):
     # to False
     """
 
-    def on_start(self, config):
+    def on_start(self, params):
 
         # Handle single segment or list of segments
-        target = config['segment']
+        target = params['segment']
         self.target_segments = []
         if isinstance(target, str):
             segment_list = [target]
@@ -31,17 +31,17 @@ class Plugin(PluginRuntime):
             target_segment = self.segment_resolver(segment_name)
             self.target_segments.append(target_segment)
 
-        if config['on_condition'] != "":
+        if params['on_condition'] != "":
             self.on_input = self.on_input_conditional
 
     def on_input(self, item):
-        if self.config['on_condition']:
+        if self.params['on_condition']:
             self.put_target(item, self.send_to_target)
         else:
             self.put(item)
 
     def on_input_conditional(self, item):
-        if self.config['on_condition']:
+        if self.params['on_condition']:
             self.send_to_all_targets(item)
         else:
             self.put(item)

@@ -6,21 +6,21 @@ from openpipe.engine import PluginRuntime
 
 class Plugin(PluginRuntime):
 
-    required_config = """
+    requiredl_params = """
     key:                    # Expression to be used as the group key
     """
 
-    optional_config = """
+    optional_params = """
     descendent: False       # Use descendent order ?
     """
 
-    def on_start(self, config):
+    def on_start(self, params):
         self.data = []
-        self.descendent = config['descendent']
+        self.descendent = params['descendent']
 
     def on_input(self, item):
         # we must copy because the item may be changed in the thread
-        self.data.append((self.config['key'], item.copy()))
+        self.data.append((self.params['key'], item.copy()))
 
     def on_finish(self, reason):
         self.data.sort(key=lambda x: x[0], reverse=self.descendent)

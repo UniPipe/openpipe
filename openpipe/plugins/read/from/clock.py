@@ -7,15 +7,15 @@ from openpipe.engine import PluginRuntime
 
 class Plugin(PluginRuntime):
 
-    optional_config = """
+    optional_params = """
     interval:   0   # Pause time between insertions, 0 means forever
     max_count:  1     # Max number of item insertions
     """
 
     def on_input(self, item):
-        interval = self.config['interval']
+        interval = self.params['interval']
         interval = time2seconds(interval)
-        count = self.config['max_count']
+        count = self.params['max_count']
         repeat_forever = (count == 0)
 
         while repeat_forever or count > 0:

@@ -14,11 +14,11 @@ from openpipe.engine import PluginRuntime
 
 class Plugin(PluginRuntime):
 
-    required_config = """
+    requiredl_params = """
     path:                       # Local path or HTTP/HTTPS/FTP url
     """
 
-    optional_config = """
+    optional_params = """
     content_only: True          # Insert only the content
     split_lines: True           # Insert line by line (enforces content_only)
     auto_decompress: True       # Automatically decompress .gz/.bz files
@@ -37,7 +37,7 @@ class Plugin(PluginRuntime):
     """
 
     def on_input(self, item):
-        path = self.config['path']
+        path = self.params['path']
         schema = path.split(':', 1)[0]
         is_remote = ':' in path and schema in ['http', 'https', 'ftp']
 
@@ -52,7 +52,7 @@ class Plugin(PluginRuntime):
             '.xml': lambda x: xmltodict.parse(x),
             '*': lambda x: x,
             }
-        if not self.config['auto_parse']:
+        if not self.params['auto_parse']:
             self.put(data)
             return
         parse_function = auto_parse_map.get(file_extension)
@@ -67,10 +67,10 @@ class Plugin(PluginRuntime):
             '.bz': lambda x: bz2.open(x, 'r'),
             '*': lambda x: open(x),
             }
-        path = self.config['path']
-        split_lines = self.config['split_lines']
+        path = self.params['path']
+        split_lines = self.params['split_lines']
 
-        if self.config['auto_expand_home']:
+        if self.params['auto_expand_home']:
             path = expanduser(path)
 
         filename, file_extension = splitext(path)
@@ -93,13 +93,13 @@ class Plugin(PluginRuntime):
                 self.put_or_parse(data, file_extension)
 
     def collect_remote_file(self):
-        url = self.config['path']
+        url = self.params['path']
         req = urlreq.Request(url)
-        req.add_header('User-Agent', self.config['user-agent'])
+        req.add_header('User-Agent', self.params['user-agent'])
         try:
-            reply = urlreq.urlopen(req, timeout=self.config['timeout'])
+            reply = urlreq.urlopen(req, timeout=self.params['timeout'])
         except HTTPError:
-            if self.config['ignore_http_errors']:
+            if self.params['ignore_http_errors']:
                 return
             raise
         content_raw = reply.read()

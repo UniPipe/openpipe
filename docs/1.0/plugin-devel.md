@@ -12,12 +12,12 @@ from openpipe.engine import PluginRuntime
 
 class Plugin(PluginRuntime):
 
-    optional_config = """
+    optional_params = """
     $_$     # The content to be printed, default is the input item ($_$)
     """
 
     def on_input(self, item):
-        print(self.config)      # Print item to the console
+        print(self.params)      # Print item to the console
         self.put(item)          # No change to the data stream, input -> output
 ```
 
@@ -34,10 +34,10 @@ An openpipe plugin is a regular Python module with the following requirements:
 - Must provide a class named `Plugin`, which:
     - Must be derived from the `PluginRuntime` class
     - May provide the following class attributes to be handled by the pipeline engine:
-        - `required_config`: string with YAML describing required config parameters
-        - `optional_config`: string with YAML describing optional config parameters
+        - `requiredl_params`: string with YAML describing required parameters
+        - `optional_params`: string with YAML describing optional parameters
     - May provide the following class methods to be invoked by the pipeline engine:
-        - `on_start(self, config)`: invoked when the pipeline is started
+        - `on_start(self, params)`: invoked when the pipeline is started
         - `on_input(self, item)`: invoked when an input item is received
             - may use `self.put(item)` once or multiple times to produce items
         - `on_finish(self, reason)`: invoked when the pipeline is finished

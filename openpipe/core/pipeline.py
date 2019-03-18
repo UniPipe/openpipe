@@ -24,8 +24,8 @@ class PipelineRuntimeCore(object):
     def load(self):
         self.dpl_doc.load()
 
-    def load_plugin(self, name, config, line_nr):
-        return self.plugin_loader.load(self.filename, name, config, line_nr)
+    def load_plugin(self, name, params, line_nr):
+        return self.plugin_loader.load(self.filename, name, params, line_nr)
 
     def load_libraries_cb(self, libraries):
         for libpath in libraries:

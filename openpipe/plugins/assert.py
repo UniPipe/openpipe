@@ -8,30 +8,30 @@ from openpipe.engine import PluginRuntime
 
 class Plugin(PluginRuntime):
 
-    required_some_config = """
+    required_some_params = """
     """
 
-    def on_start(self, config):
-        self.start_config = config  # Typically on_finish does not use config
+    def on_start(self, params):
+        self.start_params = params  # Typically on_finish does not use params
         self.never_called = True
         self.check_index = 0
 
     def on_input(self, item):
-        if isinstance(self.config, list):
-            expected_count = len(self.config)
+        if isinstance(self.params, list):
+            expected_count = len(self.params)
             if self.check_index >= expected_count:
                 raise AssertionError("Test expected %d items, got %d" % (expected_count, self.check_index+1))
-            self.value_assert(item, self.config[self.check_index])
+            self.value_assert(item, self.params[self.check_index])
             self.check_index += 1
         else:
-            self.value_assert(item, self.config)
+            self.value_assert(item, self.params)
         self.never_called = False
 
     def on_finish(self, reason):
         if self.never_called:
             print("Failed on_finish", self.plugin_label, file=stderr)
-            raise Exception("Did not receive any item, expected:\n" + str(self.start_config))
-        if isinstance(self.config, list) and self.check_index < len(self.start_config):
+            raise Exception("Did not receive any item, expected:\n" + str(self.start_params))
+        if isinstance(self.params, list) and self.check_index < len(self.start_params):
             print("Failed on_finish", self.plugin_label, file=stderr)
             raise AssertionError("Test got less values than expected")
 

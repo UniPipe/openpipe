@@ -9,10 +9,10 @@ from pprint import pprint
 class Plugin(PluginRuntime):
 
     # The default behavior is to print the input item
-    optional_config = """
+    optional_params = """
     $_$     # The content to be pretty printed
     """
 
     def on_input(self, item):
-        pprint(self.config)
+        pprint(self.params)
         self.put(item)

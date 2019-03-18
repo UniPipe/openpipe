@@ -12,10 +12,10 @@ ODP_RUNTIME_DEBUG = environ.get('ODP_RUNTIME_DEBUG')
 
 class PipelineRuntime(PipelineRuntimeCore):
 
-    def add_step_cb(self, segment_name, step_name, step_config, step_line_nr):
+    def add_step_cb(self, segment_name, step_name, step_params, step_line_nr):
         """ Create a single instance of a plugin and add it to the step_list """
         step_list = self.segments.setdefault(segment_name, [])
-        plugin_instance = self.load_plugin(step_name, step_config, step_line_nr)
+        plugin_instance = self.load_plugin(step_name, step_params, step_line_nr)
         step_list.append(plugin_instance)
 
     def create_links(self):
@@ -52,7 +52,7 @@ class PipelineRuntime(PipelineRuntimeCore):
                         print("on_start %s " % step.plugin_label)
                     try:
                         step.segment_resolver = self.segment_resolver
-                        on_start_func(step.initial_config)
+                        on_start_func(step.initial_params)
                     except:  # NOQA: E722
                         print("Failed starting", step.plugin_label, file=stderr)
                         raise

@@ -61,7 +61,7 @@ You can get the help for a plugin with:
 openpipe help «plugin_name»
 ```
 
-OpenPipe action plugins may be polymorphic, meaning the same plugin may be able to handle different input and configuration types.
+OpenPipe action plugins may be polymorphic, meaning the same plugin may be able to handle different input and parameters types.
 
 ### Data Items
 In DPL any kind of workflow managed data is referred as an _item_, in openpipe _items_ are stored in memory and transmitted as Python object references, as such, items can be of any data type or class available with Python.
@@ -70,7 +70,7 @@ In DPL any kind of workflow managed data is referred as an _item_, in openpipe _
 
 Action plugins should be observed as independent processing units, the following items will be available to them:
 
-- Config Item: action parameters for the step «provided in the pipeline document»
+- Parameters Item: action parameters for the step «provided in the pipeline document»
 - Input Item: input data provided to the action
 - Output Item: output data produced by the action execution
 
@@ -80,23 +80,20 @@ Action plugins should be observed as independent processing units, the following
 !!! Information "Last Step Output Items"
     Output items from the last step in a segment will be silently discarded.
 
-### Dynamic Configuration
+### Dynamic Parameters
 
-The configuration provided to steps may include dynamic components, this feature provides the ability to inject python expressions and data driven configuration.
+The parameters item provided may include dynamic components, this feature provides the ability to embed python expressions and input item related parameters.
 
 Before invoking an action, any text in the action parameters found between consecutive dollar signs ($) will be evaluated as a python expression and replaced with it's result. If you need to have $ on your strings, you will need to escape them using \\$ .
 
-You can inject input data in your configuration by using the special dict "_" in your python code. When evaluating dynamic configuration expressions, _ is a referenced o the input item.
+During expression evaluation, the "_" symbol is a reference to the full input item. When the input item is a dict, it's keys values will be mapped to variable names so that you can refer to them easily by providing $key$.
 
-Dynamic configuration allows you to provide python code/input data based configuration for most plugins. A plugin configuration item can use Python expressions, those expressions can refer to the input item.
-
-In OPL any text between consecutive dollar signs ($) will be treated as a Python expression. When the input item is a dictionary, it's keys will be available as variables that can be used in the expression. The "_" variable is a special variable that refers to the entire input item content.
 
 Examples:
 > calc.yaml
     ```yaml
     start:
-        - print: 2 + 1 = $2 + 1$
+        - print: 2 + 1 = $2 + 1$    # Print a sum result
     ```
 
 > Output:
@@ -109,7 +106,7 @@ Examples:
     start:
         - insert:
             place: zoo
-        - print: $_$   # Print the input item
+        - print: $_$    # Print the full  input item
     ```
 
 > input_field.yaml
@@ -118,7 +115,7 @@ Examples:
         - insert:
             animal: Elephant
             size: big
-        - print: The $animal$ is $size$.
+        - print: The $animal$ is $size$. # Print some fields
     ```
 
 

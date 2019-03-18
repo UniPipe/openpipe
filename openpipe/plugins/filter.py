@@ -6,11 +6,11 @@ from openpipe.engine import PluginRuntime
 
 class Plugin(PluginRuntime):
 
-    optional_config = """
+    optional_params = """
         in: True        # Expression to select items
         out: False      # Expression to exclude items
     """
 
     def on_input(self, item):
-        if self.config['in'] and not self.config['out']:
+        if self.params['in'] and not self.params['out']:
             self.put(item)

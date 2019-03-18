@@ -9,9 +9,9 @@ ODP_RUNTIME_DEBUG = environ.get('ODP_RUNTIME_DEBUG')
 
 class PluginRuntimeCore(object):
 
-    def __init__(self, config=None):
-        self.initial_config = config
-        self.config_template = Template(config)
+    def __init__(self, params=None):
+        self.initial_params = params
+        self.params_template = Template(params)
         self.failed_count = 0
         self.reference_count = 0
         self.init()
@@ -19,12 +19,12 @@ class PluginRuntimeCore(object):
     def _on_input(self, item):
         try:
             if item is not None:
-                self.config = self.config_template.render(item)
+                self.params = self.params_template.render(item)
         except:  # NOQA: E722
             print("ITEM:\n" + pformat(item), file=stderr)
             print_exc(file=stderr)
             msg = (
-                    "---------- Plugin %s dynamic config resolution failed ----------" % self.plugin_label)
+                    "---------- Plugin %s dynamic params resolution failed ----------" % self.plugin_label)
             print(msg, file=stderr)
             #  raise(
             self.failed_count += 1

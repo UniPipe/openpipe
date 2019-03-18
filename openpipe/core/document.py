@@ -75,9 +75,9 @@ class PipelineDocument(object):
                         file=stderr
                     )
                     exit(2)
-                step_name, step_config = list(step.items())[0]
+                step_name, step_params = list(step.items())[0]
                 step_line_nr = step['__line__']
-                remove_line_info(step_config)
+                remove_line_info(step_params)
 
                 if self.on_step_cb:
-                    self.on_step_cb(segment_name, step_name, step_config, step_line_nr)
+                    self.on_step_cb(segment_name, step_name, step_params, step_line_nr)
