@@ -49,9 +49,8 @@ class Plugin(PluginRuntime):
 
     def send_to_all_targets(self, item):
         for target_segment in self.target_segments:
-            print("Sending to", target_segment)
             if isinstance(item, (list, dict)):
                 new_item = item.copy()
             else:
                 new_item = item
-        self.put_target(new_item, target_segment)
+            self.put_target(new_item, target_segment)

@@ -1,0 +1,4 @@
+start:
+    - read from file: samples/test.tar
+    - assert:
+        - name: samples/test.json

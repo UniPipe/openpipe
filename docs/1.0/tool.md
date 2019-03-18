@@ -1,7 +1,6 @@
 # OpenPipe Tool
 
 ## Introduction
----------------
 The `openpipe` tool is a command line utility which runs on Linux, Mac and Windows and can be used to collect, transform and analyse data from multiple sources.
 
 In order to use openpipe, you must either adapt existing pipeline examples, or create your own data pipelines, in any case it is strongly recommended that you read the [DPL language documentation] .

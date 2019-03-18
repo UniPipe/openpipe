@@ -4,9 +4,8 @@ start:
         segment:
             - test_local_json_file
             - test_http_json_file
-            #- test_http_xml_file
-            #- test_ftp_json_file
-            #- test_tar_file
+            - test_http_xml_file
+            - test_ftp_json_file
     #- read from file: samples/test.txt
     #- assert:
     #    - Line in file
@@ -44,7 +43,3 @@ test_http_xml_file:
     - assert:
         result: True
 
-test_tar_file:
-    - read from file: samples/test.tar
-    - assert:
-        - name: samples/test.json

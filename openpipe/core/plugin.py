@@ -1,8 +1,11 @@
 from dinterpol import Template
 from sys import stderr
-from os import environ
+from os import environ, sep
 from traceback import print_exc
 from pprint import pformat
+from os.path import join, dirname
+from importlib import import_module
+from glob import glob
 
 ODP_RUNTIME_DEBUG = environ.get('ODP_RUNTIME_DEBUG')
 
@@ -59,3 +62,12 @@ class PluginRuntimeCore(object):
             % (self.plugin_label))
         print(msg, file=stderr)
         self.failed_count += 1
+
+    def extend(self, plugin_path, extension_path):
+        """ Extend plugin by importing modules from extension path """
+        location = join(dirname(plugin_path), extension_path)
+        sub_modules = glob(join(location, "*.py"))
+        for filename in sub_modules:
+            filename = '.'.join(filename.split(sep)[-6:])
+            filename = filename.rsplit('.', 1)[0]
+            import_module(filename)

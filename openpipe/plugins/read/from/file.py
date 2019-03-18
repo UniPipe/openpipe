@@ -4,14 +4,11 @@ Produce metadata/content from a local or remote file
 import gzip
 import bz2
 import zlib
-import os
 import urllib.request as urlreq
 import xmltodict
-from importlib import import_module
 from blinker import signal
 from urllib.error import HTTPError
-from os.path import splitext, expanduser, join, dirname
-from glob import glob
+from os.path import splitext, expanduser
 from json import loads
 from openpipe.engine import PluginRuntime
 
@@ -39,12 +36,7 @@ class Plugin(PluginRuntime):
 
     def on_start(self, params):
         self.read_from_file = signal('read from file')
-        location = join(dirname(__file__), '_file')
-        sub_modules = glob(join(location, "*.py"))
-        for filename in sub_modules:
-            filename = '.'.join(filename.split(os.sep)[-6:])
-            filename = filename.rsplit('.', 1)[0]
-            import_module(filename)
+        self.extend(__file__, '_file')
 
     def on_input(self, item):
         path = self.params['path']
@@ -121,7 +113,7 @@ class Plugin(PluginRuntime):
         content_type = None
         content_raw = reply.read()
         filename, file_extension = splitext(url)
-        if hasattr(reply, "getheader"):  # FTPs do not provide headers
+        if hasattr(reply, "getheader"):  # FTP does not
             content_type = reply.getheader('Content-Type').split(';', 1)[0]
             if content_type == 'application/x-gzip':
                 content_raw = zlib.decompress(content_raw, 16+zlib.MAX_WBITS)

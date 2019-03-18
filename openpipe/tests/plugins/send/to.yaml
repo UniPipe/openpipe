@@ -14,8 +14,13 @@ start:
 
     - assert: somethng else
 
+    - send to:
+        segment: test_good
+
 test_good:
-    - assert: good thing
+    - assert:
+        - good thing
+        - somethng else
 
 test_bad:
     - assert: bad mouse

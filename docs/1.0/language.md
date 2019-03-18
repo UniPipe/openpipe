@@ -1,7 +1,7 @@
 # Data Pipeline Language
 
 ## Introduction
-
+---------------
 This page describes the syntax and core concepts of the *data pipeline language*, an human friendly data-oriented language that can be used to describe data transformation workflows for both structured and unstructured data. DPL does not replace technology specific languages (e.g. SQL), instead it  provides an higher level computable language capable of integrating data from diverse formats, sources and technology.
 
 ## Prerequisites
