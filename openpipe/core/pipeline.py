@@ -1,14 +1,14 @@
 import sys
 from os import environ
 from os.path import normpath, expanduser
-from .document import PipelineDocument
+#from .document import PipelineDocument
 from .loader import FilesystemLoader
 from .download_cache import download_and_cache
 
 
-class PipelineRuntimeCore(object):
+class PipelineRuntimeCore:
 
-    def __init__(self, filename=None, data=None, local_only=False, start_segment='start'):
+    def __init__(self, start_segment='start'):
         """
         :param filename:            The name of the file with the pipeline YAML
         :param data:                The YAML content as a string
@@ -18,8 +18,6 @@ class PipelineRuntimeCore(object):
         self.local_only = local_only
         self.filename = filename
         self._start_segment = start_segment
-        self.dpl_doc = PipelineDocument(filename, data, start_segment, self.add_step_cb, self.load_libraries_cb)
-        self.plugin_loader = FilesystemLoader("openpipe/plugins")
 
     def load(self):
         self.dpl_doc.load()

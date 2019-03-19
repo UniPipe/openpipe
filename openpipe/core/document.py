@@ -6,20 +6,19 @@ from sys import stderr
 SEGMENTS_DOC_URL = "https://www.openpipe.org/OpenPipeLanguage#Segment"
 
 
-class PipelineDocument(object):
+class PipelineLoader:
 
-    def __init__(self, filename=None, yaml_data=None, start_segment='start', on_step_cb=None, load_libraries_cb=None):
-        self.on_step_cb = on_step_cb
-        self.load_libraries_cb = load_libraries_cb
-        if filename:
-            with open(filename, 'r') as data_file:
-                self.yaml_data = data_file.read()
-        else:
-            self.yaml_data = yaml_data
-        self.start_segment = start_segment
+    def fetch(self, pipeline_name):
+        self._name = pipeline_name
+        self._document_data = self.get(pipeline_name)
+        self._document_dict = {}
 
-    def load(self):
-        python_data = load_yaml(self.yaml_data)
+    def validate(self, start_segment="start"):
+        """
+        1. Transform document text to YAML
+        2. Validate the YAML matches the pipeline document format
+        """
+        python_data = load_yaml(self._document_data)
 
         if not isinstance(python_data, dict):
             print(
@@ -39,25 +38,22 @@ class PipelineDocument(object):
             if self.load_libraries_cb:
                 self.load_libraries_cb(list(libraries))
 
-        segment_names = list(python_data.keys())
-
         # A single segment was provided
-        start_segment = self.start_segment
         if start_segment not in python_data:
+            available_segment_names = list(python_data.keys())
             print(
                 "Start segment '{}' was not found\n"
-                "The following segment names were found:\n{}\n\n".format(start_segment, segment_names) +
+                "The following segment names were found:\n{}\n\n".format(start_segment, available_segment_names) +
                 "You can read more about pipeline segments at:\n"+SEGMENTS_DOC_URL,
                 file=stderr
                 )
             exit(1)
 
-        for segment_name in segment_names:
-            step_list = python_data[segment_name]
+        for segment_name, action_sequence in python_data.items():
             if segment_name[0] == "_":
                 continue
 
-            if not isinstance(step_list, list):
+            if not isinstance(action_sequence, list):
                 print(
                     "The content of segment '{}' is not a sequence as expected.\n".format(segment_name) +
                     "Instead got:\n{}\n\n".format(python_data[segment_name]) +
@@ -66,18 +62,43 @@ class PipelineDocument(object):
                     )
                 exit(1)
 
-            for step in step_list:
-                if not isinstance(step, dict):
+            for action in action_sequence:
+                if not isinstance(action, dict):
                     print(
-                        "ERROR on segment '{}'\n".format(start_segment) +
-                        "Expected a step definition in the format 'key: value', got '{}'\n\n".format(step) +
+                        "ERROR on segment '{}'\n".format(segment_name) +
+                        "Expected a step definition in the format 'key: value', got '{}'\n\n".format(action) +
                         "You can read more about pipeline segments at:\n"+SEGMENTS_DOC_URL,
                         file=stderr
                     )
                     exit(2)
-                step_name, step_params = list(step.items())[0]
-                step_line_nr = step['__line__']
-                remove_line_info(step_params)
 
-                if self.on_step_cb:
-                    self.on_step_cb(segment_name, step_name, step_params, step_line_nr)
+        self._document_dict = python_data
+
+    def load(self, pipeline_runtime):
+        """ Load the document into a pipeline runtime """
+
+        libraries = self._document_dict.get('libraries')
+        if libraries:
+            del self._document_dict['libraries']
+            for library in libraries:
+                pipeline_runtime.load_library(library)
+
+        for segment_name, action_list in self._document_dict.items():
+            # segments with a leading _ can be used as config placeholders
+            if segment_name[0] == "_":
+                continue
+            segment_manager = pipeline_runtime.create_segment(segment_name)
+            for action in action_list:
+                line_nr = action['__line__']
+                remove_line_info(action)
+                action_name, action_config = next(iter(action.items()))
+                action_label = "'{}', file \"{}\", line {}".format(action_name, self._name, line_nr)
+                segment_manager.add(action_name, action_config, action_label)
+
+    def get(self, document_name):
+        """ Get a document content by name """
+        # Add here the code required to load a document by name
+        raise NotImplementedError
+
+
+

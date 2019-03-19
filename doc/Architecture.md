@@ -1,23 +1,22 @@
-## Pipeline Loading
+## OpenPipe Architecture
 
-### Document Loader
+## Introduction
+Openpine is built usinga a modular architecture to facilitate extensibility.
 
-The `DocumentLoader` class provides the following methods:
+- _pipeline loader_
+- _pipeline runtime_
+
+
+The _Document Loader_ must be a Python class  derived from `openpipe.core.PipelineLoader` and it must implement the `get(self, pipeline_name)` method. This method is used to load a pipeline document based on it's name.
+
+Openpipe includes two base loaders, the `FileDocumentLoader` which will consider the name as a local filename, and open it, and the `NetFileDocumentLoader` which extends the `FileDocumentLoader` with the ability to automatically download remote files if the name starts with _http(s):_ .
+
 ```python
-class DocumentLoader:
+class MyDocumentLoader(DocumentLoader):
 
     def get(self, document_name):
         """ Get a document content by name """
-
-    def validate(self):
-        """
-        1. Transform document text to YAML
-        2. Validate the YAML matches the pipeline document format
-        """
-
-    def load(self, pipeline_runtime):
-        """ Load the document into runtime """
-        ...
+        # Add here the code required to load a document by name
 ```
 
 ### Pipeline Runtime
