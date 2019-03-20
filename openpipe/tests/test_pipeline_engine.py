@@ -1,5 +1,5 @@
-from openpipe.pipeline.loaders import PipelineFileLoader
-from openpipe.pipeline.manager import PipelineManager
+from openpipe.core.loaders import PipelineFileLoader
+from openpipe.pipeline.engine import PipelineManager
 
 
 def test_runtime_runt():

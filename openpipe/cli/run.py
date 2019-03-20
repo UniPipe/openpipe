@@ -2,7 +2,7 @@ import click
 #  import urllib.request
 #  import os
 #  from sys import stderr
-from openpipe.pipeline.loaders import PipelineFileLoader
+from openpipe.core.loaders import PipelineFileLoader
 from openpipe.pipeline.engine import PipelineManager
 
 
