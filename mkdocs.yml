@@ -1,12 +1,12 @@
 # Project information
-site_name: OpenPipe
-site_description: An open source data integration framework
+site_name: Openpipe
+site_description: A human friendly data-oriented integration toolkit
 site_author: João Pinto
 site_url: https://www.openpipe.org/
 
 # Repository
-repo_name: The OpenPipe Tool
-repo_url: https://github.com/OpenPipe/openpipe/
+repo_name: The Openpipe Tool
+repo_url: https://github.com/Openpipe/openpipe/
 
 # Repository
 copyright: This site content is licensed under a <A HREF="https://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</A>

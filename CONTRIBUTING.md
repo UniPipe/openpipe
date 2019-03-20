@@ -7,7 +7,7 @@ Thank you for considering contributing to this project. It is much appreciated. 
 1. Test your issue with openpipe from the github master version:
 
 ```bash
-pip install --user --upgrade https://github.com/OpenPipe/openpipe/archive/master.zip
+pip install --user --upgrade https://github.com/Openpipe/openpipe/archive/master.zip
 openpipe run your_test_pipeline.yaml
 ```
 

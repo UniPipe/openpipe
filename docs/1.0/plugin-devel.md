@@ -1,4 +1,4 @@
-# OpenPipe Action Plugin Development
+# Openpipe Action Plugin Development
 This document provides is a quick reference for developers planning to write openpipe  plugins.
 
 

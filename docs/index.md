@@ -1,5 +1,4 @@
-# An Open Source Data Integration Framework
-
+# An Open Source Data Integration Toolkit
 
 ## A human friendly data-oriented language:
 

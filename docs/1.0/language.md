@@ -61,7 +61,7 @@ You can get the help for a plugin with:
 openpipe help «plugin_name»
 ```
 
-OpenPipe action plugins may be polymorphic, meaning the same plugin may be able to handle different input and parameters types.
+Openpipe action plugins may be polymorphic, meaning the same plugin may be able to handle different input and parameters types.
 
 ### Data Items
 In DPL any kind of workflow managed data is referred as an _item_, in openpipe _items_ are stored in memory and transmitted as Python object references, as such, items can be of any data type or class available with Python.
@@ -141,6 +141,6 @@ This document is distributed under the [Creative Commons Attribution 4.0 Interna
 
 [YAML]: http://yaml.org/spec/1.1/
 [python_std_types]: https://docs.python.org/3/library/stdtypes.html
-[openpipe tool]: /OpenPipeTool
+[openpipe tool]: /OpenpipeTool
 
 [Creative Commons Attribution 4.0 International License]: https://creativecommons.org/licenses/by/4.0/

@@ -1,4 +1,4 @@
-## OpenPipe Architecture
+## Openpipe Architecture
 
 ## Introduction
 Openpipe is built using a modular architecture to facilitate extensibility.

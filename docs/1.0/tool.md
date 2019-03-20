@@ -1,11 +1,11 @@
-# OpenPipe Tool
+# Openpipe Tool
 
 ## Introduction
 The `openpipe` tool is a command line utility which runs on Linux, Mac and Windows and can be used to collect, transform and analyse data from multiple sources.
 
 In order to use openpipe, you must either adapt existing pipeline examples, or create your own data pipelines, in any case it is strongly recommended that you read the [DPL language documentation] .
 
-[OpenPipe Language]: /OpenPipeLanguage
+[Openpipe Language]: /OpenpipeLanguage
 
 ## Requirements
 In order to use openpipe you must have Python 3 with pip installed. If you are using Windows and need help use the [Windows Python 3] install guide, if you are using Linux follow the appropriate instructions for your Linux distribution.
