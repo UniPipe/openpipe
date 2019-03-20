@@ -1,11 +1,10 @@
 """
-This module provides the plugin_load function which is responsible for:
-- map action to action plugin
-- import the plugin
-- validate the
-- create an instance of the Plugin class
-This file provides a PluginLoader class which is responsible for importing
-a plugin's module and instantiate it's class
+This module provides the plugin_load function which performs the following:
+    - map action names to python module files
+    - import the plugin
+    - create an instance of the Plugin class
+    - validate the Plugin's config schema
+    - validate that the user provided config meets the config schema requirements
 """
 from sys import stderr, exit
 from importlib import import_module
