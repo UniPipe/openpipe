@@ -1,10 +1,14 @@
 ## OpenPipe Architecture
 
 ## Introduction
-Openpine is built usinga a modular architecture to facilitate extensibility.
+Openpipe is built using a modular architecture to facilitate extensibility.
 
+- _core_
+    _
 - _pipeline loader_
-- _pipeline runtime_
+- _pipeline engine_
+    - _pipeline manager_
+    - _segment manager_
 
 
 The _Document Loader_ must be a Python class  derived from `openpipe.core.PipelineLoader` and it must implement the `get(self, pipeline_name)` method. This method is used to load a pipeline document based on it's name.

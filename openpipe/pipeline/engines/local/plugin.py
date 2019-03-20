@@ -7,14 +7,14 @@ from os.path import join, dirname
 from importlib import import_module
 from glob import glob
 
-ODP_RUNTIME_DEBUG = environ.get('ODP_RUNTIME_DEBUG')
+DEBUG = environ.get('DEBUG')
 
 
-class PluginRuntimeCore(object):
+class PluginRuntimeBase:
 
-    def __init__(self, params=None):
-        self.initial_params = params
-        self.params_template = Template(params)
+    def __init__(self, config=None):
+        self.initial_config = config
+        self.config_template = Template(config)
         self.failed_count = 0
         self.reference_count = 0
         self.init()
@@ -22,12 +22,12 @@ class PluginRuntimeCore(object):
     def _on_input(self, item):
         try:
             if item is not None:
-                self.params = self.params_template.render(item)
+                self.config = self.config_template.render(item)
         except:  # NOQA: E722
             print("ITEM:\n" + pformat(item), file=stderr)
             print_exc(file=stderr)
             msg = (
-                    "---------- Plugin %s dynamic params resolution failed ----------" % self.plugin_label)
+                    "---------- Plugin %s dynamic config resolution failed ----------" % self.plugin_label)
             print(msg, file=stderr)
             #  raise(
             self.failed_count += 1
@@ -37,13 +37,13 @@ class PluginRuntimeCore(object):
             if self.reference_count == 0:
                 on_finish_func = getattr(self, 'on_finish', None)
                 if on_finish_func:
-                    if ODP_RUNTIME_DEBUG:
+                    if DEBUG:
                         print("on_finish %s " % self.plugin_label)
                     on_finish_func(True)
                 self.put(item)
         else:
             try:
-                if ODP_RUNTIME_DEBUG:
+                if DEBUG:
                     print("on_item %s: %s" % (self.plugin_label, item))
                 self.on_input(item)
             except SystemExit:
@@ -71,3 +71,18 @@ class PluginRuntimeCore(object):
             filename = '.'.join(filename.split(sep)[-6:])
             filename = filename.rsplit('.', 1)[0]
             import_module(filename)
+
+
+class PluginRuntime(PluginRuntimeBase):
+
+    def init(self):
+        self.next_action = None
+
+    def put(self, item):
+
+        # Put on next
+        if self.next_action:
+            self.next_action._on_input(item)
+
+    def put_target(self, item, target):
+        target._on_input(item)

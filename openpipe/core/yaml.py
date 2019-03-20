@@ -1,4 +1,4 @@
-from yaml import Loader
+from yaml import Loader, load
 from yaml.composer import Composer
 from yaml.parser import ParserError
 from yaml.constructor import Constructor
@@ -16,10 +16,13 @@ import warnings  # NOQA: E402
 warnings.warn = warn
 
 
-def load_yaml(data):
+def load_yaml(data, include_line_number=True):
     """
     Load YAML data extending it with line number information, nodes get a __line__ attribute
     """
+    if not include_line_number:
+        return load(data)
+
     loader = Loader(data)
 
     def compose_node(parent, index):

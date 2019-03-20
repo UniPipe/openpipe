@@ -2,17 +2,17 @@
 Pretty print an item
 """
 
-from openpipe.engine import PluginRuntime
+from openpipe.pipeline.engine import PluginRuntime
 from pprint import pprint
 
 
 class Plugin(PluginRuntime):
 
     # The default behavior is to print the input item
-    optional_params = """
+    optional_config = """
     $_$     # The content to be pretty printed
     """
 
     def on_input(self, item):
-        pprint(self.params)
+        pprint(self.config)
         self.put(item)

@@ -2,20 +2,20 @@
 Produce the system clock time at regular intervals
 """
 from time import time, sleep
-from openpipe.engine import PluginRuntime
+from openpipe.pipeline.engine import PluginRuntime
 
 
 class Plugin(PluginRuntime):
 
-    optional_params = """
+    optional_config = """
     interval:   0   # Pause time between insertions, 0 means forever
     max_count:  1     # Max number of item insertions
     """
 
     def on_input(self, item):
-        interval = self.params['interval']
+        interval = self.config['interval']
         interval = time2seconds(interval)
-        count = self.params['max_count']
+        count = self.config['max_count']
         repeat_forever = (count == 0)
 
         while repeat_forever or count > 0:

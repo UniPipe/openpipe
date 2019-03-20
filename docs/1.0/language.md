@@ -18,7 +18,7 @@ A segment must be represented by a dictionary, where the key is the segment name
 
 ####  Steps
 
-A step must be represented by a dictionary, where the key is an action name and the value contains the action parameters, parameters may be of any of the YAML supported data types.
+A action must be represented by a dictionary, where the key is an action name and the value contains the action parameters, parameters may be of any of the YAML supported data types.
 
 #### Example
 
@@ -49,7 +49,7 @@ At this time there is no specialized IDE for pipeline editing, any general purpo
 The command line tool `openpipe` is the software that reads pipeline documents and starts the corresponding workflow.
 
 ### Action Plugins
-After the pipeline document is loaded, openpipe associates each workflow step with a plugin instance, the plugin to be used will be determined by the action name and action parameters.  Plugins can provide a wide range of action types: collection, filtering, exporting, etc.
+After the pipeline document is loaded, openpipe associates each workflow action with a plugin instance, the plugin to be used will be determined by the action name and action parameters.  Plugins can provide a wide range of action types: collection, filtering, exporting, etc.
 
 You can get the list of available plugins with:
 ```sh
@@ -70,15 +70,15 @@ In DPL any kind of workflow managed data is referred as an _item_, in openpipe _
 
 Action plugins should be observed as independent processing units, the following items will be available to them:
 
-- Parameters Item: action parameters for the step «provided in the pipeline document»
+- Parameters Item: action parameters for the action «provided in the pipeline document»
 - Input Item: input data provided to the action
 - Output Item: output data produced by the action execution
 
 !!! Information "Output -> Input"
-    As a general rule the output item of a step will be the input item of the next step in the same segment, with the exception of the `send to` action that can deliver items to the first step of other segments.
+    As a general rule the output item of a action will be the input item of the next action in the same segment, with the exception of the `send to` action that can deliver items to the first action of other segments.
 
 !!! Information "Last Step Output Items"
-    Output items from the last step in a segment will be silently discarded.
+    Output items from the last action in a segment will be silently discarded.
 
 ### Dynamic Parameters
 

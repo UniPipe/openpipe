@@ -1,17 +1,17 @@
 """
-Produce dictionary with input joined to params
+Produce dictionary with input joined to config
 """
 
-from openpipe.engine import PluginRuntime
+from openpipe.pipeline.engine import PluginRuntime
 
 
 class Plugin(PluginRuntime):
 
-    required_some_params = """ YES
+    required_some_config = """ YES
     """
 
     # Output the parameters item
     def on_input(self, item):
-        for extend_item in self.params:
+        for extend_item in self.config:
             new_item = {**item, **extend_item}
             self.put(new_item)

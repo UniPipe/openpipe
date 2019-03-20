@@ -10,16 +10,16 @@ from blinker import signal
 from urllib.error import HTTPError
 from os.path import splitext, expanduser
 from json import loads
-from openpipe.engine import PluginRuntime
+from openpipe.pipeline.engine import PluginRuntime
 
 
 class Plugin(PluginRuntime):
 
-    required_params = """
+    required_config = """
     path:                       # Local path or HTTP/HTTPS/FTP url
     """
 
-    optional_params = """
+    optional_config = """
     content_only: True          # Insert only the content
     split_lines: True           # Insert line by line (enforces content_only)
     auto_decompress: True       # Automatically decompress .gz/.bz files
@@ -34,12 +34,12 @@ class Plugin(PluginRuntime):
     user-agent: curl/7.64.0     # User-agent to use on HTTP requests
     """
 
-    def on_start(self, params):
+    def on_start(self, config):
         self.read_from_file = signal('read from file')
         self.extend(__file__, '_file')
 
     def on_input(self, item):
-        path = self.params['path']
+        path = self.config['path']
         schema = path.split(':', 1)[0]
         is_remote = ':' in path and schema in ['http', 'https', 'ftp']
 
@@ -67,10 +67,10 @@ class Plugin(PluginRuntime):
             '.bz': lambda x: bz2.open(x, 'r'),
             '*': lambda x: open(x, 'rb'),
             }
-        path = self.params['path']
-        split_lines = self.params['split_lines']
+        path = self.config['path']
+        split_lines = self.config['split_lines']
 
-        if self.params['auto_expand_home']:
+        if self.config['auto_expand_home']:
             path = expanduser(path)
 
         filename, file_extension = splitext(path)
@@ -84,7 +84,7 @@ class Plugin(PluginRuntime):
             split_lines = False
 
         with open_func(path) as file:
-            if self.params['auto_parse']:
+            if self.config['auto_parse']:
                 parsers = self.read_from_file.send(
                     fileobj=file, file_extension=file_extension, mime_type=None, plugin=self
                 )
@@ -101,13 +101,13 @@ class Plugin(PluginRuntime):
                 self.put_or_parse(data, file_extension)
 
     def collect_remote_file(self):
-        url = self.params['path']
+        url = self.config['path']
         req = urlreq.Request(url)
-        req.add_header('User-Agent', self.params['user-agent'])
+        req.add_header('User-Agent', self.config['user-agent'])
         try:
-            reply = urlreq.urlopen(req, timeout=self.params['timeout'])
+            reply = urlreq.urlopen(req, timeout=self.config['timeout'])
         except HTTPError:
-            if self.params['ignore_http_errors']:
+            if self.config['ignore_http_errors']:
                 return
             raise
         content_type = None

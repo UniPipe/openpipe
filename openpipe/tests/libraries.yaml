@@ -1,4 +1,4 @@
-libraries:
+_libraries:
     - openpipe/tests/lib     # This library provides the "sample" plugin
 
 start:

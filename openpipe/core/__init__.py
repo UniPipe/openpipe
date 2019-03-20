@@ -1,9 +1,7 @@
-from .plugin import PluginRuntimeCore
-from .pipeline import PipelineRuntimeCore
-from openpipe.core.document import PipelineLoader
+from .document import PipelineLoader
+from .plugin_loader import plugin_load
 
 __all__ = [
-    "PluginRuntimeCore",
-    "PipelineRuntimeCore",
     "PipelineLoader",
+    "plugin_load",
     ]

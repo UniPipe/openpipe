@@ -32,12 +32,6 @@ class PipelineLoader:
         # We don't need the __line__ info for the top level dict
         del python_data['__line__']
 
-        libraries = python_data.get('libraries')
-        if libraries:
-            del python_data['libraries']
-            if self.load_libraries_cb:
-                self.load_libraries_cb(list(libraries))
-
         # A single segment was provided
         if start_segment not in python_data:
             available_segment_names = list(python_data.keys())
@@ -65,8 +59,8 @@ class PipelineLoader:
             for action in action_sequence:
                 if not isinstance(action, dict):
                     print(
-                        "ERROR on segment '{}'\n".format(segment_name) +
-                        "Expected a step definition in the format 'key: value', got '{}'\n\n".format(action) +
+                        "ERROR on file \"{}\", segment '{}:'\n".format(self._name, segment_name) +
+                        "Expected action defined as dictionary, got {} '{}'\n\n".format(type(action), action) +
                         "You can read more about pipeline segments at:\n"+SEGMENTS_DOC_URL,
                         file=stderr
                     )
@@ -74,12 +68,13 @@ class PipelineLoader:
 
         self._document_dict = python_data
 
-    def load(self, pipeline_runtime):
+    def load(self, pipeline_runtime, start_segment="start"):
         """ Load the document into a pipeline runtime """
 
-        libraries = self._document_dict.get('libraries')
+        pipeline_runtime.start_segment = start_segment
+        libraries = self._document_dict.get('_libraries')
         if libraries:
-            del self._document_dict['libraries']
+            del self._document_dict['_libraries']
             for library in libraries:
                 pipeline_runtime.load_library(library)
 
@@ -99,6 +94,3 @@ class PipelineLoader:
         """ Get a document content by name """
         # Add here the code required to load a document by name
         raise NotImplementedError
-
-
-
