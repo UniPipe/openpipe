@@ -1,15 +1,12 @@
 """
 Produce file metadata and content from a TAR archive
 """
-#  from blinker import signal
 import tarfile
 
-from ..file import attach_file_handler
+from ..file import Plugin
 
 
-def read_from_tar_file(self, fileobj, file_extension, mime_type, plugin):
-
-    #  print("Checking", file_extension, mime_type)
+def decode_file(fileobj, plugin):
 
     with tarfile.open(fileobj=fileobj) as tar:
         while True:
@@ -28,7 +25,4 @@ def read_from_tar_file(self, fileobj, file_extension, mime_type, plugin):
     return True
 
 
-attach_file_handler(read_from_tar_file, ".tar", "application/x-tar")
-
-#  read_from_file = signal("read from file")
-#  read_from_file.connect(read_from_tar_file)
+Plugin.attach_file_handler("application/x-tar", decode_file)

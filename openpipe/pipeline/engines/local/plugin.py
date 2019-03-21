@@ -23,6 +23,8 @@ class PluginRuntimeBase:
             if item is not None:
                 self.config = self.config_template.render(item)
         except:  # NOQA: E722
+            if isinstance(item, bytes) and len(item) > 256:
+                item = item[:255]
             print("ITEM:\n" + pformat(item), file=stderr)
             print_exc(file=stderr)
             msg = (
@@ -56,6 +58,8 @@ class PluginRuntimeBase:
                     exit(1)
 
     def _execution_error(self, item):
+        if isinstance(item, bytes) and len(item) > 256:
+            item = item[:255]
         print("ITEM:\n" + pformat(item), file=stderr)
         print_exc(file=stderr)
         msg = "---------- Plugin %s execution failed ----------, item content:" % (

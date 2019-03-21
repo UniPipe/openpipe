@@ -6,5 +6,6 @@ start:
 
     - read from file:
         path: /tmp/test
+        mime_type: text/plain
 
     - assert: Hello World!

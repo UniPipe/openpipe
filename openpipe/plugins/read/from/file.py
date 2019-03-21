@@ -3,25 +3,14 @@ Produce metadata/content from a local or remote file
 """
 import gzip
 import bz2
+import lzma
 import zlib
+import mimetypes
 import urllib.request as urlreq
-import xmltodict
-from blinker import signal
 from urllib.error import HTTPError
 from io import BytesIO
 from os.path import splitext, expanduser
-from json import loads
 from openpipe.pipeline.engine import PluginRuntime
-
-EXTENSION_FILE_HANDLER = {}
-MIME_FILE_HANDLER = {}
-
-
-def attach_file_handler(handler_func, file_extension=None, mime_type=None):
-    if file_extension:
-        EXTENSION_FILE_HANDLER[file_extension] = handler_func
-    if mime_type:
-        MIME_FILE_HANDLER[mime_type] = handler_func
 
 
 class Plugin(PluginRuntime):
@@ -31,55 +20,56 @@ class Plugin(PluginRuntime):
     """
 
     optional_config = """
-    content_only: True          # Insert only the content
-    split_lines: True           # Insert line by line (enforces content_only)
-    auto_decompress: True       # Automatically decompress .gz/.bz files
-    auto_parse: True            # Automatically parse json/xml files
+    # The mime_type will be used by the plugin to identify and automatically
+    # decode the file content.
+    # With the default value of 'auto' the action will try to guess the
+    # mime type based on the content header or file extension.
+    mime_type:  auto
 
-    # The following option is only relevant for local files
+    # Possible values are: "meta", "content" or "both"
+    output_type: auto
+
+    # The following option is only applicable to local filenames
     auto_expand_home: True      # Expand '~' on path to user home dir
 
     # The following options are only relevant for HTTP/HTTPS/FTP paths
     timeout: 30                 # Global timeout (in secs) for the operation
     ignore_http_errors: False   # Ignore HTTP errors replies
-    user-agent: curl/7.64.0     # User-agent to use on HTTP requests
+    user_agent: curl/7.64.0     # User-agent to use on HTTP requests
     """
 
+    """
+    This plugin can be extended with mime type decoders, on start it will load
+    modules available from the _file directory. Those modules must attach
+    a file handler using the class method `attach_file_handler` .
+    """
+    MIME_FILE_HANDLER = {}
+
+    @classmethod
+    def attach_file_handler(cls, mime_type, decoder_function):
+        cls.MIME_FILE_HANDLER[mime_type] = decoder_function
+
     def on_start(self, config):
-        self.read_from_file = signal("read from file")
         self.extend(__file__, "_file")
 
     def on_input(self, item):
         path = self.config["path"]
         schema = path.split(":", 1)[0]
         is_remote = ":" in path and schema in ["http", "https", "ftp"]
-
+        mime_type = mimetypes.guess_type(path)[0]
         if is_remote:
-            self.collect_remote_file()
+            self.collect_remote_file(path, mime_type)
         else:
-            self.collect_local_file()
+            self.collect_local_file(path, mime_type)
 
-    def put_or_parse(self, data, file_extension, content_type=None):
-        auto_parse_map = {
-            ".json": lambda x: loads(x),
-            ".xml": lambda x: xmltodict.parse(x),
-            "*": lambda x: x,
-        }
+    def collect_local_file(self, path, mime_type):
 
-        parse_function = auto_parse_map.get(file_extension)
-        if parse_function:
-            self.put(parse_function(data))
-        else:
-            self.put(data)
-
-    def collect_local_file(self):
         ext_map = {
             ".gz": lambda x: gzip.open(x, "r"),
             ".bz": lambda x: bz2.open(x, "r"),
+            ".xz": lambda x: lzma.open(x, "r"),
             "*": lambda x: open(x, "rb"),
         }
-        path = self.config["path"]
-        split_lines = self.config["split_lines"]
 
         if self.config["auto_expand_home"]:
             path = expanduser(path)
@@ -88,66 +78,48 @@ class Plugin(PluginRuntime):
 
         open_func = ext_map.get(file_extension, ext_map["*"])
 
-        # If it's a compressed file, split the filename
+        # If it's a compressed file, split the filename again
         if file_extension in ext_map:
             filename, file_extension = splitext(filename)
-        if file_extension in [".json", ".yaml", ".xml"]:
-            split_lines = False
+            mime_type = mimetypes.guess_type(path)[0]
 
         with open_func(path) as file:
-            if self.config["auto_parse"]:
-                parsers = self.read_from_file.send(
-                    fileobj=file,
-                    file_extension=file_extension,
-                    mime_type=None,
-                    plugin=self,
-                )
-                for sender, result in parsers:
-                    if result is not None:
-                        return
-            if split_lines:
-                for line in file:
-                    line = line.decode("utf-8")
-                    line = line.strip("\r\n")
-                    self.put(line)
-            else:
-                data = file.read()
-                self.put_or_parse(data, file_extension)
 
-    def collect_remote_file(self):
-        url = self.config["path"]
+            # mime type can be overriden from the action config
+            if self.config["mime_type"] != "auto":
+                mime_type = self.config["mime_type"]
+            self.decode(file, mime_type)
+
+    def collect_remote_file(self, path, mime_type):
+        url = path
         req = urlreq.Request(url)
-        req.add_header("User-Agent", self.config["user-agent"])
+        req.add_header("User-Agent", self.config["user_agent"])
         try:
             reply = urlreq.urlopen(req, timeout=self.config["timeout"])
         except HTTPError:
             if self.config["ignore_http_errors"]:
                 return
             raise
-        content_type = None
-        content_raw = reply.read()
+        file_data = reply.read()
         filename, file_extension = splitext(url)
-        if hasattr(reply, "getheader"):  # FTP does not
-            content_type = reply.getheader("Content-Type").split(";", 1)[0]
-            if content_type == "application/json":
-                file_extension = ".json"
-            if content_type == "application/x-gzip":
-                content_raw = zlib.decompress(content_raw, 16 + zlib.MAX_WBITS)
-                filename, file_extension = splitext(filename)
-                content_type = None
-        if file_extension == ".json":
-            content_raw = content_raw.decode("utf-8")
-        else:
-            file = BytesIO(content_raw)
-            if self.config["auto_parse"]:
-                parsers = self.read_from_file.send(
-                    fileobj=file,
-                    file_extension=file_extension,
-                    mime_type=content_type,
-                    plugin=self,
-                )
-                for sender, result in parsers:
-                    if result is not None:
-                        return
+        try:
+            mime_type = reply.getheader("Content-Type").split(";", 1)[0]
+        except AttributeError:  # FTP does not have a getheader
+            mime_type = mimetypes.guess_type(path)[0]
+            pass
+        if mime_type == "application/x-gzip":
+            decompressed_data = zlib.decompress(file_data, 16 + zlib.MAX_WBITS)
+            file_data = decompressed_data
+            # If we got a gz file, guess the mime type from the remaining extension
+            filename, file_extension = splitext(filename)
+            mime_type = mimetypes.guess_type(path)[0]
+        file = BytesIO(file_data)
+        self.decode(file, mime_type)
 
-        self.put_or_parse(content_raw, file_extension, content_type)
+    def decode(self, fileobj, mime_type):
+        decoder_function = self.MIME_FILE_HANDLER.get(mime_type)
+        if decoder_function:
+            decoder_function(fileobj, self)
+        else:
+            data = fileobj.read()
+            self.put(data)

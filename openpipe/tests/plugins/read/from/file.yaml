@@ -13,7 +13,6 @@ start:
 
 # Test automatic parsing of local json file
 test_local_json_file:
-    - print: Zzzzs
     - read from file: samples/test.json
     - assert:
         name: "Zin"
