@@ -19,5 +19,5 @@ Setting up your environment is pretty straight forward:
 2. `git clone` this repository to your machine
 3. `cd` to where you've cloned the repository
 4. Apply your improvements
-5. Execute: `tox` to rum the tests
+5. Execute: `tox` to run the tests
 6. Submit a pull request

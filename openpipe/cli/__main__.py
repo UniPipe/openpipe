@@ -1,6 +1,6 @@
-from .cli.run import run
-from .cli.help import help
-from .cli import version
+from .run import run
+from .help import help
+from . import version
 import click
 
 

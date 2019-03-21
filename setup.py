@@ -8,5 +8,5 @@ all_packages.extend(namespace_packages)
 setup(
     name="openpipe",
     packages=all_packages,
-    entry_points={"console_scripts": ["openpipe = openpipe.__main__:main"]},
+    entry_points={"console_scripts": ["openpipe = openpipe.cli.__main__:main"]},
 )
