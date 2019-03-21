@@ -13,12 +13,11 @@ def validate_config_dict(action_plugin, config_group_name, value_check_func):
 
     if isinstance(config, dict):
         for key, value in config.items():
-            assert(' ' not in key)  # Spaces are not allowed in key names
-            assert(value_check_func(value))
+            assert " " not in key  # Spaces are not allowed in key names
+            assert value_check_func(value)
 
 
 def validate_config_schema(action_plugin, action_label):
-
     def mut_be_none(x):
         return x is None
 

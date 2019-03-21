@@ -3,7 +3,6 @@ from openpipe.core.plugin_config import validate_provided_config
 
 
 def test_zero_config():
-
     class Plugin(PluginRuntime):
         pass
 

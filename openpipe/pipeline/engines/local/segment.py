@@ -1,9 +1,9 @@
 from os import environ
-from openpipe.core import plugin_load
+from openpipe.utils import plugin_load
 from time import time
 from sys import stderr
 
-DEBUG = environ.get('DEBUG')
+DEBUG = environ.get("DEBUG")
 
 
 class PipelineSegment:
@@ -19,14 +19,18 @@ class PipelineSegment:
 
     def activate(self, activation_item=True):
         self.action_list[0].reference_count = 1
-        self.action_list[0]._on_input(time())  # Send current time to the firs action to activate it
-        self.action_list[0]._on_input(None)    # Send end-of-input «None» to trigger on_finnish()
+        self.action_list[0]._on_input(
+            time()
+        )  # Send current time to the firs action to activate it
+        self.action_list[0]._on_input(
+            None
+        )  # Send end-of-input «None» to trigger on_finnish()
         return 0, None  # exit code, exit message
 
     def start(self, _segment_linker):
         """ Run the on start method for all the actions in this segment """
         for i, action in enumerate(self.action_list):
-            on_start_func = getattr(action, 'on_start', None)
+            on_start_func = getattr(action, "on_start", None)
             if on_start_func:
                 if DEBUG:
                     print("on_start %s " % action.plugin_label)
@@ -40,7 +44,6 @@ class PipelineSegment:
 
 
 class SegmentManager:
-
     def __init__(self):
         self._segments = {}
 
@@ -54,7 +57,7 @@ class SegmentManager:
         self._segments[segment_name] = segment
         return segment
 
-    def activate(self, start_segment_name='start'):
+    def activate(self, start_segment_name="start"):
         return self._segments[start_segment_name].activate()
 
     def _segment_linker(self, segment_name):
@@ -64,9 +67,11 @@ class SegmentManager:
         except KeyError:
             print(
                 "A reference was found for segment '{}' which does not exist.\n"
-                "The following segment names were found:\n{}\n\n".format(segment_name, list(self.segments.keys())),
-                file=stderr
-                )
+                "The following segment names were found:\n{}\n\n".format(
+                    segment_name, list(self.segments.keys())
+                ),
+                file=stderr,
+            )
             exit(2)
 
         segment.action_list[0].reference_count += 1
@@ -81,5 +86,5 @@ class SegmentManager:
             action_list = segment.action_list
             # Create links to next on all actions  except for the last
             for i, action in enumerate(action_list[:-1]):
-                action.next_action = action_list[i+1]
-                action_list[i+1].reference_count += 1
+                action.next_action = action_list[i + 1]
+                action_list[i + 1].reference_count += 1

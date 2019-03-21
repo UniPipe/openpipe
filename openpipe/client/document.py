@@ -1,13 +1,12 @@
 """
 """
-from .yaml import load_yaml, remove_line_info
+from openpipe.utils.yaml import load_yaml, remove_line_info
 from sys import stderr
 
 SEGMENTS_DOC_URL = "https://www.openpipe.org/OpenpipeLanguage#Segment"
 
 
 class PipelineLoader:
-
     def fetch(self, pipeline_name):
         self._name = pipeline_name
         self._document_data = self.get(pipeline_name)
@@ -23,24 +22,28 @@ class PipelineLoader:
         if not isinstance(python_data, dict):
             print(
                 "The provided YAML does not provide any segment (key: content).\n"
-                "Instead got:\n{}\n".format(python_data) +
-                "You can read more about the segments format at:\n"+SEGMENTS_DOC_URL,
-                file=stderr
-                )
+                "Instead got:\n{}\n".format(python_data)
+                + "You can read more about the segments format at:\n"
+                + SEGMENTS_DOC_URL,
+                file=stderr,
+            )
             exit(1)
 
         # We don't need the __line__ info for the top level dict
-        del python_data['__line__']
+        del python_data["__line__"]
 
         # A single segment was provided
         if start_segment not in python_data:
             available_segment_names = list(python_data.keys())
             print(
                 "Start segment '{}' was not found\n"
-                "The following segment names were found:\n{}\n\n".format(start_segment, available_segment_names) +
-                "You can read more about pipeline segments at:\n"+SEGMENTS_DOC_URL,
-                file=stderr
+                "The following segment names were found:\n{}\n\n".format(
+                    start_segment, available_segment_names
                 )
+                + "You can read more about pipeline segments at:\n"
+                + SEGMENTS_DOC_URL,
+                file=stderr,
+            )
             exit(1)
 
         for segment_name, action_sequence in python_data.items():
@@ -49,20 +52,28 @@ class PipelineLoader:
 
             if not isinstance(action_sequence, list):
                 print(
-                    "The content of segment '{}' is not a sequence as expected.\n".format(segment_name) +
-                    "Instead got:\n{}\n\n".format(python_data[segment_name]) +
-                    "You can read more about pipeline segments at:\n"+SEGMENTS_DOC_URL,
-                    file=stderr
+                    "The content of segment '{}' is not a sequence as expected.\n".format(
+                        segment_name
                     )
+                    + "Instead got:\n{}\n\n".format(python_data[segment_name])
+                    + "You can read more about pipeline segments at:\n"
+                    + SEGMENTS_DOC_URL,
+                    file=stderr,
+                )
                 exit(1)
 
             for action in action_sequence:
                 if not isinstance(action, dict):
                     print(
-                        "ERROR on file \"{}\", segment '{}:'\n".format(self._name, segment_name) +
-                        "Expected action defined as dictionary, got {} '{}'\n\n".format(type(action), action) +
-                        "You can read more about pipeline segments at:\n"+SEGMENTS_DOC_URL,
-                        file=stderr
+                        "ERROR on file \"{}\", segment '{}:'\n".format(
+                            self._name, segment_name
+                        )
+                        + "Expected action defined as dictionary, got {} '{}'\n\n".format(
+                            type(action), action
+                        )
+                        + "You can read more about pipeline segments at:\n"
+                        + SEGMENTS_DOC_URL,
+                        file=stderr,
                     )
                     exit(2)
 
@@ -72,9 +83,9 @@ class PipelineLoader:
         """ Load the document into a pipeline runtime """
 
         pipeline_runtime.start_segment = start_segment
-        libraries = self._document_dict.get('_libraries')
+        libraries = self._document_dict.get("_libraries")
         if libraries:
-            del self._document_dict['_libraries']
+            del self._document_dict["_libraries"]
             for library in libraries:
                 pipeline_runtime.load_library(library)
 
@@ -84,10 +95,12 @@ class PipelineLoader:
                 continue
             segment_manager = pipeline_runtime.create_segment(segment_name)
             for action in action_list:
-                line_nr = action['__line__']
+                line_nr = action["__line__"]
                 remove_line_info(action)
                 action_name, action_config = next(iter(action.items()))
-                action_label = "'{}', file \"{}\", line {}".format(action_name, self._name, line_nr)
+                action_label = "'{}', file \"{}\", line {}".format(
+                    action_name, self._name, line_nr
+                )
                 segment_manager.add(action_name, action_config, action_label)
 
     def get(self, document_name):

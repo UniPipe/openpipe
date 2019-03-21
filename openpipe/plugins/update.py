@@ -16,11 +16,11 @@ class Plugin(PluginRuntime):
 
     def on_input(self, item):
         new_item = item
-        where = self.config['where']
+        where = self.config["where"]
         if where is True:
-            for key, value in self.config['set'].items():
+            for key, value in self.config["set"].items():
                 new_item[key] = value
         if where is False:
-            for key, value in self.config['else'].items():
+            for key, value in self.config["else"].items():
                 new_item[key] = value
         self.put(new_item)

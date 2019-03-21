@@ -35,13 +35,13 @@ class Plugin(PluginRuntime):
     """
 
     def on_start(self, config):
-        self.read_from_file = signal('read from file')
-        self.extend(__file__, '_file')
+        self.read_from_file = signal("read from file")
+        self.extend(__file__, "_file")
 
     def on_input(self, item):
-        path = self.config['path']
-        schema = path.split(':', 1)[0]
-        is_remote = ':' in path and schema in ['http', 'https', 'ftp']
+        path = self.config["path"]
+        schema = path.split(":", 1)[0]
+        is_remote = ":" in path and schema in ["http", "https", "ftp"]
 
         if is_remote:
             self.collect_remote_file()
@@ -50,10 +50,10 @@ class Plugin(PluginRuntime):
 
     def put_or_parse(self, data, file_extension, content_type=None):
         auto_parse_map = {
-            '.json': lambda x: loads(x),
-            '.xml': lambda x: xmltodict.parse(x),
-            '*': lambda x: x,
-            }
+            ".json": lambda x: loads(x),
+            ".xml": lambda x: xmltodict.parse(x),
+            "*": lambda x: x,
+        }
 
         parse_function = auto_parse_map.get(file_extension)
         if parse_function:
@@ -63,37 +63,40 @@ class Plugin(PluginRuntime):
 
     def collect_local_file(self):
         ext_map = {
-            '.gz': lambda x: gzip.open(x, 'r'),
-            '.bz': lambda x: bz2.open(x, 'r'),
-            '*': lambda x: open(x, 'rb'),
-            }
-        path = self.config['path']
-        split_lines = self.config['split_lines']
+            ".gz": lambda x: gzip.open(x, "r"),
+            ".bz": lambda x: bz2.open(x, "r"),
+            "*": lambda x: open(x, "rb"),
+        }
+        path = self.config["path"]
+        split_lines = self.config["split_lines"]
 
-        if self.config['auto_expand_home']:
+        if self.config["auto_expand_home"]:
             path = expanduser(path)
 
         filename, file_extension = splitext(path)
 
-        open_func = ext_map.get(file_extension, ext_map['*'])
+        open_func = ext_map.get(file_extension, ext_map["*"])
 
         # If it's a compressed file, split the filename
         if file_extension in ext_map:
             filename, file_extension = splitext(filename)
-        if file_extension in ['.json', '.yaml', '.xml']:
+        if file_extension in [".json", ".yaml", ".xml"]:
             split_lines = False
 
         with open_func(path) as file:
-            if self.config['auto_parse']:
+            if self.config["auto_parse"]:
                 parsers = self.read_from_file.send(
-                    fileobj=file, file_extension=file_extension, mime_type=None, plugin=self
+                    fileobj=file,
+                    file_extension=file_extension,
+                    mime_type=None,
+                    plugin=self,
                 )
                 for sender, result in parsers:
                     if result is not None:
                         return
             if split_lines:
                 for line in file:
-                    line = line.decode('utf-8')
+                    line = line.decode("utf-8")
                     line = line.strip("\r\n")
                     self.put(line)
             else:
@@ -101,24 +104,24 @@ class Plugin(PluginRuntime):
                 self.put_or_parse(data, file_extension)
 
     def collect_remote_file(self):
-        url = self.config['path']
+        url = self.config["path"]
         req = urlreq.Request(url)
-        req.add_header('User-Agent', self.config['user-agent'])
+        req.add_header("User-Agent", self.config["user-agent"])
         try:
-            reply = urlreq.urlopen(req, timeout=self.config['timeout'])
+            reply = urlreq.urlopen(req, timeout=self.config["timeout"])
         except HTTPError:
-            if self.config['ignore_http_errors']:
+            if self.config["ignore_http_errors"]:
                 return
             raise
         content_type = None
         content_raw = reply.read()
         filename, file_extension = splitext(url)
         if hasattr(reply, "getheader"):  # FTP does not
-            content_type = reply.getheader('Content-Type').split(';', 1)[0]
-            if content_type == 'application/x-gzip':
-                content_raw = zlib.decompress(content_raw, 16+zlib.MAX_WBITS)
-            if content_type == 'application/json':
-                file_extension = '.json'
-        if file_extension == '.json':
-            content_raw = content_raw.decode('utf-8')
+            content_type = reply.getheader("Content-Type").split(";", 1)[0]
+            if content_type == "application/x-gzip":
+                content_raw = zlib.decompress(content_raw, 16 + zlib.MAX_WBITS)
+            if content_type == "application/json":
+                file_extension = ".json"
+        if file_extension == ".json":
+            content_raw = content_raw.decode("utf-8")
         self.put_or_parse(content_raw, file_extension, content_type)

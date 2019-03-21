@@ -12,5 +12,5 @@ class Plugin(PluginRuntime):
     """
 
     def on_input(self, item):
-        if self.config['in'] and not self.config['out']:
+        if self.config["in"] and not self.config["out"]:
             self.put(item)

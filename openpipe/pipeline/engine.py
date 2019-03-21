@@ -4,7 +4,4 @@
 from .engines.local import PipelineManager
 from .engines.local import PluginRuntime
 
-__all__ = [
-    PipelineManager,
-    PluginRuntime
-]
+__all__ = [PipelineManager, PluginRuntime]

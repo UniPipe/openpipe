@@ -42,27 +42,26 @@ def group_min(current_value, new_value):
 
 
 STATS_FUNCS = {
-    'sum': group_sum,
-    'count': group_count,
-    'max': group_max,
-    'min': group_min,
+    "sum": group_sum,
+    "count": group_count,
+    "max": group_max,
+    "min": group_min,
 }
 
 
 class GroupBy(object):
-
     def __init__(self, plugin, config):
         self.config = config
         self.last_sorted_value = None
-        self.sorted_fields = config['sorted_fields']
-        self.stats_fields = config['stats']
+        self.sorted_fields = config["sorted_fields"]
+        self.stats_fields = config["stats"]
         self.plugin = plugin
         self.aggregated_stats = {}
 
     def add(self, item):
 
         # Create composed aggregation with the values of config fields
-        group_key = '\n'.join(item[x] for x in self.config['keys'])
+        group_key = "\n".join(item[x] for x in self.config["keys"])
 
         # if using "sorted_fields", sent results when the result key changes
         if self.sorted_fields:
@@ -102,14 +101,18 @@ class GroupBy(object):
         for group_key, stats in self.aggregated_stats.items():
 
             # Add the group_by field values
-            group_values = group_key.split('\n')
-            for i, field_name in enumerate(self.config['keys']):
+            group_values = group_key.split("\n")
+            for i, field_name in enumerate(self.config["keys"]):
                 new_item[field_name] = group_values[i]
 
             # Add stats results
             for stats_field_name, func_results in stats.items():
                 for func_name, result in func_results.items():
-                    new_item[stats_field_name+"_"+func_name] = func_results[func_name]
-                new_item[stats_field_name+"_avg"] = float(func_results["sum"]) / func_results["count"]
+                    new_item[stats_field_name + "_" + func_name] = func_results[
+                        func_name
+                    ]
+                new_item[stats_field_name + "_avg"] = (
+                    float(func_results["sum"]) / func_results["count"]
+                )
             self.plugin.put(new_item)
         self.aggregated_stats = {}

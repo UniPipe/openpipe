@@ -13,7 +13,7 @@ To get a better understanding how openpipe can be used, take a look at https://w
 This python library provides the following packages:
 
 - openpipe.cli: the command line interface
-- openpile.client: client modules for pipeline document loading/validation
+- openpipe.client: client modules for pipeline document loading/validation
 - openpipe.engine: modules to be used by pipeline execution engines
 - openpipe.pipeline.manager: the pipeline manager for the 'local' pipeline engine
 

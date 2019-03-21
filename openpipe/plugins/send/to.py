@@ -21,7 +21,7 @@ class Plugin(PluginRuntime):
     def on_start(self, config):
 
         # Handle single segment or list of segments
-        target = config['segment']
+        target = config["segment"]
         self.target_segments = []
         if isinstance(target, str):
             segment_list = [target]
@@ -31,7 +31,7 @@ class Plugin(PluginRuntime):
             target_segment = self.segment_linker(segment_name)
             self.target_segments.append(target_segment)
 
-        if config['on_condition'] != "":
+        if config["on_condition"] != "":
             self.on_input = self.on_input_conditional
 
     def on_input(self, item):
@@ -39,7 +39,7 @@ class Plugin(PluginRuntime):
         self.put(item)
 
     def on_input_conditional(self, item):
-        if self.config['on_condition']:
+        if self.config["on_condition"]:
             self.send_to_all_targets(item)
         else:
             self.put(item)

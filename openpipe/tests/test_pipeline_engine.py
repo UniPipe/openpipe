@@ -1,4 +1,4 @@
-from openpipe.core.loaders import PipelineFileLoader
+from openpipe.client import PipelineFileLoader
 from openpipe.pipeline.engine import PipelineManager
 
 
@@ -6,7 +6,7 @@ def test_runtime_runt():
 
     # Load and validate file syntax
     pipeline_loader = PipelineFileLoader()
-    pipeline_loader.fetch('samples/test.yaml')
+    pipeline_loader.fetch("samples/test.yaml")
     pipeline_loader.validate()
 
     # Create a pipeline manager

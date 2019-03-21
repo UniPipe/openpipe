@@ -1,15 +1,16 @@
 import click
+
 #  import urllib.request
 #  import os
 #  from sys import stderr
-from openpipe.core.loaders import PipelineFileLoader
+from openpipe.client import PipelineFileLoader
 from openpipe.pipeline.engine import PipelineManager
 
 
 @click.command()
-@click.option('--local-only', '-l', is_flag=True, default=False)
-@click.option('--start-segment', '-s', type=str, default="start")
-@click.argument('filename', type=click.Path(exists=False), required=True)
+@click.option("--local-only", "-l", is_flag=True, default=False)
+@click.option("--start-segment", "-s", type=str, default="start")
+@click.argument("filename", type=click.Path(exists=False), required=True)
 def run(filename, local_only, start_segment):
     """
     if filename.startswith('http:') or filename.startswith('https:'):

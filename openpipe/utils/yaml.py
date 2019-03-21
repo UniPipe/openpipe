@@ -13,6 +13,7 @@ def warn(*args, **kwargs):
 
 
 import warnings  # NOQA: E402
+
 warnings.warn = warn
 
 
@@ -34,7 +35,7 @@ def load_yaml(data, include_line_number=True):
 
     def construct_mapping(node, deep=False):
         mapping = Constructor.construct_mapping(loader, node, deep=deep)
-        mapping['__line__'] = node.__line__
+        mapping["__line__"] = node.__line__
         return mapping
 
     loader.compose_node = compose_node

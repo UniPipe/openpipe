@@ -19,23 +19,23 @@ class Plugin(PluginRuntime):
     """
 
     def on_start(self, config):
-        self.path = config['path']
+        self.path = config["path"]
         self.last_path = None
         self.file = None
 
     def on_input(self, item):
-        path = self.config['path']
+        path = self.config["path"]
         path = expanduser(path)
         if path != self.last_path:
             if self.file:
                 self.file.close()
-            self.file = open(path, self.config['mode'])
+            self.file = open(path, self.config["mode"])
             self.last_path = path
-        content = self.config['content']
-        if path.endswith('.json'):
+        content = self.config["content"]
+        if path.endswith(".json"):
             content = json.dumps(content, indent=4)
         self.file.write(content)
-        if self.config['close_on_item']:
+        if self.config["close_on_item"]:
             self.file.close()
             self.file = None
             self.last_path = None

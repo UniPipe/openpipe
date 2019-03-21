@@ -7,11 +7,10 @@ from os.path import join, dirname
 from importlib import import_module
 from glob import glob
 
-DEBUG = environ.get('DEBUG')
+DEBUG = environ.get("DEBUG")
 
 
 class PluginRuntimeBase:
-
     def __init__(self, config=None):
         self.initial_config = config
         self.config_template = Template(config)
@@ -27,7 +26,9 @@ class PluginRuntimeBase:
             print("ITEM:\n" + pformat(item), file=stderr)
             print_exc(file=stderr)
             msg = (
-                    "---------- Plugin %s dynamic config resolution failed ----------" % self.plugin_label)
+                "---------- Plugin %s dynamic config resolution failed ----------"
+                % self.plugin_label
+            )
             print(msg, file=stderr)
             #  raise(
             self.failed_count += 1
@@ -35,7 +36,7 @@ class PluginRuntimeBase:
         if item is None:
             self.reference_count -= 1
             if self.reference_count == 0:
-                on_finish_func = getattr(self, 'on_finish', None)
+                on_finish_func = getattr(self, "on_finish", None)
                 if on_finish_func:
                     if DEBUG:
                         print("on_finish %s " % self.plugin_label)
@@ -55,11 +56,11 @@ class PluginRuntimeBase:
                     exit(1)
 
     def _execution_error(self, item):
-        print("ITEM:\n"+pformat(item), file=stderr)
+        print("ITEM:\n" + pformat(item), file=stderr)
         print_exc(file=stderr)
-        msg = (
-            "---------- Plugin %s execution failed ----------, item content:"
-            % (self.plugin_label))
+        msg = "---------- Plugin %s execution failed ----------, item content:" % (
+            self.plugin_label
+        )
         print(msg, file=stderr)
         self.failed_count += 1
 
@@ -68,13 +69,12 @@ class PluginRuntimeBase:
         location = join(dirname(plugin_path), extension_path)
         sub_modules = glob(join(location, "*.py"))
         for filename in sub_modules:
-            filename = '.'.join(filename.split(sep)[-6:])
-            filename = filename.rsplit('.', 1)[0]
+            filename = ".".join(filename.split(sep)[-6:])
+            filename = filename.rsplit(".", 1)[0]
             import_module(filename)
 
 
 class PluginRuntime(PluginRuntimeBase):
-
     def init(self):
         self.next_action = None
 

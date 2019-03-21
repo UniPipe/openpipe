@@ -13,10 +13,10 @@ class Plugin(PluginRuntime):
     """
 
     def on_input(self, item):
-        interval = self.config['interval']
+        interval = self.config["interval"]
         interval = time2seconds(interval)
-        count = self.config['max_count']
-        repeat_forever = (count == 0)
+        count = self.config["max_count"]
+        repeat_forever = count == 0
 
         while repeat_forever or count > 0:
             if interval:
@@ -27,9 +27,9 @@ class Plugin(PluginRuntime):
 
 
 def time2seconds(value):
-    SECONDS_MAP = {'s': 1, 'm': 60, 'h': 60*60, 'd': 24 * 60 * 60}
-    number = ''
-    unit = 's'
+    SECONDS_MAP = {"s": 1, "m": 60, "h": 60 * 60, "d": 24 * 60 * 60}
+    number = ""
+    unit = "s"
     if isinstance(value, int):
         return value
     for char in value:

@@ -11,7 +11,7 @@ Openpipe is built using a modular architecture to facilitate extensibility.
     - _segment manager_
 
 
-The _Document Loader_ must be a Python class  derived from `openpipe.core.PipelineLoader` and it must implement the `get(self, pipeline_name)` method. This method is used to load a pipeline document based on it's name.
+The _Document Loader_ must be a Python class  derived from `openpipe.client.PipelineLoader` and it must implement the `get(self, pipeline_name)` method. This method is used to load a pipeline document based on it's name.
 
 Openpipe includes two base loaders, the `FileDocumentLoader` which will consider the name as a local filename, and open it, and the `NetFileDocumentLoader` which extends the `FileDocumentLoader` with the ability to automatically download remote files if the name starts with _http(s):_ .
 

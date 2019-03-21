@@ -16,22 +16,22 @@ from .plugin_config import validate_provided_config
 def plugin_load(action_name, action_config, action_label):
     plugin_path = "openpipe plugins "
     plugin_path += action_name
-    plugin_path = plugin_path.replace(' ', '.')
+    plugin_path = plugin_path.replace(" ", ".")
 
     try:
         module = import_module(plugin_path)
     except ModuleNotFoundError:
         print(format_exc(), file=stderr)
-        print('Required for action:', plugin_path, file=stderr)
+        print("Required for action:", plugin_path, file=stderr)
         exit(1)
     except ImportError as error:
-        print('Error loading module', plugin_path, file=stderr)
+        print("Error loading module", plugin_path, file=stderr)
         print(format_exc(), error, file=stderr)
-        print('Required for action:', action_label, file=stderr)
+        print("Required for action:", action_label, file=stderr)
         exit(2)
-    if not hasattr(module, 'Plugin'):
+    if not hasattr(module, "Plugin"):
         print("Module {} does not provide a Plugin class!".format(module), file=stderr)
-        print('Required for action:', action_label, file=stderr)
+        print("Required for action:", action_label, file=stderr)
         exit(2)
     plugin_class = module.Plugin
     validate_config_schema(plugin_class, action_label)

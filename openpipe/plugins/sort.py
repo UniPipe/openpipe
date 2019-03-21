@@ -16,11 +16,11 @@ class Plugin(PluginRuntime):
 
     def on_start(self, config):
         self.data = []
-        self.descendent = config['descendent']
+        self.descendent = config["descendent"]
 
     def on_input(self, item):
         # we must copy because the item may be changed in the thread
-        self.data.append((self.config['key'], item.copy()))
+        self.data.append((self.config["key"], item.copy()))
 
     def on_finish(self, reason):
         self.data.sort(key=lambda x: x[0], reverse=self.descendent)

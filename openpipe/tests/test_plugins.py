@@ -33,6 +33,7 @@ def pytest_generate_tests(metafunc):
 
     metafunc.parametrize(argnames, argvalues, ids=id_list, scope="class")
 
+
 # if os_system != 'Windows' and test_file in WIN_ONLY:
 #     argnames.append("conf")
 #     argvalues.append(pytest.skip("Smoke tests must...."))
