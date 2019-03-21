@@ -1,6 +1,6 @@
 # An Open Source Data Integration Toolkit
 
-## A human friendly data-oriented language:
+## A human friendly data-oriented language
 
 *hello.yaml*
 ```yaml
@@ -14,7 +14,7 @@ start:
 To learn more about the language, check the [language documentation].
 
 
-## And a simple command line tool:
+## A simple command line tool
 *openpipe run hello.yaml*
 ```
 {'name': 'John Doe', 'age': 80}
