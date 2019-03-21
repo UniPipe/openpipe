@@ -8,9 +8,20 @@ import urllib.request as urlreq
 import xmltodict
 from blinker import signal
 from urllib.error import HTTPError
+from io import BytesIO
 from os.path import splitext, expanduser
 from json import loads
 from openpipe.pipeline.engine import PluginRuntime
+
+EXTENSION_FILE_HANDLER = {}
+MIME_FILE_HANDLER = {}
+
+
+def attach_file_handler(handler_func, file_extension=None, mime_type=None):
+    if file_extension:
+        EXTENSION_FILE_HANDLER[file_extension] = handler_func
+    if mime_type:
+        MIME_FILE_HANDLER[mime_type] = handler_func
 
 
 class Plugin(PluginRuntime):
@@ -118,10 +129,25 @@ class Plugin(PluginRuntime):
         filename, file_extension = splitext(url)
         if hasattr(reply, "getheader"):  # FTP does not
             content_type = reply.getheader("Content-Type").split(";", 1)[0]
-            if content_type == "application/x-gzip":
-                content_raw = zlib.decompress(content_raw, 16 + zlib.MAX_WBITS)
             if content_type == "application/json":
                 file_extension = ".json"
+            if content_type == "application/x-gzip":
+                content_raw = zlib.decompress(content_raw, 16 + zlib.MAX_WBITS)
+                filename, file_extension = splitext(filename)
+                content_type = None
         if file_extension == ".json":
             content_raw = content_raw.decode("utf-8")
+        else:
+            file = BytesIO(content_raw)
+            if self.config["auto_parse"]:
+                parsers = self.read_from_file.send(
+                    fileobj=file,
+                    file_extension=file_extension,
+                    mime_type=content_type,
+                    plugin=self,
+                )
+                for sender, result in parsers:
+                    if result is not None:
+                        return
+
         self.put_or_parse(content_raw, file_extension, content_type)
