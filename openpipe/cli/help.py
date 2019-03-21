@@ -84,7 +84,7 @@ def help(plugin):
         with open(examples_filename) as yaml_content:
             print(
                 highlight(
-                    yaml_content.read(), YamlLexer(), TerminalTrueColorFormatter()
+                    yaml_content.read(), YamlLexer(), TerminalTrueColorFormatter(style='colorful')
                 )
             )
 
@@ -116,6 +116,9 @@ def print_list_of_plugins():
     table_data = [["Action", "Description"]]
     for name in sorted(available_plugins.keys()):
         filename = available_plugins[name]
+        # Don't list submodules
+        if "_" in filename:
+            continue
         with open(filename) as module_file:
             filedata = module_file.read()
             purpose = re.findall('"""\n([^\n]*)', filedata)
@@ -131,4 +134,4 @@ def print_list_of_plugins():
     table = SingleTable(table_data)
     print(table.table)
     # print("-------------------------------------\n")
-    # print("You can get help for a plugin with:\nopenpipe help <plugin_name>")
+    print("You can get help for a plugin with:\nopenpipe help <plugin_name>")

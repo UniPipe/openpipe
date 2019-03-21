@@ -1,0 +1,10 @@
+start:
+    - insert:
+        - { name: Zap, color: red, hits: 10}
+        - { name: Pong, color: red, hits: 5}
+        - { name: Zap, color: red, hits: 20}
+
+    - group by:
+        stats: [ hits ]
+        keys: [ name ]
+    - print:

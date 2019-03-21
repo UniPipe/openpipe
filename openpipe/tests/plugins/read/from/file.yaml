@@ -6,10 +6,10 @@ start:
             - test_http_json_file
             - test_http_xml_file
             - test_ftp_json_file
-    #- read from file: samples/test.txt
-    #- assert:
-    #    - Line in file
-    #    - One more line
+    - read from file: samples/test.txt
+    - assert:
+        - Line in file
+        - One more line
 
 # Test automatic parsing of local json file
 test_local_json_file:

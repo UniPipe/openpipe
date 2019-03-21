@@ -68,7 +68,7 @@ class SegmentManager:
             print(
                 "A reference was found for segment '{}' which does not exist.\n"
                 "The following segment names were found:\n{}\n\n".format(
-                    segment_name, list(self.segments.keys())
+                    segment_name, list(self._segments.keys())
                 ),
                 file=stderr,
             )

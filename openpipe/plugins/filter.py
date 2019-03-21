@@ -7,8 +7,8 @@ from openpipe.pipeline.engine import PluginRuntime
 class Plugin(PluginRuntime):
 
     optional_config = """
-        in: True        # Expression to select items
-        out: False      # Expression to exclude items
+        in: True    # Expression to include items
+        out: False  # Expression to exclude items
     """
 
     def on_input(self, item):

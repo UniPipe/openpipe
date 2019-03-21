@@ -1,0 +1,9 @@
+start:
+    # Print the file content line by line
+    - read from file: /etc/hosts
+    - print: Line $_$
+
+    # Print a JSON API response
+    - read from file: https://api.exchangeratesapi.io/latest
+    - pprint:
+

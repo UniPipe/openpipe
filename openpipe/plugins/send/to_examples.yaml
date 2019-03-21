@@ -1,0 +1,24 @@
+start:
+    - insert:
+        - bad mouse
+        - good thing
+
+    # Send "good" items to segment "is_good"
+    - send to:
+        segment: is_good
+        on_condition: $'good' in _$
+
+    # Send the other items to both branch a and b
+    - send to:
+        segment:
+            - branch a
+            - branch b
+
+is_good:
+    - print: 'Found something good: $_$'
+
+branch a:
+    - print: Branch A received $_$
+
+branch b:
+    - print: Branch B received $_$

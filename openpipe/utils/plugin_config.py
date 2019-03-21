@@ -57,8 +57,10 @@ def validate_optional_config(
 
     # config schema accepts a single optional non dict item
     if not isinstance(optional_config, dict):
-        return provided_config
-
+        if provided_config:
+            return provided_config
+        else:
+            return optional_config
     merged_config = {**required_config, **optional_config}
 
     # a single input item was provided and required_config is only one

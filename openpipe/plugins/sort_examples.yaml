@@ -1,0 +1,9 @@
+start:
+    - insert:
+        - {id: zok, name: Zipper}
+        - {id: anc, name: Bottle}
+        - {id: zin, name: Alternative}
+    - sort:
+        # Sort by the "id" key value
+        key: $id$
+    - print:

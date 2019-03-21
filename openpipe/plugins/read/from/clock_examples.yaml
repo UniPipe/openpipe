@@ -1,0 +1,5 @@
+start:
+    - read from clock:
+        interval: 1s
+        max_count: 3
+    - print: clock ticked

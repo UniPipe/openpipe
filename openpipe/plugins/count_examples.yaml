@@ -1,0 +1,6 @@
+start:
+    - insert:
+        - item X
+        - item Y
+    - count:
+    - print:

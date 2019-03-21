@@ -1,0 +1,6 @@
+start:
+    - insert:
+        color: red
+        size: 12
+    - drop: [ size ]
+    - print:

@@ -1,0 +1,10 @@
+start:
+    - insert: This is the item we want to write
+    - write to file: /tmp/test
+    - insert:
+            name: John
+            age: 34
+    # We can also specify the content item to be written
+    - write to file:
+        path: /tmp/test_name_content
+        content: $name$

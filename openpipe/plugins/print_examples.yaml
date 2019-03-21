@@ -1,22 +1,18 @@
 # Print simple string
 start:
+    # Print a string
     print: Hello World!
-    # Output: Hello World
 
-# Print a calculation
-start:
+    # Print a calculation
     - print: 2 + 1 = $2 + 1$
     # Output: 2 + 1 = 3
 
-# Printing the full input item
-start:
+    # Printing the full input item
     - insert:
         place: zoo
     - print:
     # Output: { 'place': 'zoo' }
 
-# Printing input item fields
-start:
     - insert:
         animal: Elephant
         size: big
