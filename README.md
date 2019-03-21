@@ -1,8 +1,8 @@
 # Openpipe: A human friendly data-oriented integration toolkit
 
-Over the years while performing different roles within Information Tecnhology, a significant part of my effort was devoted to data collection/analists/transformation automation. I have lost the track to the number of sheets, shell and python scripts whose main purpose was to parse/filter/transform data.
+Over the years while performing different roles within Information Technology, a significant part of my effort was devoted to data collection/analysis/transformation automation. I have lost the track to the number of sheets, shell and python scripts whose main purpose was to parse/filter/transform data.
 
-Openpipe is and attempt to offer those automation capabilities in a more human-friendly and higly
+Openpipe is and attempt to offer those automation capabilities in a more human-friendly and highly
 reusable format.
 
 To get a better understanding how openpipe can be used, take a look at https://www.openpipe.org/ .
@@ -15,7 +15,9 @@ This python library provides the following packages:
 - openpipe.cli: the command line interface
 - openpipe.client: client modules for pipeline document loading/validation
 - openpipe.engine: modules to be used by pipeline execution engines
-- openpipe.pipeline.manager: the pipeline manager for the 'local' pipeline engine
+- openpipe.pipeline: the pipeline manager for the 'local' pipeline engine
+- openpipe.plugins: the action modules to be used by pipeline runtime
+- openpipe.tests: tests for pytest
 
 The python package provides the following com
 
