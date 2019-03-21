@@ -18,7 +18,7 @@ A segment must be represented by a dictionary, where the key is the segment name
 
 ####  Steps
 
-A action must be represented by a dictionary, where the key is an action name and the value contains the action parameters, parameters may be of any of the YAML supported data types.
+A action must be represented by a dictionary, where the key is an action name and the value contains the action config, config may be of any of the YAML supported data types.
 
 #### Example
 
@@ -26,7 +26,7 @@ A action must be represented by a dictionary, where the key is an action name an
     ```yaml
     # This is the 'start' segment
     start:
-        # Call the "print" action with the string parameter Hello World!
+        # Call the "print" action with the config string Hello World!
         - print: Hello World!
     ```
 
@@ -49,7 +49,7 @@ At this time there is no specialized IDE for pipeline editing, any general purpo
 The command line tool `openpipe` is the software that reads pipeline documents and starts the corresponding workflow.
 
 ### Action Plugins
-After the pipeline document is loaded, openpipe associates each workflow action with a plugin instance, the plugin to be used will be determined by the action name and action parameters.  Plugins can provide a wide range of action types: collection, filtering, exporting, etc.
+After the pipeline document is loaded, openpipe associates each workflow action with a plugin instance, the plugin to be used will be determined by the action name and action config.  Plugins can provide a wide range of action types: collection, filtering, exporting, etc.
 
 You can get the list of available plugins with:
 ```sh
@@ -61,7 +61,7 @@ You can get the help for a plugin with:
 openpipe help «plugin_name»
 ```
 
-Openpipe action plugins may be polymorphic, meaning the same plugin may be able to handle different input and parameters types.
+Openpipe action plugins may be polymorphic, meaning the same plugin may be able to handle different input and config types.
 
 ### Data Items
 In DPL any kind of workflow managed data is referred as an _item_, in openpipe _items_ are stored in memory and transmitted as Python object references, as such, items can be of any data type or class available with Python.
@@ -70,7 +70,7 @@ In DPL any kind of workflow managed data is referred as an _item_, in openpipe _
 
 Action plugins should be observed as independent processing units, the following items will be available to them:
 
-- Parameters Item: action parameters for the action «provided in the pipeline document»
+- Config Item: the config value that was provided in the pipeline document
 - Input Item: input data provided to the action
 - Output Item: output data produced by the action execution
 
@@ -80,11 +80,11 @@ Action plugins should be observed as independent processing units, the following
 !!! Information "Last Step Output Items"
     Output items from the last action in a segment will be silently discarded.
 
-### Dynamic Parameters
+### Dynamic Configuration
 
-The parameters item provided may include dynamic components, this feature provides the ability to embed python expressions and input item related parameters.
+The configuration item provided may include dynamic components, this feature provides the ability to embed python expressions and input item related config.
 
-Before invoking an action, any text in the action parameters found between consecutive dollar signs ($) will be evaluated as a python expression and replaced with it's result. If you need to have $ on your strings, you will need to escape them using \\$ .
+Before invoking an action, any config text found between consecutive dollar signs ($) will be evaluated as a python expression and replaced with it's result. If you need to have $ on your strings, you will need to escape them using \\$ .
 
 During expression evaluation, the "_" symbol is a reference to the full input item. When the input item is a dict, it's keys values will be mapped to variable names so that you can refer to them easily by providing $key$.
 

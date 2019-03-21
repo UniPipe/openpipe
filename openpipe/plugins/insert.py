@@ -1,5 +1,5 @@
 """
-Produce the action's parameter item
+Produce the action's config item
 """
 from openpipe.pipeline.engine import PluginRuntime
 
@@ -10,7 +10,7 @@ class Plugin(PluginRuntime):
     item # The item to be inserted, default is the input item
     """
 
-    # Output the parameters item
+    # Output the config item
     def on_input(self, item):
         if isinstance(self.config, list):
             for list_item in self.config:

@@ -11,7 +11,7 @@ class Plugin(PluginRuntime):
     []  # List of keys for the fields to be removed
     """
 
-    # Output the parameters item
+    # Output the config item
     def on_input(self, item):
         new_item = {}
         for key, value in item.items():

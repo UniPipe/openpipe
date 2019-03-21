@@ -28,7 +28,7 @@ def validate_required_config(module_plugin, plugin_label, provided_config):
             required_config_key = next(iter(required_config.keys()))
             return {required_config_key: provided_config}
         else:
-            print("Invalid parameters for", plugin_label, file=stderr)
+            print("Invalid config for", plugin_label, file=stderr)
             print("Got", type(provided_config), pformat(provided_config), file=stderr)
             print("Expected dictionary with fields", required_config_str, file=stderr)
             exit(Errors.CONFIG_MUST_BE_DICT)
@@ -37,12 +37,10 @@ def validate_required_config(module_plugin, plugin_label, provided_config):
         try:
             resulting_config[key] = provided_config[key]
         except KeyError:
-            print("Invalid parameters for", plugin_label, file=stderr)
+            print("Invalid config for", plugin_label, file=stderr)
             print("The required field '%s' is missing" % key, plugin_label, file=stderr)
             print(
-                "The following parameters are required:",
-                required_config_str,
-                file=stderr,
+                "The following config are required:", required_config_str, file=stderr
             )
             exit(Errors.CONFIG_MISSING_KEY)
 
@@ -98,7 +96,7 @@ def validate_provided_config(module_plugin, plugin_label, provided_config):
     if hasattr(module_plugin, "required_some_config"):
         if provided_config is None:
             print("Missing config for", plugin_label, file=stderr)
-            print("The plugin requires parameters", file=stderr)
+            print("The plugin requires config", file=stderr)
             exit(25)
         else:
             return provided_config

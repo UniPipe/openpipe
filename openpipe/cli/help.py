@@ -54,13 +54,13 @@ def help(plugin):
     if hasattr(plugin_module.Plugin, "required_config"):
         config_string = plugin_module.Plugin.required_config
         config_string = config_markdown(config_string)
-        required_config_md = "\n# Required Parameters\n" + config_string + "\n"
+        required_config_md = "\n# Required Configuration\n" + config_string + "\n"
     else:
         required_config_md = ""
     if hasattr(plugin_module.Plugin, "optional_config"):
         config_string = plugin_module.Plugin.optional_config
         config_string = config_markdown(config_string)
-        optional_config_md = "\n# Optional Parameters\n" + config_string + "\n"
+        optional_config_md = "\n# Optional Configuration\n" + config_string + "\n"
     else:
         optional_config_md = ""
 

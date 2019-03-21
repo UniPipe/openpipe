@@ -19,9 +19,6 @@ This python library provides the following packages:
 - openpipe.plugins: the action modules to be used by pipeline runtime
 - openpipe.tests: tests for pytest
 
-The python package provides the following com
-
 
 [Openpipe tool]: https://www.openpipe.org/OpenpipeTool
-
 [PyPA Code of Conduct]: https://www.pypa.io/en/latest/code-of-conduct/
