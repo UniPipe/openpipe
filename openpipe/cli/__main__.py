@@ -2,7 +2,7 @@ import sys
 import click
 from .run import run
 from .help import help
-from . import version
+from ..about import __version__
 from os import environ
 
 
@@ -21,7 +21,7 @@ if environ.get("TRACE"):
 
 
 @click.group()
-@click.version_option(version=version)
+@click.version_option(version=__version__)
 def cli():
     pass
 

@@ -40,7 +40,7 @@ To get a list of the action plugins available in the standard library, run:
 ```bash
 openpipe help
 ```
-![Parse Text XML](img/help/openpipe_help.png)
+![Parse Text XML](../imgs/help/openpipe_help.png)
 
 To get the help/example for a specific plugin, run:
 ```bash
@@ -49,9 +49,9 @@ openpipe help plugin name
 
 Example:
 ```bash
-openpipe help read from file
+openpipe help print
 ```
-![read from file](img/help/openpipe_collect_from_file.png)
+![openpipe help print](../imgs/help/openpipe_help_print.png)
 
 
 
