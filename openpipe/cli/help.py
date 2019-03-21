@@ -84,7 +84,9 @@ def help(plugin):
         with open(examples_filename) as yaml_content:
             print(
                 highlight(
-                    yaml_content.read(), YamlLexer(), TerminalTrueColorFormatter(style='colorful')
+                    yaml_content.read(),
+                    YamlLexer(),
+                    TerminalTrueColorFormatter(style="colorful"),
                 )
             )
 
