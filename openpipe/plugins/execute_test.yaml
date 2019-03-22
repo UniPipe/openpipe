@@ -1,3 +1,6 @@
 start:
-    - execute: ps -ef
+    - execute: echo -n ok
     - pprint:
+    - assert:
+        return_code: 0
+        stdout: ok

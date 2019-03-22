@@ -18,7 +18,7 @@ class PluginRuntimeBase:
         self.reference_count = 0
         self.init()
 
-    def _on_input(self, item, context_item) :
+    def _on_input(self, item, context_item):
         self.context_item = context_item
         try:
             if item is not None:
@@ -50,7 +50,10 @@ class PluginRuntimeBase:
         else:
             try:
                 if DEBUG:
-                    print("on_input %s: \n\tInput:%s\n\tContext:%s" % (self.plugin_label, item, context_item))
+                    print(
+                        "on_input %s: \n\tInput:%s\n\tContext:%s"
+                        % (self.plugin_label, item, context_item)
+                    )
                 self.on_input(item)
             except SystemExit:
                 exit(1)
@@ -82,7 +85,6 @@ class PluginRuntimeBase:
 
 
 class PluginRuntime(PluginRuntimeBase):
-
     def init(self):
         self.next_action = None
         self.context_item = None

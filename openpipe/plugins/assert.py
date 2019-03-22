@@ -48,9 +48,25 @@ class Plugin(PluginRuntime):
                 try:
                     assert item_value == value
                 except AssertionError:
+                    try:
+                        value_len = len(value)
+                    except TypeError:
+                        value_len = 0
+                    try:
+                        item_value_len = len(item_value)
+                    except TypeError:
+                        item_value_len = 0
                     print(
-                        "AssertionError: Expected %s on field '%s', got %s"
-                        % (str(value), str(key), str(item_value)),
+                        "AssertionError: On field '%s' expected %s[%s] %s , got %s[%s] %s"
+                        % (
+                            str(key),
+                            type(value),
+                            value_len,
+                            str(value),
+                            type(item_value),
+                            item_value_len,
+                            str(item_value),
+                        ),
                         file=stderr,
                     )
                     raise
