@@ -1,15 +1,14 @@
 #!/bin/sh
 set -eu
 
-test_files=$(ls -1 test.*)
-compressors="gzip bzip2 xz"
-for compressor in $compressors; do
-    for file in $test_files; do
-        output_file=$(echo archives/$file.$compressor | sed -e "s/bzip2/bz/" -e "s/gzip/gz/g")
-        $compressor -c $file > $output_file
+rm -f archives/*
+array=(gzip:.gz bzip2:.bz2 xz:.xz)
+
+for item in ${array[*]}; do
+    cmd=$(echo $item|cut -d":" -f1)
+    ext=$(echo $item|cut -d":" -f2)
+    for file in test.*; do
+        $cmd -c $file > archives/$file$ext
     done
-    output_file=$(echo archives/test.tar.$compressor | sed -e "s/bzip2/bz/" -e "s/gzip/gz/g")
-    tar -cvf - test.* | $compressor -c > $output_file
+    tar -cf - test.* | $cmd -c > archives/test.tar$ext
 done
-
-

@@ -45,6 +45,7 @@ def help(plugin):
         exit(2)
 
     examples_filename = plugin_module.__file__.rsplit(".", 1)[0] + "_examples.yaml"
+    test_filename = plugin_module.__file__.rsplit(".", 1)[0] + "_test.yaml"
     plugin_purpose = plugin_module.__doc__
     triggers = ""
     if hasattr(plugin_module.Plugin, "on_input"):
@@ -65,6 +66,8 @@ def help(plugin):
         optional_config_md = ""
 
     cols, _ = os.get_terminal_size(0)
+    if not exists(examples_filename) and exists(test_filename):
+        examples_filename = test_filename
 
     if exists(examples_filename):
         example_md = "# Example(s)"

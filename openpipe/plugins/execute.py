@@ -13,6 +13,7 @@ class Plugin(PluginRuntime):
     optional_config = """
     shell:  True    # Execute the command as parameters to a system shell
     output_as_text: True # Output the command output as text
+    fail_on_error: True  # Abort pipeline if exit code is not zero
     """
 
     def on_input(self, item):
@@ -28,6 +29,8 @@ class Plugin(PluginRuntime):
                 stdout = stdout.decode("utf-8")
             if stderr:
                 stderr = stderr.decode("utf-8")
+        if process.returncode != 0 and self.config["fail_on_error"]:
+            raise Exception(stderr)
         new_item = {
             "stdout": stdout,
             "stderr": stderr,

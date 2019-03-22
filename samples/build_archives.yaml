@@ -1,19 +1,19 @@
 start:
-    - insert: [ cmd: gzip, ext: .gz, cmd: bzip2, ext: .bz, cmd: xz, ext: .xz" ]
+    - execute: rm -f archives/*
+    - insert: { gzip: .gz, bzip2: .bz2, xz: .xz }
+    - reduce: [cmd, ext]    # Maps dict items key,values to cmd, ext
     - send to:
         - create individual files
         - create compressed tar
 
 create individual files:
-    # Save context because we will need it later for processing every file
+    # Save context to resuse later
     - write to context:
-    - collect from file_list: test.*
+    - read from file_list:  test.*
     - insert: { filename: $_$ }
-    # Merge context with input to get all the required item
+    # Merge with context because we need to reuse $cmd$ and $ext$
     - merge: $ _ctx $
-    - execute: $cmd -c $filename > archives/$filename.$ext
+    - execute: $cmd$ -c $filename$ > archives/$filename$$ext$
 
 create compressed tar:
-    - execute: tar -cvf - | $cmd$ -c > test.tar.$ext$
-
-
+    - execute: tar -cf - test.*| $cmd$ -c > archives/test.tar$ext$

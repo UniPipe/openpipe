@@ -1,5 +1,5 @@
 """
-_Abort execution when input does not match expected values
+Abort execution when input does not match the expected value
 """
 
 from sys import stderr

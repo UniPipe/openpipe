@@ -1,0 +1,39 @@
+start:
+    - send to:
+        - dict with dict
+        - list with dict
+        - dict with list
+        - list with list
+
+dict with dict: # Merge dict with dict
+    - insert: { name: pen }
+    - merge: { color: blue }
+    - print:
+    - assert: { name: pen, color: blue }
+
+list with dict: # Merge list with dict
+    - insert: [ name: pen, name: pencil ]
+    - merge: { color: blue }
+    - print:
+    - assert:
+        - {name: pen, color: blue}
+        - {name: pencil, color: blue}
+
+dict with list: # Merge dict with list
+    - insert:
+        { name: pen }
+    - merge: [ color: blue, color: red ]
+    - print:
+    - assert:
+        - { color: blue, name: pen }
+        - { color: red, name: pen }
+
+list with list: # Merge list with list
+    - insert: [ name: pen, name: pencil ]
+    - merge: [ color: blue,  color: red ]
+    - print:
+    - assert:
+        - { color: blue, name: pen }
+        - { color: red, name: pen }
+        - { color: blue, name: pencil }
+        - { color: red, name: pencil }
