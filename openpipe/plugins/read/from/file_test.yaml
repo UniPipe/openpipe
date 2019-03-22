@@ -1,5 +1,4 @@
 start:
-    - print: Sending
     - send to:
         segment:
             - test_local_json_file

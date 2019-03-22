@@ -10,4 +10,4 @@ def decode_file(fileobj, plugin):
     plugin.put(json_data)
 
 
-Plugin.attach_file_handler("application/json", decode_file)
+Plugin.attach_file_handler(decode_file, "application/json")

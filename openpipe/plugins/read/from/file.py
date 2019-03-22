@@ -7,8 +7,9 @@ import lzma
 import zlib
 import mimetypes
 import urllib.request as urlreq
+from re import findall
 from urllib.error import HTTPError
-from io import BytesIO
+from io import BytesIO, StringIO
 from os.path import splitext, expanduser
 from openpipe.pipeline.engine import PluginRuntime
 
@@ -44,10 +45,14 @@ class Plugin(PluginRuntime):
     a file handler using the class method `attach_file_handler` .
     """
     MIME_FILE_HANDLER = {}
+    EXTENSION_FILE_HANDLER = {}
 
     @classmethod
-    def attach_file_handler(cls, mime_type, decoder_function):
-        cls.MIME_FILE_HANDLER[mime_type] = decoder_function
+    def attach_file_handler(cls, decoder_function, mime_type=None, file_extension=None):
+        if mime_type:
+            cls.MIME_FILE_HANDLER[mime_type] = decoder_function
+        if file_extension:
+            cls.EXTENSION_FILE_HANDLER[file_extension] = decoder_function
 
     def on_start(self, config):
         self.extend(__file__, "_file")
@@ -66,7 +71,7 @@ class Plugin(PluginRuntime):
 
         ext_map = {
             ".gz": lambda x: gzip.open(x, "r"),
-            ".bz": lambda x: bz2.open(x, "r"),
+            ".bz2": lambda x: bz2.open(x, "r"),
             ".xz": lambda x: lzma.open(x, "r"),
             "*": lambda x: open(x, "rb"),
         }
@@ -91,6 +96,12 @@ class Plugin(PluginRuntime):
             self.decode(file, mime_type)
 
     def collect_remote_file(self, path, mime_type):
+
+        ext_map = {
+            ".gz": lambda x: zlib.decompress(x, 16 + zlib.MAX_WBITS),
+            ".xz": lambda x: lzma.decompress(x),
+            ".bz2": lambda x: bz2.decompress(x),
+        }
         url = path
         req = urlreq.Request(url)
         req.add_header("User-Agent", self.config["user_agent"])
@@ -102,18 +113,31 @@ class Plugin(PluginRuntime):
             raise
         file_data = reply.read()
         filename, file_extension = splitext(url)
+        mime_type, mime_extension = mimetypes.guess_type(path)
+        encoding = None
         try:
-            mime_type = reply.getheader("Content-Type").split(";", 1)[0]
+            content_type = reply.getheader("Content-Type")
         except AttributeError:  # FTP does not have a getheader
-            mime_type = mimetypes.guess_type(path)[0]
             pass
-        if mime_type == "application/x-gzip":
-            decompressed_data = zlib.decompress(file_data, 16 + zlib.MAX_WBITS)
-            file_data = decompressed_data
+        else:
+            # Only use header mime type when mime type was not determined by extension
+            if not mime_type:
+                mime_type = content_type.split(';', 1)[0]
+            charset = findall(r'charset=(\S*)', content_type)
+            if charset:
+                encoding = charset[0]
+
+        decompress_func = ext_map.get(file_extension)
+        if decompress_func:
+            file_data = decompress_func(file_data)
             # If we got a gz file, guess the mime type from the remaining extension
             filename, file_extension = splitext(filename)
             mime_type = mimetypes.guess_type(path)[0]
-        file = BytesIO(file_data)
+        if encoding:
+            file_data = file_data.decode(encoding)
+            file = StringIO(file_data)
+        else:
+            file = BytesIO(file_data)
         self.decode(file, mime_type)
 
     def decode(self, fileobj, mime_type):

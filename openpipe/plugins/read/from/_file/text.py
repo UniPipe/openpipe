@@ -11,4 +11,4 @@ def decode_file(fileobj, plugin):
         plugin.put(line)
 
 
-Plugin.attach_file_handler("text/plain", decode_file)
+Plugin.attach_file_handler(decode_file, "text/plain")

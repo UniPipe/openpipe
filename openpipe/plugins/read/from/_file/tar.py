@@ -25,4 +25,4 @@ def decode_file(fileobj, plugin):
     return True
 
 
-Plugin.attach_file_handler("application/x-tar", decode_file)
+Plugin.attach_file_handler(decode_file, "application/x-tar")

@@ -7,6 +7,7 @@
     },
     "cSpell.words": [
         "astimezone",
+        "charset",
         "chdir",
         "checkboxes",
         "dinterpol",
@@ -47,6 +48,8 @@
         "pythonsetup",
         "pythonsetupsuccessful",
         "pytz",
+        "r",
+        "r'charset",
         "rsplit",
         "shutil",
         "statbuf",
