@@ -5,9 +5,9 @@ import os
 
 def collect_test_files():
     test_files = []
-    for root, dirs, files in os.walk(join("openpipe", "tests", "plugins")):
+    for root, dirs, files in os.walk(join("openpipe", "plugins")):
         for file in files:
-            if file.endswith(".yaml"):
+            if file.endswith("_test.yaml"):
                 test_files.append(os.path.join(root, file))
     return test_files
 

@@ -1,4 +1,4 @@
-dinterpol
+dinterpol >= 0.2.0
 pyyaml
 click
 xmltodict

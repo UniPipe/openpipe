@@ -3,6 +3,6 @@
 set -eu
 
 black openpipe
-#scripts/check_test_availability.sh
+scripts/check_plugin_supportfiles.sh
 
-#tox
+tox

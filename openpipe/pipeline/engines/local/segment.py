@@ -1,7 +1,6 @@
 from os import environ
 from openpipe.utils import plugin_load
-from time import time
-from sys import stderr
+from sys import stderr, argv
 
 DEBUG = environ.get("DEBUG")
 
@@ -20,10 +19,10 @@ class PipelineSegment:
     def activate(self, activation_item=True):
         self.action_list[0].reference_count = 1
         self.action_list[0]._on_input(
-            time()
+            argv, None
         )  # Send current time to the firs action to activate it
         self.action_list[0]._on_input(
-            None
+            None, None
         )  # Send end-of-input «None» to trigger on_finnish()
         return 0, None  # exit code, exit message
 

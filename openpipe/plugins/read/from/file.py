@@ -85,7 +85,7 @@ class Plugin(PluginRuntime):
 
         with open_func(path) as file:
 
-            # mime type can be overriden from the action config
+            # mime type can be overridden from the action config
             if self.config["mime_type"] != "auto":
                 mime_type = self.config["mime_type"]
             self.decode(file, mime_type)

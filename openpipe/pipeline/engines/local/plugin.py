@@ -18,14 +18,17 @@ class PluginRuntimeBase:
         self.reference_count = 0
         self.init()
 
-    def _on_input(self, item):
+    def _on_input(self, item, context_item) :
+        self.context_item = context_item
         try:
             if item is not None:
-                self.config = self.config_template.render(item)
+                self.config = self.config_template.render(item, context_item)
         except:  # NOQA: E722
             if isinstance(item, bytes) and len(item) > 256:
                 item = item[:255]
             print("ITEM:\n" + pformat(item), file=stderr)
+            if context_item:
+                print("CONTEX ITEM:\n" + pformat(context_item), file=stderr)
             print_exc(file=stderr)
             msg = (
                 "---------- Plugin %s dynamic config resolution failed ----------"
@@ -47,7 +50,7 @@ class PluginRuntimeBase:
         else:
             try:
                 if DEBUG:
-                    print("on_item %s: %s" % (self.plugin_label, item))
+                    print("on_input %s: \n\tInput:%s\n\tContext:%s" % (self.plugin_label, item, context_item))
                 self.on_input(item)
             except SystemExit:
                 exit(1)
@@ -79,14 +82,21 @@ class PluginRuntimeBase:
 
 
 class PluginRuntime(PluginRuntimeBase):
+
     def init(self):
         self.next_action = None
+        self.context_item = None
 
     def put(self, item):
 
         # Put on next
         if self.next_action:
-            self.next_action._on_input(item)
+            self.next_action._on_input(item, self.context_item)
 
     def put_target(self, item, target):
-        target._on_input(item)
+        target._on_input(item, self.context_item)
+
+    def set_context(self, context_item):
+        if DEBUG:
+            print("set_context %s : " % self.plugin_label, context_item)
+        self.context_item = context_item
