@@ -1,5 +1,5 @@
 start:
-    - insert:
+    - iterate:
         - red zone
         - red pie
         - blue moon

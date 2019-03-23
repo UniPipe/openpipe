@@ -9,9 +9,3 @@ start:
         name: Dog
         gender: Female
     - print:
-
-    # List insertion (produces each list element individually)
-    - insert:
-        - item 1
-        - item 2
-    - print: Insert list iteration, $_$

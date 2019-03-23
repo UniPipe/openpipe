@@ -1,0 +1,3 @@
+start:
+    - iterate: [a, b]
+    - assert: [a, b]

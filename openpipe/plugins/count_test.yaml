@@ -1,7 +1,7 @@
 start:
     - count:
     - assert: 1
-    - insert:
+    - iterate:
         - abc
         - xyz
     - count:

@@ -1,5 +1,5 @@
 start:
-    - insert:   # Select from a list of dictionaries
+    - iterate:   # Select from a list of dictionaries
         - { name: "Rose", gender: female, age: 17}
         - { name: "Bob", gender: male, age: 75 }
     - update:

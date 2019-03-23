@@ -1,5 +1,5 @@
 start:
-    - insert:
+    - iterate:
         - bad mouse
         - good thing
         - somethng else

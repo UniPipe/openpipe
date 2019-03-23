@@ -1,6 +1,6 @@
 start:
     # Insert sample data
-    - insert:
+    - iterate:
         - Good line 1
         - Broken line
         - Good line 2

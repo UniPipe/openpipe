@@ -12,7 +12,7 @@ dict with dict: # Merge dict with dict
     - assert: { name: pen, color: blue }
 
 list with dict: # Merge list with dict
-    - insert: [ name: pen, name: pencil ]
+    - iterate: [ name: pen, name: pencil ]
     - merge: { color: blue }
     - print:
     - assert:
@@ -29,7 +29,7 @@ dict with list: # Merge dict with list
         - { color: red, name: pen }
 
 list with list: # Merge list with list
-    - insert: [ name: pen, name: pencil ]
+    - iterate: [ name: pen, name: pencil ]
     - merge: [ color: blue,  color: red ]
     - print:
     - assert:

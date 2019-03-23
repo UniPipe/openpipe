@@ -1,5 +1,5 @@
 start:
-    - insert:
+    - iterate:
         - { name: Zap, color: red, hits: 10}
         - { name: Pong, color: red, hits: 5}
         - { name: Zap, color: red, hits: 20}

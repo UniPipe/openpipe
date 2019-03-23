@@ -1,9 +1,8 @@
 start:
     - insert: { extension: .tar }
-    - insert: [ samples/archives/*$extension$.*bz2 ]
-    - read from file_list:
-    - insert: $_$   # Expand list to item
-    - insert:       # Test both local and remote
+    - read from file_list: samples/archives/*$extension$.*
+    - iterate:  # Iterate over every file
+    - iterate:  # Iterate over local and remote
         - $_$
         - https://raw.githubusercontent.com/Openpipe/openpipe/master/$_$
     - print: Testing read from $_$

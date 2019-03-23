@@ -1,6 +1,10 @@
 start:
+    - insert: Hello World!
+    - assert: Hello World!
+
     - insert: 12
     - assert: 12
+
     - insert: $ 5 * 5 $
     - assert: 25
     - insert:

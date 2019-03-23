@@ -1,5 +1,5 @@
 start:
-    - insert:
+    - iterate:
         - {id: zok, name: Zipper}
         - {id: anc, name: Bottle}
         - {id: zin, name: Alternative}
