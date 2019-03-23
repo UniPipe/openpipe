@@ -9,6 +9,7 @@ from terminaltables import SingleTable
 from pygments import highlight
 from pygments.formatters import TerminalTrueColorFormatter
 from pygments.lexers import YamlLexer
+from openpipe.utils import action2module
 
 
 def config_markdown(config_string):
@@ -32,10 +33,7 @@ def example_markdown(example_string):
 def help(plugin):
     if len(plugin) == 0:
         return print_list_of_plugins()
-    md_path = "openpipe.plugins."
-    md_path += ".".join(plugin)
-    for plugin_part in plugin:
-        md_path + "." + plugin_part
+    md_path = action2module(' '.join(plugin))
     try:
         plugin_module = import_module(md_path)
     except ModuleNotFoundError:
@@ -104,6 +102,9 @@ def print_list_of_plugins():
         for root, dirs, files in os.walk(path, topdown=True):
             if root.endswith("__pycache__"):
                 continue
+            # Skip submodules
+            if root.split(os.sep)[-1][0] == "_":
+                continue
             plugin_path = root[len(path) :].strip(os.sep).replace(os.sep, " ")
             for filename in files:
                 if not filename.endswith(".py"):
@@ -116,14 +117,12 @@ def print_list_of_plugins():
                 plugin_fullname += plugin_name
                 if plugin_fullname in available_plugins:
                     continue
+                plugin_fullname = plugin_fullname.replace('_', ' ')
                 available_plugins[plugin_fullname] = plugin_filename
 
     table_data = [["Action", "Description"]]
     for name in sorted(available_plugins.keys()):
         filename = available_plugins[name]
-        # Don't list submodules
-        if "_" in filename:
-            continue
         with open(filename) as module_file:
             filedata = module_file.read()
             purpose = re.findall('"""\n([^\n]*)', filedata)
@@ -133,8 +132,6 @@ def print_list_of_plugins():
             purpose = purpose[0] if purpose else ""
             # actions descriptions with a leading _ means it should be hidden
             # from the actions list (for internal actions)
-            if purpose and purpose[0] == "_":
-                continue
             table_data.append([name, purpose])
     table = SingleTable(table_data)
     print(table.table)

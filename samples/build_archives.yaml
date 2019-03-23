@@ -9,7 +9,7 @@ start:
 create individual files:
     # Tag the compressor info because we will ned to reuse it later
     - tag:
-    - read from file_list:  test.*
+    - read from file list:  test.*
     - iterate:  # Iterate over the file list
     - insert: { filename: $_$ }
     # Merge with the tag to create a per compressor iteration

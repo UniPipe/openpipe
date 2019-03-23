@@ -14,9 +14,7 @@ from .plugin_config import validate_provided_config
 
 
 def plugin_load(action_name, action_config, action_label):
-    plugin_path = "openpipe plugins "
-    plugin_path += action_name
-    plugin_path = plugin_path.replace(" ", ".")
+    plugin_path = action2module(action_name)
 
     try:
         module = import_module(plugin_path)
@@ -40,3 +38,10 @@ def plugin_load(action_name, action_config, action_label):
     instance.plugin_label = action_label
     instance.plugin_filename = plugin_path
     return instance
+
+
+def action2module(action_name):
+    action_words = action_name.split(' ', 2)
+    package_name = action_words[:-1]
+    module_name = action_words[-1].replace(' ', '_')
+    return "openpipe.plugins." + ('.'.join(package_name + [module_name]))

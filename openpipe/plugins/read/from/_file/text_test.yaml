@@ -1,7 +1,7 @@
 start:
     - insert: { extension: .txt }
     - iterate: [samples/*$extension$, samples/archives/*$extension$.*]
-    - read from file_list:
+    - read from file list:
     - iterate:  # Iterate over every file
     - iterate:  # Iterate over local and remote
         - $_$

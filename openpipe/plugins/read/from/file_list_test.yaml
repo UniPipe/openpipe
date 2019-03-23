@@ -1,5 +1,5 @@
 start:
-    - read from file_list: samples/test.*
+    - read from file list: samples/test.*
     - iterate:
     - assert:
         - samples/test.json
