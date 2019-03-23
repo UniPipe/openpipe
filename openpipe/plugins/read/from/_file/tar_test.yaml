@@ -6,8 +6,7 @@ start:
         - $_$
         - https://raw.githubusercontent.com/Openpipe/openpipe/master/$_$
     - print: Testing read from $_$
-    # Set tag on filename because later we want the full assert sequence to be
-    # applied for each filename
+    # Set tag on filename because we use a per file assert sequence
     - tag: $_$
     - read from file: $_$
     - assert:

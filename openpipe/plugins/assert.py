@@ -15,7 +15,7 @@ class Plugin(PluginRuntime):
         self.expected_count = len(config) if isinstance(config, list) else 1
         # For asserts on list of items, we need to keep the current index
         # on a per tag basis
-        self.tag_assert_idx = {}   # We keep the index
+        self.tag_assert_idx = {}  # We keep the index
 
     def on_input(self, item):
         config = self.config

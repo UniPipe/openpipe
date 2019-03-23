@@ -12,6 +12,7 @@ DEBUG = environ.get("DEBUG")
 
 class PluginRuntimeBase:
     def __init__(self, config=None):
+        self._tag = None
         self.initial_config = config
         self.config_template = Template(config)
         self.failed_count = 0
@@ -44,7 +45,7 @@ class PluginRuntimeBase:
                 on_finish_func = getattr(self, "on_finish", None)
                 if on_finish_func:
                     if DEBUG:
-                        print("on_finish %s " % self.tag_item)
+                        print("on_finish %s " % self._tag)
                     on_finish_func(True)
                 self.put(item)
         else:
@@ -87,7 +88,6 @@ class PluginRuntimeBase:
 class PluginRuntime(PluginRuntimeBase):
     def init(self):
         self.next_action = None
-        self._tag = None
 
     def put(self, item):
 

@@ -1,6 +1,6 @@
     start:
         - insert: { gzip: .gz, bzip2: .bz2, xz: .xz }
-        - reduce: [cmd, ext]    # Maps dict items key,values to cmd, ext
+        - reduce: [cmd, ext]    # Maps dict items key, value to cmd, ext
         - assert:
             - { cmd: gzip, ext: .gz }
             - { cmd: bzip2, ext: .bz2 }

@@ -6,8 +6,8 @@ from openpipe.pipeline.engine import PluginRuntime
 
 class Plugin(PluginRuntime):
 
-    required_some_config = """
-    item # The item to be inserted, default is the input item
+    optional_config = """
+    $_tag$ # The item to merge with
     """
 
     def on_input(self, item):
