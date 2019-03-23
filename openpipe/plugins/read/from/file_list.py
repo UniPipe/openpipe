@@ -12,5 +12,5 @@ class Plugin(PluginRuntime):
     """
 
     def on_input(self, item):
-        for filename in glob(self.config):
+        for filename in sorted(glob(self.config)):
             self.put(filename)
