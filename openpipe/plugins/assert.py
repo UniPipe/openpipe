@@ -13,7 +13,9 @@ class Plugin(PluginRuntime):
 
     def on_start(self, config):
         self.expected_count = len(config) if isinstance(config, list) else 1
-        self.context_assert_index = {}
+        # For asserts on list of items, we need to keep the current index
+        # on a per tag basis
+        self.tag_assert_idx = {}   # We keep the index
 
     def on_input(self, item):
         config = self.config
@@ -22,17 +24,17 @@ class Plugin(PluginRuntime):
         if not isinstance(config, list):
             config = [config]
 
-        current_index = self.context_assert_index.get(self.context_item, 0)
+        current_index = self.tag_assert_idx.get(self._tag, 0)
         if current_index >= self.expected_count:
             raise AssertionError(
                 "Test expected %d items, got %d"
                 % (self.expected_count, current_index + 1)
             )
         self.value_assert(item, config[current_index])
-        self.context_assert_index[self.context_item] = current_index + 1
+        self.tag_assert_idx[self._tag] = current_index + 1
 
     def on_finish(self, reason):
-        for context_value, context_index in self.context_assert_index.items():
+        for context_value, context_index in self.tag_assert_idx.items():
             if context_index < self.expected_count:
                 raise AssertionError(
                     "Test [%s] expected %d items, got %d"

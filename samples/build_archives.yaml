@@ -8,11 +8,11 @@ start:
 
 create individual files:
     # Save context to resuse later
-    - write to context:
+    - tag:
     - read from file_list:  test.*
     - insert: { filename: $_$ }
     # Merge with context because we need to reuse $cmd$ and $ext$
-    - merge: $ _ctx $
+    - merge: $ _tag $
     - execute: $cmd$ -c $filename$ > archives/$filename$$ext$
 
 create compressed tar:

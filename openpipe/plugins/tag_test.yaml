@@ -1,0 +1,8 @@
+start:
+    - insert: This will be stored as the tag
+    - tag:
+    - insert: New input
+    - assert: New input
+    - insert: $ _tag $
+    - assert: This will be stored as the tag
+

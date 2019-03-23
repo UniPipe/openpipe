@@ -1,5 +1,5 @@
 """
-Write item to context
+Tag input item with the provided configuration tag item
 """
 
 from openpipe.pipeline.engine import PluginRuntime
@@ -8,9 +8,9 @@ from openpipe.pipeline.engine import PluginRuntime
 class Plugin(PluginRuntime):
 
     optional_config = """
-    $_$     #  Item to be stored as context, the default is the input item
+    $_$     #  Default is to tag the entire input item
     """
 
     def on_input(self, item):
-        self.set_context(self.config)
+        self.set_tag(self.config)
         self.put(item)

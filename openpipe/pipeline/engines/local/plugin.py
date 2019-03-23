@@ -18,17 +18,17 @@ class PluginRuntimeBase:
         self.reference_count = 0
         self.init()
 
-    def _on_input(self, item, context_item):
-        self.context_item = context_item
+    def _on_input(self, item, tag_item):
+        self._tag = tag_item
         try:
             if item is not None:
-                self.config = self.config_template.render(item, context_item)
+                self.config = self.config_template.render(item, tag_item)
         except:  # NOQA: E722
             if isinstance(item, bytes) and len(item) > 256:
                 item = item[:255]
             print("ITEM:\n" + pformat(item), file=stderr)
-            if context_item:
-                print("CONTEX ITEM:\n" + pformat(context_item), file=stderr)
+            if tag_item:
+                print("CONTEX ITEM:\n" + pformat(tag_item), file=stderr)
             print_exc(file=stderr)
             msg = (
                 "---------- Plugin %s dynamic config resolution failed ----------"
@@ -44,15 +44,15 @@ class PluginRuntimeBase:
                 on_finish_func = getattr(self, "on_finish", None)
                 if on_finish_func:
                     if DEBUG:
-                        print("on_finish %s " % self.plugin_label)
+                        print("on_finish %s " % self.tag_item)
                     on_finish_func(True)
                 self.put(item)
         else:
             try:
                 if DEBUG:
                     print(
-                        "on_input %s: \n\tInput:%s\n\tContext:%s"
-                        % (self.plugin_label, item, context_item)
+                        "on_input %s: \n\tInput:%s\n\tTag:%s"
+                        % (self.plugin_label, item, tag_item)
                     )
                 self.on_input(item)
             except SystemExit:
@@ -87,18 +87,18 @@ class PluginRuntimeBase:
 class PluginRuntime(PluginRuntimeBase):
     def init(self):
         self.next_action = None
-        self.context_item = None
+        self._tag = None
 
     def put(self, item):
 
         # Put on next
         if self.next_action:
-            self.next_action._on_input(item, self.context_item)
+            self.next_action._on_input(item, self._tag)
 
     def put_target(self, item, target):
-        target._on_input(item, self.context_item)
+        target._on_input(item, self._tag)
 
-    def set_context(self, context_item):
+    def set_tag(self, tag_item):
         if DEBUG:
-            print("set_context %s : " % self.plugin_label, context_item)
-        self.context_item = context_item
+            print("set_tag %s : " % self.plugin_label, tag_item)
+        self._tag = tag_item

@@ -1,8 +1,0 @@
-start:
-    - insert: This will be saved to context
-    - write to context:
-    - insert: New input
-    - assert: New input
-    - insert: $ _ctx $
-    - assert: This will be saved to context
-
