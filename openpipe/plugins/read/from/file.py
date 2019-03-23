@@ -122,8 +122,8 @@ class Plugin(PluginRuntime):
         else:
             # Only use header mime type when mime type was not determined by extension
             if not mime_type:
-                mime_type = content_type.split(';', 1)[0]
-            charset = findall(r'charset=(\S*)', content_type)
+                mime_type = content_type.split(";", 1)[0]
+            charset = findall(r"charset=(\S*)", content_type)
             if charset:
                 encoding = charset[0]
 

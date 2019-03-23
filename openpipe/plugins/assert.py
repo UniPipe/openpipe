@@ -12,33 +12,32 @@ class Plugin(PluginRuntime):
     """
 
     def on_start(self, config):
-        self.start_config = config  # Typically on_finish does not use config
-        self.never_called = True
-        self.check_index = 0
+        self.expected_count = len(config) if isinstance(config, list) else 1
+        self.context_assert_index = {}
 
     def on_input(self, item):
-        if isinstance(self.config, list):
-            expected_count = len(self.config)
-            if self.check_index >= expected_count:
-                raise AssertionError(
-                    "Test expected %d items, got %d"
-                    % (expected_count, self.check_index + 1)
-                )
-            self.value_assert(item, self.config[self.check_index])
-            self.check_index += 1
-        else:
-            self.value_assert(item, self.config)
-        self.never_called = False
+        config = self.config
+
+        # Treat single items as lists of one item
+        if not isinstance(config, list):
+            config = [config]
+
+        current_index = self.context_assert_index.get(self.context_item, 0)
+        if current_index >= self.expected_count:
+            raise AssertionError(
+                "Test expected %d items, got %d"
+                % (self.expected_count, current_index + 1)
+            )
+        self.value_assert(item, config[current_index])
+        self.context_assert_index[self.context_item] = current_index + 1
 
     def on_finish(self, reason):
-        if self.never_called:
-            print("Failed on_finish", self.plugin_label, file=stderr)
-            raise Exception(
-                "Did not receive any item, expected:\n" + str(self.start_config)
-            )
-        if isinstance(self.config, list) and self.check_index < len(self.start_config):
-            print("Failed on_finish", self.plugin_label, file=stderr)
-            raise AssertionError("Test got less values than expected")
+        for context_value, context_index in self.context_assert_index.items():
+            if context_index < self.expected_count:
+                raise AssertionError(
+                    "Test [%s] expected %d items, got %d"
+                    % (context_value, self.expected_count, context_index + 1)
+                )
 
     def value_assert(self, item, assert_data):
         assert assert_data is not None

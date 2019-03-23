@@ -6,7 +6,8 @@ from ..file import Plugin
 
 def decode_file(fileobj, plugin):
     for line in fileobj:
-        line = line.decode("utf-8")
+        if isinstance(line, bytes):
+            line = line.decode("utf-8")
         line = line.rstrip("\r\n")
         plugin.put(line)
 

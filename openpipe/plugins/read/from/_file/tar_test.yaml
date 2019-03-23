@@ -5,12 +5,9 @@ start:
     - insert: $_$   # Expand list to item
     - insert:       # Test both local and remote
         - $_$
-        #- https://raw.githubusercontent.com/Openpipe/openpipe/master/$_$
-    - send to:
-        - check_file_content_1
-
-check_file_content_1:
+        - https://raw.githubusercontent.com/Openpipe/openpipe/master/$_$
     - print: Testing read from $_$
+    - write to context: $_$
     - read from file: $_$
     - assert:
             - name: test.json

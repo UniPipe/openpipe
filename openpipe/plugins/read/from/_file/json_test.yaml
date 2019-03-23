@@ -7,6 +7,7 @@ start:
         - $_$
         - https://raw.githubusercontent.com/Openpipe/openpipe/master/$_$
     - print: Testing read from $_$
+    - write to context: $_$
     - read from file: $_$
     - assert:
             name: Zin
