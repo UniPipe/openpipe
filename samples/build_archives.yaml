@@ -2,7 +2,7 @@ start:
     - execute: rm -f archives/*
     - insert: { gzip: .gz, bzip2: .bz2, xz: .xz }  # comrpess info
     - reduce: [cmd, ext]    # Maps dict items key, value to cmd, ext
-    - send to:
+    - send to segment:
         - create individual files
         - create compressed tar
 

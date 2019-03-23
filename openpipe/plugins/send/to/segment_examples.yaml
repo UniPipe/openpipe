@@ -4,15 +4,14 @@ start:
         - good thing
 
     # Send "good" items to segment "is_good"
-    - send to:
-        segment: is_good
+    - send to segment:
+        name: is_good
         on_condition: $'good' in _$
 
     # Send the other items to both branch a and b
-    - send to:
-        segment:
-            - branch a
-            - branch b
+    - send to segment:
+        - branch a
+        - branch b
 
 is_good:
     - print: 'Found something good: $_$'

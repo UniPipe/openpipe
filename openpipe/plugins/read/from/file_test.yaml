@@ -1,10 +1,9 @@
 start:
-    - send to:
-        segment:
-            - test_local_json_file
-            - test_http_json_file
-            - test_http_xml_file
-            - test_ftp_json_file
+    - send to segment:
+        - test_local_json_file
+        - test_http_json_file
+        - test_http_xml_file
+        - test_ftp_json_file
     - read from file: samples/test.txt
     - assert:
         - Line in file

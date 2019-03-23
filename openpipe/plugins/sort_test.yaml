@@ -4,10 +4,9 @@ start:
         - {id: anc}
         - {id: zin}
 
-    - send to:
-        segment:
-            - sort_desc
-            - sort_asc
+    - send to segment:
+        - sort_desc
+        - sort_asc
 
 sort_asc:
     - sort:

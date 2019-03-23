@@ -7,7 +7,7 @@ from openpipe.pipeline.engine import PluginRuntime
 class Plugin(PluginRuntime):
 
     required_config = """
-    segment:            # Name or list of of segments to receive the item
+    name:               # Name or list of of segments to receive the item
     """
 
     optional_config = """
@@ -21,7 +21,7 @@ class Plugin(PluginRuntime):
     def on_start(self, config):
 
         # Handle single segment or list of segments
-        target = config["segment"]
+        target = config["name"]
         self.target_segments = []
         if isinstance(target, str):
             segment_list = [target]
