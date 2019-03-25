@@ -127,7 +127,7 @@ Examples:
 
 ### Data Tagging
 
-One of the challenges of using modular pipeline components is to aggregate/relate data produced by different actions. Openpipe addresses this with the data tagging feature. When an information is tagged, all the next actions will received that tag information with every input item they receive.
+One of the challenges of using independent modular pipeline components with an input/output pattern is the ability to correlate/aggregate outputs from different actions in the pipeline. Openpipe addresses this need with the support for data tagging. Items flowing through a pipeline can be tagged, a tag is a piece of information that will be transmitted/available to every next step in the pipeline.
 
 Let's image for example that we want to produce the count of 'a' letters from a list of files:
 ```yaml
@@ -138,7 +138,7 @@ start:
     # anymore from the output ($_$) reference
     - print: The number of 'a's in file is $ _.count(b'a') $
 ```
-In order to persist the file name, we need to tag it before the read from file, once it becomes tagged, we can refer to it with the special reference `$_tag$`:
+In order to persist the file name, we need to tag it before the read from file, once it becomes tagged, we can refer to it with the special reference `$_tag$` :
 ```yaml
 start:
     - iterate: [/etc/passwd, /etc/group]
