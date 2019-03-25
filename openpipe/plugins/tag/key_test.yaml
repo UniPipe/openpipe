@@ -1,0 +1,24 @@
+start:
+    # Some sample data to test  tagging
+    - insert:
+        description: Red Bottle
+        state: Fine
+        size: M
+        status: sold
+
+    # Tag a single key, and check tag content
+    - tag key: size
+    - print: "Single tag item: $_tag$"
+    - assert: "$_tag == {'size': 'M'}$"
+
+    # Tag two keys
+    - tag key: [description, state]
+    - insert: $_tag$    # We want to check the tag content
+    - print: "Multiple tags item:\n$_tag$"
+    - assert:   # Tag is cummulative, so we should get description, state, size
+        description: Red Bottle
+        state: Fine
+        size: M
+
+    # Make sure the key which was not tagged is not found on tag
+    - assert: $'status' not in _tag$

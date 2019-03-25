@@ -25,14 +25,19 @@ class Plugin(PluginRuntime):
         if not isinstance(config, list):
             config = [config]
 
-        current_index = self.tag_assert_idx.get(self._tag, 0)
+        # We can't assert on dict based tags
+        if isinstance(self._tag, dict):
+            tag_index = None
+        else:
+            tag_index = self._tag
+        current_index = self.tag_assert_idx.get(tag_index, 0)
         if current_index >= self.expected_count:
             raise AssertionError(
                 "Test expected %d items, got %d"
                 % (self.expected_count, current_index + 1)
             )
         self.value_assert(item, config[current_index])
-        self.tag_assert_idx[self._tag] = current_index + 1
+        self.tag_assert_idx[tag_index] = current_index + 1
 
     def on_finish(self, reason):
         for context_value, context_index in self.tag_assert_idx.items():
@@ -44,6 +49,10 @@ class Plugin(PluginRuntime):
 
     def value_assert(self, item, assert_data):
         assert assert_data is not None
+        if isinstance(assert_data, bool):
+            assert(assert_data)
+            self.put(item)
+            return
         if isinstance(assert_data, dict):
             for key, value in assert_data.items():
                 item_value = item.get(key)
