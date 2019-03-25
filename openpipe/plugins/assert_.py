@@ -50,7 +50,7 @@ class Plugin(PluginRuntime):
     def value_assert(self, item, assert_data):
         assert assert_data is not None
         if isinstance(assert_data, bool):
-            assert(assert_data)
+            assert assert_data
             self.put(item)
             return
         if isinstance(assert_data, dict):

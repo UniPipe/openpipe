@@ -14,7 +14,12 @@ start:
     # Select lines with "1"
     - filter:
         in: $ "1" in _ $
-    - assert:
-        - Good line 1
+    - assert: Good line 1
     - print: "After filter in : $_$"
+    - insert:
+        name: John
+        surname: Doe
+    - filter:
+        what: $name$
+    - assert: John
 

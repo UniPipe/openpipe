@@ -141,6 +141,9 @@ class Plugin(PluginRuntime):
         self.decode(file, mime_type)
 
     def decode(self, fileobj, mime_type):
+        forced_mime_type = self.config.get("mime_type")
+        if forced_mime_type != "auto":
+            mime_type = forced_mime_type
         decoder_function = self.MIME_FILE_HANDLER.get(mime_type)
         if decoder_function:
             decoder_function(fileobj, self)

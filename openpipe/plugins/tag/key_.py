@@ -15,7 +15,7 @@ class Plugin(PluginRuntime):
     def on_input(self, item):
         current_tag = self._tag or {}
 
-        key_list = self.config['key_list']
+        key_list = self.config["key_list"]
         if not isinstance(key_list, list):
             key_list = [key_list]
 
