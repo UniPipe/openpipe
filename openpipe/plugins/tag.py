@@ -12,5 +12,9 @@ class Plugin(PluginRuntime):
     """
 
     def on_input(self, item):
-        self.set_tag(self.config)
+        if isinstance(self.config, dict):
+            current_tag = self._tag or {}
+            self.set_tag({**current_tag, **self.config})
+        else:
+            self.set_tag(item)
         self.put(item)

@@ -41,7 +41,7 @@ def plugin_load(action_name, action_config, action_label):
 
 
 def action2module(action_name):
-    action_words = action_name.split(' ', 2)
+    action_words = action_name.split(" ", 2)
     package_name = action_words[:-1]
-    module_name = action_words[-1].replace(' ', '_')
-    return "openpipe.plugins." + ('.'.join(package_name + [module_name]))
+    module_name = action_words[-1].replace(" ", "_")
+    return "openpipe.plugins." + (".".join(package_name + [module_name]))

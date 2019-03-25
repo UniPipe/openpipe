@@ -33,7 +33,7 @@ def example_markdown(example_string):
 def help(plugin):
     if len(plugin) == 0:
         return print_list_of_plugins()
-    md_path = action2module(' '.join(plugin))
+    md_path = action2module(" ".join(plugin))
     try:
         plugin_module = import_module(md_path)
     except ModuleNotFoundError:
@@ -117,7 +117,7 @@ def print_list_of_plugins():
                 plugin_fullname += plugin_name
                 if plugin_fullname in available_plugins:
                     continue
-                plugin_fullname = plugin_fullname.replace('_', ' ')
+                plugin_fullname = plugin_fullname.replace("_", " ")
                 available_plugins[plugin_fullname] = plugin_filename
 
     table_data = [["Action", "Description"]]
