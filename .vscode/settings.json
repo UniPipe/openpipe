@@ -38,6 +38,7 @@
         "openfilesecuritywarning",
         "openpipe",
         "parametrize",
+        "passwd",
         "pformat",
         "pkgutil",
         "popen",

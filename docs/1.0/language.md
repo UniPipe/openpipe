@@ -11,14 +11,13 @@ DPL is entirely based on the [YAML] format. The knowledge of YAML is fundamental
 
 ### Pipeline
 DPL follows the data pipeline design pattern: a set of data processing elements are connected in series, where the output of one element is the input of the next one.
-In DPL the elements are referred as **steps**, and a sequence of steps is referred as a ***segment***. A pipeline document is a single YAML document that contains one or more segments.
+In DPL the elements are referred as **actions**, and a sequence of actions is referred as a ***segment***. A pipeline document is a single YAML document that contains one or more segments.
 
 #### Segments
-A segment must be represented by a dictionary, where the key is the segment name and the value is a sequence of steps.
+A segment must be represented by a dictionary, where the key is the segment name and the value is a sequence of actions.
 
-####  Steps
-
-A action must be represented by a dictionary, where the key is an action name and the value contains the action config, config may be of any of the YAML supported data types.
+#### Actions
+An action must be represented by a dictionary, where the key is an action name and the value contains the action config, config may be of any of the YAML supported data types.
 
 #### Example
 
@@ -73,12 +72,14 @@ Action plugins should be observed as independent processing units, the following
 - Config Item: the config value that was provided in the pipeline document
 - Input Item: input data provided to the action
 - Output Item: output data produced by the action execution
+- Tag Item: the tag
 
 !!! Information "Output -> Input"
     As a general rule the output item of a action will be the input item of the next action in the same segment, with the exception of the `send to` action that can deliver items to the first action of other segments.
 
-!!! Information "Last Step Output Items"
+!!! Information "Last Action Output Items"
     Output items from the last action in a segment will be silently discarded.
+
 
 ### Dynamic Configuration
 
@@ -123,6 +124,38 @@ Examples:
     ```
     The Elephant is big.
     ```
+
+### Data Tagging
+
+One of the challenges of using modular pipeline components is to aggregate/relate data produced by different actions. Openpipe addresses this with the data tagging feature. When an information is tagged, all the next actions will received that tag information with every input item they receive.
+
+Let's image for example that we want to produce the count of 'a' letters from a list of files:
+```yaml
+start:
+    - iterate: [/etc/passwd, /etc/group]
+    - read from file: $_$
+    # The read from file outputs only the file content, we can't refer to it
+    # anymore from the output ($_$) reference
+    - print: The number of 'a's in file is $ _.count(b'a') $
+```
+In order to persist the file name, we need to tag it before the read from file, once it becomes tagged, we can refer to it with the special reference `$_tag$`:
+```yaml
+start:
+    - iterate: [/etc/passwd, /etc/group]
+    - tag: $_$ # The filename is tagged, tag is available on every next action
+    - read from file: $_$
+    # We can now use $_tag_
+    - print: The number of 'a's in file $_tag$ is $ _.count(b'a') $
+```
+
+Multidimensional tagging is easy to achieve by using a dictionary tag:
+```yaml
+    # do some action
+    tag: { animal_type: $_$ }   # Tag it as animal type
+    # do some other action
+    tag: { animal_size: $_$ }   # Tag it as animal size
+```
+
 
 ## Plugin Libraries
 
