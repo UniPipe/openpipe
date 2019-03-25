@@ -4,7 +4,7 @@ start:
         - { name: Pong, color: red, hits: 5}
         - { name: Zap, color: red, hits: 20}
 
-    - group by:
+    - group by stats:
         stats: [ hits ]
         keys: [ name ]
     - print:
