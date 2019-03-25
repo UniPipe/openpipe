@@ -9,6 +9,7 @@ from openpipe.pipeline.engine import PluginRuntime
 class Plugin(PluginRuntime):
 
     required_some_config = """
+    # The item with the expected input value
     """
 
     def on_start(self, config):

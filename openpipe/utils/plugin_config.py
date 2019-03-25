@@ -117,3 +117,9 @@ def validate_provided_config(module_plugin, plugin_label, provided_config):
         required_config, module_plugin, plugin_label, provided_config
     )
     return config
+
+
+def is_nested_dict(item):
+    """ Check if item provides a nested dictionary"""
+    item = next(iter(item.values()))
+    return isinstance(item, dict)

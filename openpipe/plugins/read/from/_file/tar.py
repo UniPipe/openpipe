@@ -3,7 +3,7 @@ Produce file metadata and content from a TAR archive
 """
 import tarfile
 
-from ..file import Plugin
+from ..file_ import Plugin
 
 
 def decode_file(fileobj, plugin):

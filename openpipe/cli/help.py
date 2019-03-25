@@ -43,7 +43,10 @@ def help(plugin):
         exit(2)
 
     examples_filename = plugin_module.__file__.rsplit(".", 1)[0] + "_examples.yaml"
-    test_filename = plugin_module.__file__.rsplit(".", 1)[0] + "_test.yaml"
+    test_filename = plugin_module.__file__.rsplit(".", 1)[0]
+    if test_filename[-1] != "_":
+        test_filename += "_"
+    test_filename += "test.yaml"
     plugin_purpose = plugin_module.__doc__
     triggers = ""
     if hasattr(plugin_module.Plugin, "on_input"):

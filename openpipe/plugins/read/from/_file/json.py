@@ -2,7 +2,7 @@
 Produce content from a json file
 """
 from json import load
-from ..file import Plugin
+from ..file_ import Plugin
 
 
 def decode_file(fileobj, plugin):

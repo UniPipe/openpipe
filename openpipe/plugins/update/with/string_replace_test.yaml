@@ -1,8 +1,0 @@
-start:
-    - insert: The dog is brown
-    - update string replace: { dog: cat, brown: yellow }
-    - assert: The cat is white
-
-    - insert: { line: The dog is brown }
-    - update string replace: { line: { dog:cat, yellow: white } }
-    - assert: { line: The cat is white }

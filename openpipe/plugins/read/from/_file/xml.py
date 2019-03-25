@@ -1,7 +1,7 @@
 """
 Produce content from a xml file
 """
-from ..file import Plugin
+from ..file_ import Plugin
 import xmltodict
 
 
