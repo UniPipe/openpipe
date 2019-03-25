@@ -72,3 +72,5 @@ target/
 # gh-pages publishing
 site/
 tmp/
+
+docs/*/actions.md

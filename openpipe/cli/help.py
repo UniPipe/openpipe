@@ -1,15 +1,14 @@
 import os
-import re
 import click
+from os.path import exists
 from sys import stderr
-from os.path import join, exists
 from mdvl import render
 from importlib import import_module
 from terminaltables import SingleTable
 from pygments import highlight
 from pygments.formatters import TerminalTrueColorFormatter
 from pygments.lexers import YamlLexer
-from openpipe.utils import action2module
+from openpipe.utils import action2module, get_actions
 
 
 def config_markdown(config_string):
@@ -96,46 +95,10 @@ def help(plugin):
 
 
 def print_list_of_plugins():
-    available_plugins = (
-        {}
-    )  # When running from source, the same module with be found in multiple paths
-    import openpipe.plugins
-
-    for path in openpipe.plugins.__path__:
-        for root, dirs, files in os.walk(path, topdown=True):
-            if root.endswith("__pycache__"):
-                continue
-            # Skip submodules
-            if root.split(os.sep)[-1][0] == "_":
-                continue
-            plugin_path = root[len(path) :].strip(os.sep).replace(os.sep, " ")
-            for filename in files:
-                if not filename.endswith(".py"):
-                    continue
-                plugin_filename = join(root, filename)
-                plugin_name = filename.replace(".py", "")
-                plugin_fullname = ""
-                if plugin_path:
-                    plugin_fullname += plugin_path + " "
-                plugin_fullname += plugin_name
-                if plugin_fullname in available_plugins:
-                    continue
-                plugin_fullname = plugin_fullname.replace("_", " ")
-                available_plugins[plugin_fullname] = plugin_filename
 
     table_data = [["Action", "Description"]]
-    for name in sorted(available_plugins.keys()):
-        filename = available_plugins[name]
-        with open(filename) as module_file:
-            filedata = module_file.read()
-            purpose = re.findall('"""\n([^\n]*)', filedata)
-            if not purpose or "#" in purpose[0]:
-                print("Error on", filename)
-                exit(1)
-            purpose = purpose[0] if purpose else ""
-            # actions descriptions with a leading _ means it should be hidden
-            # from the actions list (for internal actions)
-            table_data.append([name, purpose])
+    for name, purpose in get_actions():
+        table_data.append([name, purpose])
     table = SingleTable(table_data)
     print(table.table)
     # print("-------------------------------------\n")

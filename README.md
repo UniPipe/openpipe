@@ -16,7 +16,6 @@ This python library provides the following packages:
 - openpipe.client: client modules for pipeline document loading/validation
 - openpipe.pipeline: the pipeline manager and runtime for the 'local' pipeline engine
 - openpipe.plugins: the action modules to be used by pipeline runtime
-- openpipe.tests: tests for pytest
 
 
 [Openpipe tool]: https://www.openpipe.org/OpenpipeTool

@@ -12,7 +12,6 @@ def download_and_cache(url):
     parsed_url = urlparse(url)
     if parsed_url.netloc == "github.com":
         url += "/archive/master.zip"
-
     cache_dir = join(expanduser("~"), ".openpipe", "libraries_cache")
     if not exists(cache_dir):
         os.makedirs(cache_dir, 0o700)
@@ -24,7 +23,6 @@ def download_and_cache(url):
             os.unlink(zip_file_name)
         except FileNotFoundError:
             pass
-
         try:
             urllib.request.urlretrieve(url, zip_file_name)
         except:  # NOQA: E722, we really don't care about the error details

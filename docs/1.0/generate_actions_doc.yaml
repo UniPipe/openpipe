@@ -1,0 +1,11 @@
+_libraries:
+    - https://github.com/openpipe-plugins/jinja
+
+start:
+    - read from openpipe actions:
+    - transform using jinja:
+        template: docs/1.0/actions.md.jinja
+        single_item: False
+    - print:
+    - write to file:
+        path: docs/1.0/actions.md
