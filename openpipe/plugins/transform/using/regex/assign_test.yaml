@@ -1,0 +1,8 @@
+start:
+    - insert: |
+        name = dog
+        color=blue
+    - transform using regex assign: '^\s*(\S*)\s*=\s*(.*)\$'
+    - print:
+    - assert:
+        {'name': 'dog', 'color': 'blue'}

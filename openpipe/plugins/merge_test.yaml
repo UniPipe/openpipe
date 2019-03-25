@@ -6,34 +6,34 @@ start:
         #- list with list
 
 dict with dict: # Merge dict with dict
-    - insert: { name: pen }
+    - insert: { filename: pen }
     - merge: { color: blue }
     - print:
-    - assert: { name: pen, color: blue }
+    - assert: { filename: pen, color: blue }
 
 list with dict: # Merge list with dict
-    - iterate: [ name: pen, name: pencil ]
+    - iterate: [ filename: pen, filename: pencil ]
     - merge: { color: blue }
     - print:
     - assert:
-        - {name: pen, color: blue}
-        - {name: pencil, color: blue}
+        - {filename: pen, color: blue}
+        - {filename: pencil, color: blue}
 
 dict with list: # Merge dict with list
     - insert:
-        { name: pen }
+        { filename: pen }
     - merge: [ color: blue, color: red ]
     - print:
     - assert:
-        - { color: blue, name: pen }
-        - { color: red, name: pen }
+        - { color: blue, filename: pen }
+        - { color: red, filename: pen }
 
 list with list: # Merge list with list
-    - iterate: [ name: pen, name: pencil ]
+    - iterate: [ filename: pen, filename: pencil ]
     - merge: [ color: blue,  color: red ]
     - print:
     - assert:
-        - { color: blue, name: pen }
-        - { color: red, name: pen }
-        - { color: blue, name: pencil }
-        - { color: red, name: pencil }
+        - { color: blue, filename: pen }
+        - { color: red, filename: pen }
+        - { color: blue, filename: pencil }
+        - { color: red, filename: pencil }

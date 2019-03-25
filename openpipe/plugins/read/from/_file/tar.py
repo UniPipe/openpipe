@@ -17,7 +17,7 @@ def decode_file(fileobj, plugin):
                 continue
             single_file = tar.extractfile(file_info)
             new_item = {}
-            new_item["name"] = file_info.name
+            new_item["filename"] = file_info.name
             new_item["content"] = single_file.read()
             single_file.close()
             plugin.put(new_item)

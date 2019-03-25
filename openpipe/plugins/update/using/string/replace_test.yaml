@@ -1,12 +1,12 @@
 start:
     - insert: The dog is brown
     # Update multiple words in a string strem
-    - update with string replace: { dog: cat, brown: yellow }
+    - update using string replace: { dog: cat, brown: yellow }
     - print:
     - assert: The cat is yellow
     - insert: { phrase: $_$ , extra: This is nice }
     # Update multiple words oinn a dictionary item
-    - update with string replace:
+    - update using string replace:
         phrase: { cat: bird, yellow: blue }
         extra:  { nice: very nice }
     - print:

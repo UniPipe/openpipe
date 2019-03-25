@@ -10,7 +10,7 @@ start:
     - tag: $_$
     - read from file: $_$
     - assert:
-            - name: test.json
-            - name: test.txt
-            - name: test.xml
-            - name: test.yaml
+            - filename: test.json
+            - filename: test.txt
+            - filename: test.xml
+            - filename: test.yaml
