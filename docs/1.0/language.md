@@ -127,18 +127,18 @@ Examples:
 
 ### Data Tagging
 
-One of the challenges of using independent modular pipeline components with an input/output pattern is the ability to correlate/aggregate outputs from different actions in the pipeline. Openpipe addresses this need with the support for data tagging. Items flowing through a pipeline can be tagged, a tag is a piece of information that will be transmitted/available to every next step in the pipeline.
+One of the challenges of using independent pipeline actions with a strict input/output pattern is the need to correlate/aggregate outputs from different actions. Openpipe addresses this with the support for data tagging. Items flowing through a pipeline can be tagged, a tag is a piece of information that will be transmitted with every item as it is sent to the _after tagging actions in the pipeline.
 
-Let's image for example that we want to produce the count of 'a' letters from a list of files:
+Let's assume as example that we want to produce the count of 'a' letters from a list of files:
 ```yaml
 start:
     - iterate: [/etc/passwd, /etc/group]
     - read from file: $_$
-    # The read from file outputs only the file content, we can't refer to it
-    # anymore from the output ($_$) reference
+    # The read from file outputs only the file content, we can't refer to
+    # the file name anymore
     - print: The number of 'a's in file is $ _.count(b'a') $
 ```
-In order to persist the file name, we need to tag it before the read from file, once it becomes tagged, we can refer to it with the special reference `$_tag$` :
+In order to persist the file name, we need to tag it before the the _read from file_ action.  After being tagged, we can refer to it with the special reference `$_tag$` :
 ```yaml
 start:
     - iterate: [/etc/passwd, /etc/group]
@@ -148,12 +148,14 @@ start:
     - print: The number of 'a's in file $_tag$ is $ _.count(b'a') $
 ```
 
-Multidimensional tagging is easy to achieve by using a dictionary tag:
+When more than two items need to be tagged, a dictionary based tag needs to be used, every tag will be merged into the tag dict.
+
 ```yaml
     # do some action
     tag: { animal_type: $_$ }   # Tag it as animal type
     # do some other action
     tag: { animal_size: $_$ }   # Tag it as animal size
+    # We can now use $_tag['animal_type']$ and $_tag['animal_size']$
 ```
 
 
