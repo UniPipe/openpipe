@@ -46,7 +46,9 @@ def get_actions_metadata():
                 if not filename.endswith(".py"):
                     continue
                 plugin_name = filename.replace(".py", "")
-                test_filename = join(root, filename.replace(".py", "").strip('_') + "_test.yaml")
+                test_filename = join(
+                    root, filename.replace(".py", "").strip("_") + "_test.yaml"
+                )
                 plugin_fullname = ""
                 if plugin_path:
                     plugin_fullname += plugin_path + " "
@@ -65,9 +67,9 @@ def get_actions_metadata():
                     "optional_config": metadata["optional_config"],
                 }
                 if exists(test_filename):
-                    action['test_file_name'] = test_filename
+                    action["test_file_name"] = test_filename
                     with open(test_filename) as test_file:
-                        action['test_file_content'] = test_file.read()
+                        action["test_file_content"] = test_file.read()
                 action_list.append(action)
     action_list.sort(key=lambda x: x["name"])
     return action_list
