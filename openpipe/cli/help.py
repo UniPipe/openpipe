@@ -8,7 +8,7 @@ from terminaltables import SingleTable
 from pygments import highlight
 from pygments.formatters import TerminalTrueColorFormatter
 from pygments.lexers import YamlLexer
-from openpipe.utils import action2module, get_actions
+from openpipe.utils import action2module, get_actions_metadata
 
 
 def config_markdown(config_string):
@@ -97,8 +97,8 @@ def help(plugin):
 def print_list_of_plugins():
 
     table_data = [["Action", "Description"]]
-    for name, purpose in get_actions():
-        table_data.append([name, purpose])
+    for action_metadata in get_actions_metadata():
+        table_data.append((action_metadata["name"], action_metadata["purpose"]))
     table = SingleTable(table_data)
     print(table.table)
     # print("-------------------------------------\n")

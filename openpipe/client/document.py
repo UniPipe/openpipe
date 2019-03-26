@@ -1,6 +1,6 @@
 """
 """
-from openpipe.utils.yaml import load_yaml, remove_line_info
+from openpipe.utils.yaml_extra import load_yaml, remove_line_info
 from sys import stderr
 
 SEGMENTS_DOC_URL = "https://www.openpipe.org/OpenpipeLanguage#Segment"

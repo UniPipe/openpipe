@@ -1,4 +1,4 @@
-from openpipe.utils.yaml import load_yaml
+from openpipe.utils.yaml_extra import load_yaml
 from sys import stderr, exit
 from pprint import pformat
 from enum import Enum, unique

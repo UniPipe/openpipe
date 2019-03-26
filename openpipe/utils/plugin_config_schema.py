@@ -1,4 +1,4 @@
-from .yaml import load_yaml
+from .yaml_extra import load_yaml
 
 
 def validate_config_dict(action_plugin, config_group_name, value_check_func):

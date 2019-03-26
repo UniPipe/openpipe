@@ -1,27 +1,49 @@
+""" This module provides functions to get metadata from  actions """
 import os
-from os.path import join
+from os.path import join, dirname
 from re import findall
+from os.path import expanduser
+from glob import glob
 
 
-class ActionInfo:
-    def __init__(self, name, purpose, test):
-        self.name = name
-        self.purpose = purpose
-        self.test = test
+def get_actions_paths():
+    """
+    Return a list of paths that should be used too search for action modules.
+    The following order will be used:
+    """
+    action_search_list = []
+
+    # ../plugins/
+    plugins_dir = join(dirname(__file__), "..", "plugins")
+    action_search_list.append(plugins_dir)
+
+    # current directory/openpipe/plugins
+    cwd = os.getcwd()
+    plugins_dir = join(cwd, "..", "plugins")
+    action_search_list.append(plugins_dir)
+
+    # ~/openpipe/libraries_cache/*/openpipe/plugins
+    search_pattern = join(
+        expanduser("~"), ".openpipe", "libraries_cache", "*", "*", "openpipe", "plugins"
+    )
+    for search_dir in glob(search_pattern):
+        action_search_list.append(search_dir)
+
+    return action_search_list
+    #  libraries_cache_dir = join(expanduser("~"), ".openpipe", "libraries_cache")
+    #  for libdirname in glob(join(libraries_cache_dir, '*'))
 
 
-def get_actions():
+def get_actions_metadata():
+    """ Extract metadata from modules """
     action_list = []
-    import openpipe.plugins
 
-    for path in openpipe.plugins.__path__:
-        for root, dirs, files in os.walk(path, topdown=True):
-            if root.endswith("__pycache__"):
-                continue
+    for action_path in get_actions_paths():
+        for root, dirs, files in os.walk(action_path, topdown=True):
             # Skip submodules
             if root.split(os.sep)[-1][0] == "_":
                 continue
-            plugin_path = root[len(path) :].strip(os.sep).replace(os.sep, " ")
+            plugin_path = root[len(action_path) :].strip(os.sep).replace(os.sep, " ")
             for filename in files:
                 if not filename.endswith(".py"):
                     continue
