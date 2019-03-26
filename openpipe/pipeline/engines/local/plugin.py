@@ -20,39 +20,40 @@ class PluginRuntimeBase:
         self.init()
 
     def _on_input(self, item, tag_item):
-        self._tag = tag_item
-        try:
-            if item is not None:
+        if item is not None:
+            self._tag = tag_item
+            try:
                 self.config = self.config_template.render(item, tag_item)
-        except:  # NOQA: E722
-            if isinstance(item, bytes) and len(item) > 256:
-                item = item[:255]
-            print("ITEM:\n" + pformat(item), file=stderr)
-            if tag_item:
-                print("TAG ITEM:\n" + pformat(tag_item), file=stderr)
-            print_exc(file=stderr)
-            msg = (
-                "---------- Plugin %s dynamic config resolution failed ----------"
-                % self.plugin_label
-            )
-            print(msg, file=stderr)
-            #  raise(
-            self.failed_count += 1
-            exit(1)
+            except:  # NOQA: E722
+                if isinstance(item, bytes) and len(item) > 256:
+                    item = item[:255]
+                print("ITEM:\n" + pformat(item), file=stderr)
+                if tag_item:
+                    print("TAG ITEM:\n" + pformat(tag_item), file=stderr)
+                print_exc(file=stderr)
+                msg = (
+                    "---------- Plugin %s dynamic config resolution failed ----------"
+                    % self.plugin_label
+                )
+                print(msg, file=stderr)
+                #  raise(
+                self.failed_count += 1
+                exit(1)
+
         if item is None:
             self.reference_count -= 1
             if self.reference_count == 0:
                 on_finish_func = getattr(self, "on_finish", None)
                 if on_finish_func:
                     if DEBUG:
-                        print("on_finish %s " % self._tag)
+                        print("on_finish %s [Tag: %s]" % (self.plugin_label, self._tag))
                     on_finish_func(True)
                 self.put(item)
         else:
             try:
                 if DEBUG:
                     print(
-                        "on_input %s: \n\tInput:%s\n\tTag:%s"
+                        "on_input %s: \n\tInput: %s\n\tTag: %s"
                         % (self.plugin_label, item, tag_item)
                     )
                 self.on_input(item)

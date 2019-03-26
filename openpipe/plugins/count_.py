@@ -11,7 +11,7 @@ class Plugin(PluginRuntime):
     """
 
     def on_start(self, config):
-        if config['group_by'] == "":     # Simple per input count
+        if config["group_by"] == "":  # Simple per input count
             self.count = 0
         else:
             self.count_dict = {}
@@ -22,7 +22,7 @@ class Plugin(PluginRuntime):
         self.put(self.count)
 
     def on_input_group_by(self, item):
-        group_by = self.config['group_by']
+        group_by = self.config["group_by"]
         try:
             count = self.count_dict[group_by]
         except KeyError:
