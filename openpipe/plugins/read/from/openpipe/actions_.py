@@ -2,7 +2,7 @@
 Produce the list of available action plugins
 """
 from openpipe.pipeline.engine import PluginRuntime
-from openpipe.utils import get_actions
+from openpipe.utils import get_actions_metadata
 
 
 class Plugin(PluginRuntime):
@@ -12,5 +12,5 @@ class Plugin(PluginRuntime):
     """
 
     def on_input(self, item):
-        for action in get_actions():
+        for action in get_actions_metadata():
             self.put(action)

@@ -13,9 +13,8 @@ from .plugin_config_schema import validate_config_schema
 from .plugin_config import validate_provided_config
 
 
-def plugin_load(action_name, action_config, action_label):
+def plugin_load(action_name, action_config, action_label, meta_only=False):
     plugin_path = action2module(action_name)
-
     try:
         module = import_module(plugin_path)
     except ModuleNotFoundError:
@@ -32,6 +31,13 @@ def plugin_load(action_name, action_config, action_label):
         print("Required for action:", action_label, file=stderr)
         exit(2)
     plugin_class = module.Plugin
+    if meta_only:
+        meta = {
+            "purpose": module.__doc__,
+            "required_config": getattr(plugin_class, "required_config", None),
+            "optional_config": getattr(plugin_class, "optional_config", None),
+        }
+        return meta
     validate_config_schema(plugin_class, action_label)
     action_config = validate_provided_config(plugin_class, action_label, action_config)
     instance = module.Plugin(action_config)

@@ -1,0 +1,6 @@
+start:
+    - read from openpipe actions:
+    - filter:
+        in: $ name == "read from openpipe actions" $
+    - assert:
+        purpose: 'Produce the list of available action plugins'

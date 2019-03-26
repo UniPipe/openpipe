@@ -5,10 +5,8 @@ from sys import stderr
 from mdvl import render
 from importlib import import_module
 from terminaltables import SingleTable
-from pygments import highlight
-from pygments.formatters import TerminalTrueColorFormatter
-from pygments.lexers import YamlLexer
-from openpipe.utils import action2module, get_actions_metadata
+from ..utils import action2module, get_actions_metadata
+from ..client.pretty import pretty_print_yaml
 
 
 def config_markdown(config_string):
@@ -27,9 +25,9 @@ def example_markdown(example_string):
     return markdown
 
 
-@click.command()
+@click.command(name="help")
 @click.argument("plugin", nargs=-1, required=False)
-def help(plugin):
+def cmd_help(plugin):
     if len(plugin) == 0:
         return print_list_of_plugins()
     md_path = action2module(" ".join(plugin))
@@ -80,18 +78,8 @@ def help(plugin):
     """.format(
         plugin_purpose, required_config_md, optional_config_md, example_md
     )
-
     render(markdown, cols=cols)
-
-    if exists(examples_filename):
-        with open(examples_filename) as yaml_content:
-            print(
-                highlight(
-                    yaml_content.read(),
-                    YamlLexer(),
-                    TerminalTrueColorFormatter(style="colorful"),
-                )
-            )
+    pretty_print_yaml(examples_filename)
 
 
 def print_list_of_plugins():

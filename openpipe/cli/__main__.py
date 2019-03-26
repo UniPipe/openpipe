@@ -1,7 +1,8 @@
 import sys
 import click
-from .run import run
-from .help import help
+from .run import cmd_run
+from .help import cmd_help
+from .test import cmd_test
 from .pluginmanager import install_plugin
 from ..about import __version__
 from os import environ
@@ -27,8 +28,9 @@ def cli():
     pass
 
 
-cli.add_command(run)
-cli.add_command(help)
+cli.add_command(cmd_run)
+cli.add_command(cmd_help)
+cli.add_command(cmd_test)
 cli.add_command(install_plugin)
 
 

@@ -5,12 +5,14 @@ start:
         - Broken line
         - Good line 2
     # Remove lines with "Broken"
+
     - filter:
         out: $ "Broken" in _ $
     - assert:
         - Good line 1
         - Good line 2
     - print: "After filter out: $_$"
+
     # Select lines with "1"
     - filter:
         in: $ "1" in _ $
@@ -19,6 +21,8 @@ start:
     - insert:
         name: John
         surname: Doe
+
+    # Filter only the name
     - filter:
         what: $name$
     - assert: John

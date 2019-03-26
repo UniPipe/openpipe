@@ -1,2 +1,2 @@
 start:
-  - print: Dummy test
+    - print: Dummy test

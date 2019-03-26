@@ -1,9 +1,9 @@
 """ This module provides functions to get metadata from  actions """
 import os
 from os.path import join, dirname
-from re import findall
-from os.path import expanduser
+from os.path import expanduser, exists
 from glob import glob
+from .plugin_loader import plugin_load
 
 
 def get_actions_paths():
@@ -30,8 +30,6 @@ def get_actions_paths():
         action_search_list.append(search_dir)
 
     return action_search_list
-    #  libraries_cache_dir = join(expanduser("~"), ".openpipe", "libraries_cache")
-    #  for libdirname in glob(join(libraries_cache_dir, '*'))
 
 
 def get_actions_metadata():
@@ -47,8 +45,8 @@ def get_actions_metadata():
             for filename in files:
                 if not filename.endswith(".py"):
                     continue
-                plugin_filename = join(root, filename)
                 plugin_name = filename.replace(".py", "")
+                test_filename = join(root, filename.replace(".py", "").strip('_') + "_test.yaml")
                 plugin_fullname = ""
                 if plugin_path:
                     plugin_fullname += plugin_path + " "
@@ -58,14 +56,18 @@ def get_actions_metadata():
                     continue
                 plugin_fullname = plugin_fullname.replace("_", " ")
                 plugin_fullname = plugin_fullname.strip(" ")
-                with open(plugin_filename) as module_file:
-                    filedata = module_file.read()
-                    purpose = findall('"""\n([^\n]*)', filedata)
-                    if not purpose or "#" in purpose[0]:
-                        print("Purpose docstring error on", plugin_filename)
-                        exit(1)
-                    purpose = purpose[0] if purpose else ""
-                action = {"name": plugin_fullname, "purpose": purpose}
+                metadata = plugin_load(plugin_fullname, None, None, meta_only=True)
+                purpose = metadata["purpose"].splitlines()[1]
+                action = {
+                    "name": plugin_fullname,
+                    "purpose": purpose,
+                    "required_config": metadata["required_config"],
+                    "optional_config": metadata["optional_config"],
+                }
+                if exists(test_filename):
+                    action['test_file_name'] = test_filename
+                    with open(test_filename) as test_file:
+                        action['test_file_content'] = test_file.read()
                 action_list.append(action)
     action_list.sort(key=lambda x: x["name"])
     return action_list
