@@ -1,15 +1,20 @@
 start:
     - insert: Hello World!
     - assert: Hello World!
+    - pprint:
 
     - insert: 12
     - assert: 12
+    - pprint:
 
     - insert: $ 5 * 5 $
     - assert: 25
+    - pprint:
+
     - insert:
         color: blue
         type: Z
     - assert:
         color: blue
         type: Z
+    - pprint:
