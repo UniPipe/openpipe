@@ -14,7 +14,7 @@ class Plugin(PluginRuntime):
         self.count = 0
 
     def on_input(self, item):
-        self.max = self.config['max']
+        self.max = self.config["max"]
         if self.count == self.max:
             return
         self.count += 1

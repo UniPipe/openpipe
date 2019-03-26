@@ -20,7 +20,8 @@ class PluginRuntimeBase:
         self.init()
 
     def _on_input(self, item, tag_item):
-        if DEBUG:
+        _debug = isinstance(tag_item, dict) and tag_item.get("_debug", False)
+        if DEBUG or _debug:
             print(
                 "on_input %s: \n\tInput: %s\n\tTag: %s"
                 % (self.plugin_label, item, tag_item)
@@ -50,7 +51,7 @@ class PluginRuntimeBase:
             if self.reference_count == 0:
                 on_finish_func = getattr(self, "on_finish", None)
                 if on_finish_func:
-                    if DEBUG:
+                    if DEBUG or _debug:
                         print("on_finish %s [Tag: %s]" % (self.plugin_label, self._tag))
                     on_finish_func(True)
                 self.put(item)
