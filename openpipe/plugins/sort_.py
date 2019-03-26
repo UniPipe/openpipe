@@ -1,5 +1,5 @@
 """
-Produce the input items after sorting by an expression
+Sort items based on a key expression
 """
 from openpipe.pipeline.engine import PluginRuntime
 

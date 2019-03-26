@@ -1,5 +1,5 @@
 __title__ = "Openpipe"
-__version__ = "0.0.200"
+__version__ = "0.0.201"
 __summary__ = "A human friendly data-oriented integration toolkit"
 __uri__ = "https://www.openpipe.org"
 __author__ = "João Pinto"

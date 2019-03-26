@@ -1,5 +1,5 @@
 """
-Produce the configuration item
+Insert an item
 """
 from openpipe.pipeline.engine import PluginRuntime
 

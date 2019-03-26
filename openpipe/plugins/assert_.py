@@ -1,5 +1,5 @@
 """
-Check if input does matches the expected value
+Abort if input does matches the expected value
 """
 
 from sys import stderr

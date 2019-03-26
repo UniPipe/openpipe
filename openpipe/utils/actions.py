@@ -67,4 +67,5 @@ def get_actions_metadata():
                     purpose = purpose[0] if purpose else ""
                 action = {"name": plugin_fullname, "purpose": purpose}
                 action_list.append(action)
+    action_list.sort(key=lambda x: x["name"])
     return action_list

@@ -1,5 +1,5 @@
 """
-Produce single units resulted from reducing an item
+Reduce a complex item type into a simpler structure
 """
 from openpipe.pipeline.engine import PluginRuntime
 

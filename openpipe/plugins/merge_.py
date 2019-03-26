@@ -1,5 +1,5 @@
 """
-Produce the merge between the input item and config item
+Merge input and configuration items
 """
 from openpipe.pipeline.engine import PluginRuntime
 
