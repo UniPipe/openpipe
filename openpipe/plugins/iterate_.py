@@ -11,5 +11,10 @@ class Plugin(PluginRuntime):
     """
 
     def on_input(self, item):
-        for item in self.config:
-            self.put(item)
+        if isinstance(self.config, list):
+            for item in self.config:
+                self.put(item)
+        else:
+            for key, value in self.config.items():
+                new_item = {"key": key, "value": value}
+                self.put(new_item)

@@ -1,5 +1,5 @@
 """
-Produce the count of elements received since start
+Count the number of elements received, optionally grouping by expression
 """
 from openpipe.pipeline.engine import PluginRuntime
 
@@ -7,19 +7,32 @@ from openpipe.pipeline.engine import PluginRuntime
 class Plugin(PluginRuntime):
 
     optional_config = """
-    ""      # The default action is to output the current count value
-            # If a key name is provided, the input item will be the output
-            # with item[key] set to the count .
+    group_by:   ""  # Expression to use for count aggregation
     """
 
     def on_start(self, config):
-        self.count = 0
+        if config['group_by'] == "":     # Simple per input count
+            self.count = 0
+        else:
+            self.count_dict = {}
+            self.on_input = self.on_input_group_by
 
     def on_input(self, item):
         self.count += 1
-        if self.config:
-            new_item = item.copy()
-            new_item[self.config] = self.count
+        self.put(self.count)
+
+    def on_input_group_by(self, item):
+        group_by = self.config['group_by']
+        try:
+            count = self.count_dict[group_by]
+        except KeyError:
+            count = 0
+        count += 1
+        self.count_dict[group_by] = count
+
+    def on_finish(self, reason):
+        if hasattr(self, "count_dict"):
+            new_item = {}
+            for key, value in self.count_dict.items():
+                new_item[key] = value
             self.put(new_item)
-        else:
-            self.put(self.count)

@@ -29,7 +29,7 @@ class PluginRuntimeBase:
                 item = item[:255]
             print("ITEM:\n" + pformat(item), file=stderr)
             if tag_item:
-                print("CONTEX ITEM:\n" + pformat(tag_item), file=stderr)
+                print("TAG ITEM:\n" + pformat(tag_item), file=stderr)
             print_exc(file=stderr)
             msg = (
                 "---------- Plugin %s dynamic config resolution failed ----------"
@@ -68,6 +68,8 @@ class PluginRuntimeBase:
         if isinstance(item, bytes) and len(item) > 256:
             item = item[:255]
         print("ITEM:\n" + pformat(item), file=stderr)
+        if self._tag:
+            print("TAG ITEM:\n" + pformat(self._tag), file=stderr)
         print_exc(file=stderr)
         msg = "---------- Plugin %s execution failed ----------, item content:" % (
             self.plugin_label

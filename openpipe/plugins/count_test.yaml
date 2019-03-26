@@ -1,10 +1,30 @@
 start:
+    - send to segment:
+        - group by test
     - count:
     - assert: 1
     - iterate:
         - abc
         - xyz
     - count:
+    - print:
     - assert:
         - 1
         - 2
+
+group by test:
+    - iterate:
+        - {name: fish}
+        - {name: cat}
+        - {name: cat}
+        - {name: dog}
+        - {name: fish}
+        - {name: cat}
+
+    - count:
+        group_by: $name$
+    - print:
+    - assert:
+        fish: 2
+        cat: 3
+        dog: 1

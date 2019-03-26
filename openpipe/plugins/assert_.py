@@ -13,13 +13,20 @@ class Plugin(PluginRuntime):
     """
 
     def on_start(self, config):
-        self.expected_count = len(config) if isinstance(config, list) else 1
+        if isinstance(config, list):
+            self.expected_count = len(config)
+        else:
+            self.expected_count = 1
         # For asserts on list of items, we need to keep the current index
         # on a per tag basis
         self.tag_assert_idx = {}  # We keep the index
+        self.is_bool = False
 
     def on_input(self, item):
         config = self.config
+        if isinstance(config, bool):
+            self.value_assert(item, config)
+            return
 
         # Treat single items as lists of one item
         if not isinstance(config, list):
@@ -40,6 +47,9 @@ class Plugin(PluginRuntime):
         self.tag_assert_idx[tag_index] = current_index + 1
 
     def on_finish(self, reason):
+        if self.is_bool:
+            return
+
         for context_value, context_index in self.tag_assert_idx.items():
             if context_index < self.expected_count:
                 raise AssertionError(
