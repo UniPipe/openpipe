@@ -6,7 +6,7 @@ start:
     # Send "good" items to segment "is_good"
     - send to segment:
         name: is_good
-        on_condition: $'good' in _$
+        when: $'good' in _$
 
     # Send the other items to both branch a and b
     - send to segment:

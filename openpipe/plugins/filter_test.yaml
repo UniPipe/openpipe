@@ -18,7 +18,6 @@ filter in test:
 
 filter out test:
     # Remove lines with "Broken"
-
     - filter:
         out: $ "Broken" in _ $
     - assert: [Good line 1, Good word X, Something Else]

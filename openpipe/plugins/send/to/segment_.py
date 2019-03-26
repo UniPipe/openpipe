@@ -11,9 +11,9 @@ class Plugin(PluginRuntime):
     """
 
     optional_config = """
-    on_condition:   ""  # An expression that should result in a boolean
+    when:   ""  # An expression that should result in a boolean
 
-    # If `on_condition` is set, item will only be copied to the segment(s)
+    # If `when` is set, item will only be copied to the segment(s)
     # when it evaluates to True. And sent to next action when it evaluates
     # to False
     """
@@ -31,7 +31,7 @@ class Plugin(PluginRuntime):
             target_segment = self.segment_linker(segment_name)
             self.target_segments.append(target_segment)
 
-        if config["on_condition"] != "":
+        if config["when"] != "":
             self.on_input = self.on_input_conditional
 
     def on_input(self, item):
@@ -39,7 +39,7 @@ class Plugin(PluginRuntime):
         self.put(item)
 
     def on_input_conditional(self, item):
-        if self.config["on_condition"]:
+        if self.config["when"]:
             self.send_to_all_targets(item)
         else:
             self.put(item)
