@@ -96,7 +96,7 @@ def help(plugin):
 
 def print_list_of_plugins():
 
-    table_data = [["Action", "Description"]]
+    table_data = [["Action", "Purpose"]]
     for action_metadata in get_actions_metadata():
         table_data.append((action_metadata["name"], action_metadata["purpose"]))
     table = SingleTable(table_data)
