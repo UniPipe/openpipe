@@ -35,4 +35,6 @@ class Plugin(PluginRuntime):
             new_item = {}
             for key, value in self.count_dict.items():
                 new_item[key] = value
-            self.put(new_item)
+            # If no items were received, don't trigger results
+            if new_item:
+                self.put(new_item)

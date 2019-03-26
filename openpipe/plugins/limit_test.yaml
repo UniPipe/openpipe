@@ -1,0 +1,13 @@
+start:
+    - iterate:
+        - Line 1
+        - Line 2
+        - Line 3
+    - limit: 2
+    - print: Received $_$
+    - assert:
+        - Line 1
+        - Line 2
+    # Paranoid check for Line 3 found in the input
+    - assert: $ "3" not in _ $
+    - print: Line 3 was not found

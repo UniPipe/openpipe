@@ -20,6 +20,11 @@ class PluginRuntimeBase:
         self.init()
 
     def _on_input(self, item, tag_item):
+        if DEBUG:
+            print(
+                "on_input %s: \n\tInput: %s\n\tTag: %s"
+                % (self.plugin_label, item, tag_item)
+            )
         if item is not None:
             self._tag = tag_item
             try:
@@ -51,11 +56,6 @@ class PluginRuntimeBase:
                 self.put(item)
         else:
             try:
-                if DEBUG:
-                    print(
-                        "on_input %s: \n\tInput: %s\n\tTag: %s"
-                        % (self.plugin_label, item, tag_item)
-                    )
                 self.on_input(item)
             except SystemExit:
                 exit(1)
