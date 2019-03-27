@@ -32,13 +32,13 @@ class PipelineSegment:
             on_start_func = getattr(action, "on_start", None)
             if on_start_func:
                 if DEBUG:
-                    print("on_start %s " % action.plugin_label)
+                    print("on_start %s " % action.action_label)
                 try:
                     action.segment_linker = _segment_linker
                     on_start_func(action.initial_config)
                     action.segment_linker = None
                 except:  # NOQA: E722
-                    print("Failed starting", action.plugin_label, file=stderr)
+                    print("Failed starting", action.action_label, file=stderr)
                     raise
 
 

@@ -24,7 +24,7 @@ class PluginRuntimeBase:
         if DEBUG or _debug:
             print(
                 "on_input %s: \n\tInput: %s\n\tTag: %s"
-                % (self.plugin_label, item, tag_item)
+                % (self.action_label, item, tag_item)
             )
         if item is not None:
             self._tag = tag_item
@@ -39,7 +39,7 @@ class PluginRuntimeBase:
                 print_exc(file=stderr)
                 msg = (
                     "---------- Plugin %s dynamic config resolution failed ----------"
-                    % self.plugin_label
+                    % self.action_label
                 )
                 print(msg, file=stderr)
                 #  raise(
@@ -52,7 +52,7 @@ class PluginRuntimeBase:
                 on_finish_func = getattr(self, "on_finish", None)
                 if on_finish_func:
                     if DEBUG or _debug:
-                        print("on_finish %s [Tag: %s]" % (self.plugin_label, self._tag))
+                        print("on_finish %s [Tag: %s]" % (self.action_label, self._tag))
                     on_finish_func(True)
                 self.put(item)
         else:
@@ -74,7 +74,7 @@ class PluginRuntimeBase:
             print("TAG ITEM:\n" + pformat(self._tag), file=stderr)
         print_exc(file=stderr)
         msg = "---------- Plugin %s execution failed ----------, item content:" % (
-            self.plugin_label
+            self.action_label
         )
         print(msg, file=stderr)
         self.failed_count += 1
@@ -104,5 +104,5 @@ class PluginRuntime(PluginRuntimeBase):
 
     def set_tag(self, tag_item):
         if DEBUG:
-            print("set_tag %s : " % self.plugin_label, tag_item)
+            print("set_tag %s : " % self.action_label, tag_item)
         self._tag = tag_item

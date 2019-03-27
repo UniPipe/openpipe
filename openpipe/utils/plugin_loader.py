@@ -44,7 +44,7 @@ def plugin_load(action_name, action_config, action_label, meta_only=False):
     validate_config_schema(plugin_class, action_label)
     action_config = validate_provided_config(plugin_class, action_label, action_config)
     instance = module.Plugin(action_config)
-    instance.plugin_label = action_label
+    instance.action_label = action_label
     instance.plugin_filename = plugin_path
     return instance
 

@@ -11,7 +11,7 @@ class Errors(Enum):
     CONFIG_UNSUPPORTED_KEY = 22
 
 
-def validate_required_config(module_plugin, plugin_label, provided_config):
+def validate_required_config(module_plugin, action_label, provided_config):
     """ """
     resulting_config = {}
     try:
@@ -28,7 +28,7 @@ def validate_required_config(module_plugin, plugin_label, provided_config):
             required_config_key = next(iter(required_config.keys()))
             return {required_config_key: provided_config}
         else:
-            print("Invalid config for", plugin_label, file=stderr)
+            print("Invalid config for", action_label, file=stderr)
             print("Got", type(provided_config), pformat(provided_config), file=stderr)
             print("Expected dictionary with fields", required_config_str, file=stderr)
             exit(Errors.CONFIG_MUST_BE_DICT)
@@ -37,8 +37,8 @@ def validate_required_config(module_plugin, plugin_label, provided_config):
         try:
             resulting_config[key] = provided_config[key]
         except KeyError:
-            print("Invalid config for", plugin_label, file=stderr)
-            print("The required field '%s' is missing" % key, plugin_label, file=stderr)
+            print("Invalid config for", action_label, file=stderr)
+            print("The required field '%s' is missing" % key, action_label, file=stderr)
             print(
                 "The following config are required:", required_config_str, file=stderr
             )
@@ -48,7 +48,7 @@ def validate_required_config(module_plugin, plugin_label, provided_config):
 
 
 def validate_optional_config(
-    required_config, module_plugin, plugin_label, provided_config
+    required_config, module_plugin, action_label, provided_config
 ):
     """ validate optional config and return the complete config """
 
@@ -72,7 +72,7 @@ def validate_optional_config(
             if key not in merged_config:
                 print(
                     "The provide field '%s' is not supported" % key,
-                    plugin_label,
+                    action_label,
                     file=stderr,
                 )
                 print(
@@ -84,7 +84,7 @@ def validate_optional_config(
         {**merged_config, **provided_config} if provided_config else merged_config
     )
     if len(final_config) == 0 and provided_config is not None:
-        print("Unexpected config for", plugin_label, file=stderr)
+        print("Unexpected config for", action_label, file=stderr)
         print("Got", type(provided_config), pformat(provided_config), file=stderr)
         print("The plugin does not support any kind of configuration", file=stderr)
         exit(20)
@@ -92,19 +92,19 @@ def validate_optional_config(
     return final_config
 
 
-def validate_provided_config(module_plugin, plugin_label, provided_config):
+def validate_provided_config(module_plugin, action_label, provided_config):
     """ Validate that the provided_config is valid per the plugin config schema """
 
     if hasattr(module_plugin, "required_some_config"):
         if provided_config is None:
-            print("Missing config for", plugin_label, file=stderr)
+            print("Missing config for", action_label, file=stderr)
             print("The plugin requires config", file=stderr)
             exit(25)
         else:
             return provided_config
 
     required_config = validate_required_config(
-        module_plugin, plugin_label, provided_config
+        module_plugin, action_label, provided_config
     )
 
     if (
@@ -114,7 +114,7 @@ def validate_provided_config(module_plugin, plugin_label, provided_config):
     ):
         return required_config
     config = validate_optional_config(
-        required_config, module_plugin, plugin_label, provided_config
+        required_config, module_plugin, action_label, provided_config
     )
     return config
 
