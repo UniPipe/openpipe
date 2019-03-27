@@ -7,13 +7,14 @@ from openpipe.pipeline.engine import PluginRuntime
 
 class Plugin(PluginRuntime):
 
-    optional_config = """
-    []  # List of keys for the fields to be removed
-    """
+    required_some_config = "# name or list of names of the keys to be removed"
 
     # Output the config item
     def on_input(self, item):
         new_item = {}
+        drop_list = self.config
+        if not isinstance(drop_list, list):
+            drop_list = [drop_list]
         for key, value in item.items():
             if key not in self.config:
                 new_item[key] = value

@@ -1,5 +1,5 @@
 """
-Assert that input must match the config item value(s)
+Asserts that input matches the config provided item
 """
 
 from sys import stderr
@@ -8,9 +8,7 @@ from openpipe.pipeline.engine import PluginRuntime
 
 class Plugin(PluginRuntime):
 
-    required_some_config = """
-    # The item with the expected input value
-    """
+    required_some_config = "# The item with the expected value(s)"
 
     def on_start(self, config):
         if isinstance(config, list):

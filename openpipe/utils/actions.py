@@ -78,6 +78,7 @@ def get_actions_metadata():
                     "purpose": purpose,
                     "required_config": metadata["required_config"],
                     "optional_config": metadata["optional_config"],
+                    "required_some_config": metadata["required_some_config"],
                 }
                 if exists(examples_filename):
                     action["examples_file_name"] = examples_filename
@@ -94,7 +95,6 @@ def get_actions_metadata():
                 if not action.get("examples_file_name", None):
                     action["examples_file_name"] = test_filename
                     action["examples_file_content"] = action["test_file_content"]
-
                 action_list.append(action)
     action_list.sort(key=lambda x: x["name"])
     return action_list

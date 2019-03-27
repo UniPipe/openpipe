@@ -7,6 +7,7 @@ This module provides the plugin_load function which performs the following:
     - validate that the user provided config meets the config schema requirements
 """
 import traceback
+import re
 from sys import stderr, exit
 from importlib import import_module
 from wasabi import TracebackPrinter
@@ -19,6 +20,7 @@ def yaml_attribute(plugin_class, attribute_name):
     if attribute_text:
         attribute_text = attribute_text.strip("\n")
         attribute_text = attribute_text.rstrip("\n ")
+        attribute_text = re.sub("^    ", "        ", attribute_text, flags=re.MULTILINE)
     return attribute_text
 
 
@@ -47,6 +49,7 @@ def plugin_load(action_name, action_config, action_label, meta_only=False):
             "purpose": module.__doc__,
             "required_config": yaml_attribute(plugin_class, "required_config"),
             "optional_config": yaml_attribute(plugin_class, "optional_config"),
+            "required_some_config": yaml_attribute(plugin_class, "required_some_config"),
         }
         return meta
     validate_config_schema(plugin_class, action_label)

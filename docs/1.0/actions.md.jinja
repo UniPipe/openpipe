@@ -8,18 +8,26 @@ Action | Purpose
 ## {{ action.name }}
 {{ action.purpose }}
 
-{% if action.required_config is not none %}
-*Required Configuration*
+
+{% if action.required_some_config is not none %}
+**Required Configuration**
 ```yaml
-{{action.name}}:
+    - {{action.name}}: {{ action.required_some_config }}
+```
+{%endif %}
+
+{% if action.required_config is not none %}
+**Required Configuration**
+```yaml
+    - {{action.name}}:
 {{ action.required_config }}
 ```
 {%endif %}
 
 {% if action.optional_config is not none %}
-*Optional Configuration*
+**Optional Configuration**
 ```yaml
-{{action.name}}:
+    - {{action.name}}:
 {{ action.optional_config }}
 ```
 {%endif %}

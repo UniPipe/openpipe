@@ -1,9 +1,9 @@
 start:
     - send to segment:
         - dict with dict
-        #- list with dict
-        #- dict with list
-        #- list with list
+        - list with dict
+        - dict with list
+        - list with list
 
 dict with dict: # Merge dict with dict
     - insert: { filename: pen }
