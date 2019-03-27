@@ -2,15 +2,13 @@ _libraries:
     - https://github.com/openpipe-plugins/jinja
 
 start:
+    - tag:
+        base: docs/1.0
     - read from openpipe actions:
-    - copy to segment:
-        - build action page
     - transform using jinja:
         template: docs/1.0/actions.md.jinja
         single_item: False
-    - print:
     - write to file:
-        path: docs/1.0/actions.md
+        path: $_tag['base']$/actions.md
 
-build action page:
-    print:
+    #- update using string replace: {name: {' ': '_'}}

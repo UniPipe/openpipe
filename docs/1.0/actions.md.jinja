@@ -1,5 +1,36 @@
 Action | Purpose
 --- | ---
 {% for action in items %}
-{{ action.name }}|{{ action.purpose }}
+[{{ action.name }}](#{{ action.name.replace(' ', '-') }})|{{ action.purpose }}
+{% endfor %}
+
+{% for action in items %}
+## {{ action.name }}
+{{ action.purpose }}
+
+{% if action.required_config is not none %}
+*Required Configuration*
+```yaml
+{{action.name}}:
+{{ action.required_config }}
+```
+{%endif %}
+
+{% if action.optional_config is not none %}
+*Optional Configuration*
+```yaml
+{{action.name}}:
+{{ action.optional_config }}
+```
+{%endif %}
+
+{% if action.examples_file_content %}
+*Examples:*
+```yaml
+{{ action.examples_file_content }}
+```
+{%endif %}
+
+
+----
 {% endfor %}

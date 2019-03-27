@@ -1,6 +1,0 @@
-start:
-    - iterate:
-        - item X
-        - item Y
-    - count:
-    - print:

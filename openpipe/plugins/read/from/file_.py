@@ -27,9 +27,6 @@ class Plugin(PluginRuntime):
     # mime type based on the content header or file extension.
     mime_type:  auto
 
-    # Possible values are: "meta", "content" or "both"
-    output_type: auto
-
     # The following option is only applicable to local filenames
     auto_expand_home: True      # Expand '~' on path to user home dir
 

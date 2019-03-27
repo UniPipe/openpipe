@@ -27,6 +27,7 @@
         "isdir",
         "isfile",
         "ispkg",
+        "jinja",
         "joão",
         "khtml",
         "lamego",

@@ -2,7 +2,6 @@ import hashlib
 import os
 import zipfile
 import urllib.request
-from sys import exit
 from glob import glob
 from shutil import rmtree
 from os.path import expanduser, join, exists
@@ -23,9 +22,6 @@ def download_and_cache(url, is_upgrade=False):
     if exists(cached_lib_name):
         if is_upgrade:
             rmtree(cached_lib_name)
-        else:
-            msg.warn("Plugin was already installed!")
-            exit(2)
     if not exists(cached_lib_name):
         zip_file_name = cached_lib_name + ".zip"
         try:

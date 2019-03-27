@@ -14,6 +14,13 @@ from .plugin_config_schema import validate_config_schema
 from .plugin_config import validate_provided_config
 
 
+def yaml_attribute(plugin_class, attribute_name):
+    attribute_text = getattr(plugin_class, attribute_name, None)
+    if attribute_text:
+        attribute_text = attribute_text.strip("\n")
+    return attribute_text
+
+
 def plugin_load(action_name, action_config, action_label, meta_only=False):
     plugin_path = action2module(action_name)
     try:
@@ -37,8 +44,8 @@ def plugin_load(action_name, action_config, action_label, meta_only=False):
     if meta_only:
         meta = {
             "purpose": module.__doc__,
-            "required_config": getattr(plugin_class, "required_config", None),
-            "optional_config": getattr(plugin_class, "optional_config", None),
+            "required_config": yaml_attribute(plugin_class, "required_config"),
+            "optional_config": yaml_attribute(plugin_class, "optional_config"),
         }
         return meta
     validate_config_schema(plugin_class, action_label)
