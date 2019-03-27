@@ -6,9 +6,10 @@ This module provides the plugin_load function which performs the following:
     - validate the Plugin's config schema
     - validate that the user provided config meets the config schema requirements
 """
+import traceback
 from sys import stderr, exit
 from importlib import import_module
-from traceback import format_exc
+from wasabi import TracebackPrinter
 from .plugin_config_schema import validate_config_schema
 from .plugin_config import validate_provided_config
 
@@ -17,14 +18,15 @@ def plugin_load(action_name, action_config, action_label, meta_only=False):
     plugin_path = action2module(action_name)
     try:
         module = import_module(plugin_path)
-    except ModuleNotFoundError:
-        print(format_exc(), file=stderr)
-        print("Required for action:", plugin_path, file=stderr)
-        exit(1)
+    except ModuleNotFoundError as error:
+        tb = TracebackPrinter(tb_base="openpipe", tb_exclude=("core.py",))
+        error = tb("Module not found:", error.name, tb=traceback.extract_stack())
+        raise ModuleNotFoundError(error) from None
     except ImportError as error:
         print("Error loading module", plugin_path, file=stderr)
-        print(format_exc(), error, file=stderr)
+        error = tb("ImportError", error.name, tb=traceback.extract_stack())
         print("Required for action:", action_label, file=stderr)
+        raise ImportError(error) from None
         exit(2)
     if not hasattr(module, "Plugin"):
         print("Module {} does not provide a Plugin class!".format(module), file=stderr)

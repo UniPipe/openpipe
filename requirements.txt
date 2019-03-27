@@ -6,3 +6,4 @@ mdvl
 pygments
 terminaltables
 blinker
+wasabi

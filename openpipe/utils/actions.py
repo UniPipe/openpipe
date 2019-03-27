@@ -42,6 +42,7 @@ def get_actions_metadata():
             if root.split(os.sep)[-1][0] == "_":
                 continue
             plugin_path = root[len(action_path) :].strip(os.sep).replace(os.sep, " ")
+
             for filename in files:
                 if not filename.endswith(".py"):
                     continue
