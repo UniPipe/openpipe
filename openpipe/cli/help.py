@@ -66,7 +66,7 @@ def cmd_help(plugin):
     #     example_md = ""
     example_md = ""
 
-    markdown = """# Purpose\
+    markdown = """# Purpose\n\
     {}
 {}{}{}
     """.format(

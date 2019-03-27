@@ -53,6 +53,7 @@
         "pytz",
         "r",
         "r'charset",
+        "rmtree",
         "rsplit",
         "shutil",
         "statbuf",
