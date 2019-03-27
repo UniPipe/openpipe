@@ -1,6 +1,7 @@
 from os import environ
 from openpipe.utils import plugin_load
 from sys import stderr, argv
+from wasabi import Printer
 
 DEBUG = environ.get("DEBUG")
 
@@ -17,13 +18,13 @@ class PipelineSegment:
         self.config_list.append(action_config)
 
     def activate(self, activation_item=True):
-        self.action_list[0].reference_count = 1
+        self.action_list[0].input_sources.append(self)
         self.action_list[0]._on_input(
-            argv, None
+            self, argv, None
         )  # Send current time to the firs action to activate it
         self.action_list[0]._on_input(
-            None, None
-        )  # Send end-of-input «None» to trigger on_finnish()
+            self, None, None
+        )  # Send end-of-input «None» to trigger on_finish()
         return 0, None  # exit code, exit message
 
     def start(self, _segment_linker):
@@ -34,9 +35,9 @@ class PipelineSegment:
                 if DEBUG:
                     print("on_start %s " % action.action_label)
                 try:
-                    action.segment_linker = _segment_linker
+                    action._segment_linker = _segment_linker
                     on_start_func(action.initial_config)
-                    action.segment_linker = None
+                    action._segment_linker = None
                 except:  # NOQA: E722
                     print("Failed starting", action.action_label, file=stderr)
                     raise
@@ -45,11 +46,26 @@ class PipelineSegment:
 class SegmentManager:
     def __init__(self):
         self._segments = {}
+        self.msg = Printer()
 
     def start(self):
         """ Runs the start code for every segment created on this manager """
         for segment_name, segment in self._segments.items():
             segment.start(self._segment_linker)
+
+        # We must remove all references from segments which have
+        # no input sources (inactive)
+        for origin_segment_name, origin_segment in self._segments.items():
+            origin_action = origin_segment.action_list[0]
+            segment_sources = origin_action.input_sources
+            if len(segment_sources) == 0:
+                if origin_segment_name == "start":
+                    continue
+                self.msg.warn("Segment '%s' is not referenced" % origin_segment_name)
+                for target_segment_name, target_segment in self._segments.items():
+                    target_action = target_segment.action_list[0]
+                    if origin_action in target_action.input_sources:
+                        target_action.input_sources.remove(origin_action)
 
     def create(self, segment_name):
         segment = PipelineSegment(segment_name)
@@ -59,7 +75,7 @@ class SegmentManager:
     def activate(self, start_segment_name="start"):
         return self._segments[start_segment_name].activate()
 
-    def _segment_linker(self, segment_name):
+    def _segment_linker(self, source, segment_name):
         """ Returns a reference name to a local segment """
         try:
             segment = self._segments[segment_name]
@@ -73,7 +89,7 @@ class SegmentManager:
             )
             exit(2)
 
-        segment.action_list[0].reference_count += 1
+        segment.action_list[0].input_sources.append(source)
         return segment.action_list[0]
 
     def create_action_links(self):
@@ -86,4 +102,4 @@ class SegmentManager:
             # Create links to next on all actions  except for the last
             for i, action in enumerate(action_list[:-1]):
                 action.next_action = action_list[i + 1]
-                action_list[i + 1].reference_count += 1
+                action_list[i + 1].input_sources.append(action)

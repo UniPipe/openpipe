@@ -16,10 +16,13 @@ class PluginRuntimeBase:
         self.initial_config = config
         self.config_template = Template(config)
         self.failed_count = 0
-        self.reference_count = 0
+        self.input_sources = []  # List of input sources
         self.init()
 
-    def _on_input(self, item, tag_item):
+    def segment_linker(self, segment_name):
+        return self._segment_linker(self, segment_name)
+
+    def _on_input(self, caller, item, tag_item):
         _debug = isinstance(tag_item, dict) and tag_item.get("_debug", False)
         if DEBUG or _debug:
             print(
@@ -47,14 +50,21 @@ class PluginRuntimeBase:
                 exit(1)
 
         if item is None:
-            self.reference_count -= 1
-            if self.reference_count == 0:
+            self.input_sources.remove(caller)
+            reference_count = len(self.input_sources)
+            if reference_count == 0:
                 on_finish_func = getattr(self, "on_finish", None)
                 if on_finish_func:
                     if DEBUG or _debug:
                         print("on_finish %s [Tag: %s]" % (self.action_label, self._tag))
                     on_finish_func(True)
                 self.put(item)
+            else:
+                if DEBUG or _debug:
+                    print(
+                        "input_close %s [Tag: %s], input sources: %s"
+                        % (self.action_label, self._tag, self.input_sources)
+                    )
         else:
             try:
                 self.on_input(item)
@@ -97,10 +107,10 @@ class PluginRuntime(PluginRuntimeBase):
 
         # Put on next
         if self.next_action:
-            self.next_action._on_input(item, self._tag)
+            self.next_action._on_input(self, item, self._tag)
 
     def put_target(self, item, target):
-        target._on_input(item, self._tag)
+        target._on_input(self, item, self._tag)
 
     def set_tag(self, tag_item):
         if DEBUG:

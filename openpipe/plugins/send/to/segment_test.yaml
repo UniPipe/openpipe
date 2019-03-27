@@ -13,7 +13,6 @@ start:
         when: $'bad' in _$
 
     - assert: somethng else
-
     - send to segment: test_good
 
 test_good:
@@ -23,3 +22,4 @@ test_good:
 
 test_bad:
     - assert: bad mouse
+
