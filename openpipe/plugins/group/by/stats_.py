@@ -11,8 +11,8 @@ class Plugin(PluginRuntime):
     """
 
     optional_config = """
-    stats: [sum, count, max, min]   # List of stats to obtain []
-    sorted_fields: []               # When these fields change, perform sort
+    stats: [sum, count, max, min]   # List of stats to obtain
+    sorted_fields: []               # When these fields change, produce the sorte
     """
 
     def on_start(self, config):

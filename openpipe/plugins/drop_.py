@@ -1,5 +1,5 @@
 """
-Remove some keys from a dictionary item
+Remove some keys from the input item
 """
 
 from openpipe.pipeline.engine import PluginRuntime

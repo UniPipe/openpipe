@@ -1,3 +1,0 @@
-start:
-    - execute: ls -ld s*
-    - pprint:

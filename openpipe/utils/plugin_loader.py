@@ -18,6 +18,7 @@ def yaml_attribute(plugin_class, attribute_name):
     attribute_text = getattr(plugin_class, attribute_name, None)
     if attribute_text:
         attribute_text = attribute_text.strip("\n")
+        attribute_text = attribute_text.rstrip("\n ")
     return attribute_text
 
 

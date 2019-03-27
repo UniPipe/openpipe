@@ -1,5 +1,5 @@
 """
-Count the number of elements received, optionally grouping by expression
+Count the number of elements received
 """
 from openpipe.pipeline.engine import PluginRuntime
 

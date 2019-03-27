@@ -1,5 +1,5 @@
 """
-Build a dictionary from a key/map regex group expession
+Build a dictionary from a key/map regex group expression
 """
 from openpipe.pipeline.engine import PluginRuntime
 from re import compile, MULTILINE

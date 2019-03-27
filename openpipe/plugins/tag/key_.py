@@ -9,13 +9,13 @@ from openpipe.pipeline.engine import PluginRuntime
 class Plugin(PluginRuntime):
 
     required_config = """
-    key_list:     #  The list of data keys to be tagged
+    name:   #  The name or list of names for the keys to be tagged
     """
 
     def on_input(self, item):
         current_tag = self._tag or {}
 
-        key_list = self.config["key_list"]
+        key_list = self.config["name"]
         if not isinstance(key_list, list):
             key_list = [key_list]
 

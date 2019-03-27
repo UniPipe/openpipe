@@ -1,5 +1,5 @@
 """
-Abort if input does matches the expected value
+Assert that input must match the config item value(s)
 """
 
 from sys import stderr
