@@ -19,6 +19,7 @@
         "funcs",
         "functools",
         "getcwd",
+        "getenv",
         "gmail",
         "imgs",
         "influxdb",

@@ -1,5 +1,6 @@
 start:
     - read from openpipe actions:
+    - print: $name$
     - filter:
         in: $ name == "read from openpipe actions" $
     - assert:

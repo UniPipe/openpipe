@@ -19,6 +19,7 @@ def plugin_load(action_name, action_config, action_label, meta_only=False):
     try:
         module = import_module(plugin_path)
     except ModuleNotFoundError as error:
+        print("Error loading module", plugin_path, file=stderr)
         tb = TracebackPrinter(tb_base="openpipe", tb_exclude=("core.py",))
         error = tb("Module not found:", error.name, tb=traceback.extract_stack())
         raise ModuleNotFoundError(error) from None
