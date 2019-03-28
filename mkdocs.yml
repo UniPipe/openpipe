@@ -32,7 +32,7 @@ nav:
     - Language: 1.0/language.md
     - Tool: 1.0/tool.md
     - Actions: 1.0/actions.md
-    - Plugin Development: 1.0/action-devel.md
+    - Actions Development: 1.0/action-devel.md
 
 
 markdown_extensions:
