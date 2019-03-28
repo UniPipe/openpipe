@@ -9,14 +9,14 @@ Action | Purpose
 {{ action.purpose }}
 
 
-{% if action.required_some_config is not none %}
+{% if action.required_some_config %}
 **Required Configuration**
 ```yaml
     - {{action.name}}: {{ action.required_some_config }}
 ```
 {%endif %}
 
-{% if action.required_config is not none %}
+{% if action.required_config %}
 **Required Configuration**
 ```yaml
     - {{action.name}}:
@@ -24,10 +24,12 @@ Action | Purpose
 ```
 {%endif %}
 
-{% if action.optional_config is not none %}
+{% if  action.optional_config %}
 **Optional Configuration**
 ```yaml
+{% if not action.required_config %}
     - {{action.name}}:
+{%endif %}
 {{ action.optional_config }}
 ```
 {%endif %}
@@ -39,6 +41,8 @@ Action | Purpose
 ```
 {%endif %}
 
+
+Module source: [{{ action.module_name }}](https://github.com/Openpipe/openpipe/blob/master/{{ action.module_name }})
 
 ----
 {% endfor %}
