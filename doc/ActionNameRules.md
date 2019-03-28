@@ -17,8 +17,8 @@ The last word is the module name, it gets an`"_"` appended to avoid module names
 Example:
 
 ```python
-import openpipe.plugins.insert_.py              # "insert" action
-import openpipe.plugins.insert.using.tag_.py    # "insert using tag" action
+import openpipe.actions.insert_.py              # "insert" action
+import openpipe.actions.insert.using.tag_.py    # "insert using tag" action
 ```
 
 ```python
@@ -27,5 +27,5 @@ def action2module(action_name):
     package_name = action_words[:-1]
     if not '_' in package_name:
         module_name = action_words[-1] + "_"
-    return "openpipe.plugins." + ('.'.join(package_name + [module_name]))
+    return "openpipe.actions." + ('.'.join(package_name + [module_name]))
 ```

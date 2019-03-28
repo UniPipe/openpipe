@@ -3,7 +3,7 @@ import click
 from .run import cmd_run
 from .help import cmd_help
 from .test import cmd_test
-from .pluginmanager import install_plugin
+from .actionmanager import install_action_lib
 from ..about import __version__
 from os import environ
 
@@ -31,7 +31,7 @@ def cli():
 cli.add_command(cmd_run)
 cli.add_command(cmd_help)
 cli.add_command(cmd_test)
-cli.add_command(install_plugin)
+cli.add_command(install_action_lib)
 
 
 def main():

@@ -36,15 +36,15 @@ openpipe run pipeline.yaml
 ```
 
 ------
-To get a list of the action plugins available in the standard library, run:
+To get a list of the action actions available in the standard library, run:
 ```bash
 openpipe help
 ```
 ![Parse Text XML](../imgs/help/openpipe_help.png)
 
-To get the help/example for a specific plugin, run:
+To get the help/example for a specific action, run:
 ```bash
-openpipe help plugin name
+openpipe help action name
 ```
 
 Example:
@@ -60,9 +60,9 @@ openpipe help print
 
 !!! Warning
 
-    The plugin API is not stable yet, the provided plugins are likely to break with openpipe upgrades.
+    The action API is not stable yet, the provided actions are likely to break with openpipe upgrades.
 
-Additional plugins are maintained on GitHub repositories under the [openpipe-plugins] organization.
+Additional actions are maintained on GitHub repositories under the [openpipe-actions] organization.
 
-[openpipe-plugins]: https://github.com/openpipe-plugins/
+[openpipe-actions]: https://github.com/openpipe-actions/
 [DPL language documentation]: /1.0/language

@@ -23,7 +23,7 @@ def setup_package():
         readme = f.read()
 
     # Add meta packages
-    namespace_packages = ["openpipe", "openpipe/plugins"]
+    namespace_packages = ["openpipe", "openpipe/actions"]
     all_packages = find_packages()
     all_packages.extend(namespace_packages)
 

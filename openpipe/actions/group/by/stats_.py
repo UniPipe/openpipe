@@ -50,12 +50,12 @@ STATS_FUNCS = {
 
 
 class GroupBy(object):
-    def __init__(self, plugin, config):
+    def __init__(self, action, config):
         self.config = config
         self.last_sorted_value = None
         self.sorted_fields = config["sorted_fields"]
         self.stats_fields = config["stats"]
-        self.plugin = plugin
+        self.action = action
         self.aggregated_stats = {}
 
     def add(self, item):
@@ -114,5 +114,5 @@ class GroupBy(object):
                 new_item[stats_field_name + "_avg"] = (
                     float(func_results["sum"]) / func_results["count"]
                 )
-            self.plugin.put(new_item)
+            self.action.put(new_item)
         self.aggregated_stats = {}

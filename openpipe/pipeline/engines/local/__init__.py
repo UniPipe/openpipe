@@ -1,4 +1,4 @@
 from .manager import PipelineManager
-from .plugin import PluginRuntime
+from .action import PluginRuntime
 
 __all__ = [PipelineManager, PluginRuntime]

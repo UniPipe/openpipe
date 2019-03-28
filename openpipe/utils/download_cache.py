@@ -40,8 +40,8 @@ def download_and_cache(url, is_upgrade=False):
             zf.extractall(cached_lib_name)
         msg.good("Installed")
 
-    plugins_dir = glob(join(cached_lib_name, "*"))
-    if len(plugins_dir) == 1 and not plugins_dir[0].endswith("openpipe"):
-        cached_lib_name = plugins_dir[0]
+    actions_dir = glob(join(cached_lib_name, "*"))
+    if len(actions_dir) == 1 and not actions_dir[0].endswith("openpipe"):
+        cached_lib_name = actions_dir[0]
 
     return cached_lib_name

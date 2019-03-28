@@ -1,5 +1,5 @@
-from .plugin_loader import create_action_instance, get_action_metadata
-from .plugin_config import is_nested_dict
+from .action_loader import create_action_instance, get_action_metadata
+from .action_config import is_nested_dict
 from .actions import get_actions_metadata
 
 __all__ = [

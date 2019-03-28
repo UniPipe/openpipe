@@ -1,5 +1,5 @@
 _libraries:
-    - openpipe/tests/lib     # This library provides the "sample" plugin
+    - openpipe/tests/lib     # This library provides the "sample" action
 
 start:
     - sample:

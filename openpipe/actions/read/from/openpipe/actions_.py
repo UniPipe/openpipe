@@ -1,5 +1,5 @@
 """
-Produce the list of available action plugins
+Produce the list of available action actions
 """
 from openpipe.pipeline.engine import PluginRuntime
 from openpipe.utils import get_actions_metadata

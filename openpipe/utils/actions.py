@@ -1,10 +1,10 @@
 """ This module provides functions to get metadata from  actions """
 import os
 import sys
-from os.path import join, dirname, abspath
-from os.path import expanduser, exists
+from os.path import join, dirname, abspath, splitext
+from os.path import expanduser
 from glob import glob
-from .plugin_loader import get_action_metadata
+from .action_loader import get_action_metadata
 
 
 def get_actions_paths():
@@ -14,18 +14,18 @@ def get_actions_paths():
     """
     action_search_list = []
 
-    # ../plugins/
-    plugins_dir = join(dirname(__file__), "..", "plugins")
-    action_search_list.append(plugins_dir)
+    # ../actions/
+    actions_dir = join(dirname(__file__), "..", "actions")
+    action_search_list.append(actions_dir)
 
-    # current directory/openpipe/plugins
+    # current directory/openpipe/actions
     cwd = os.getcwd()
-    plugins_dir = join(cwd, "openpipe", "plugins")
-    action_search_list.append(plugins_dir)
+    actions_dir = join(cwd, "openpipe", "actions")
+    action_search_list.append(actions_dir)
 
     running_on_tox = os.getenv("TOX_ENV_NAME", False)
     if not running_on_tox:
-        # ~/openpipe/libraries_cache/*/openpipe/plugins
+        # ~/openpipe/libraries_cache/*/openpipe/actions
         search_pattern = join(
             expanduser("~"),
             ".openpipe",
@@ -33,7 +33,7 @@ def get_actions_paths():
             "*",
             "*",
             "openpipe",
-            "plugins",
+            "actions",
         )
         for search_dir in glob(search_pattern):
             action_search_list.append(search_dir)
@@ -53,29 +53,29 @@ def get_actions_metadata():
             # Skip submodules
             if root.split(os.sep)[-1][0] == "_":
                 continue
-            plugin_path = root[len(action_path) :].strip(os.sep).replace(os.sep, " ")
+            action_root = root.split(os.sep)[len(action_path.split(os.sep)) :]
             for filename in files:
-                if not filename.endswith(".py"):
+                filename, extension = splitext(filename)
+                if not extension == ".py":
                     continue
-                plugin_name = filename.replace(".py", "")
-                test_filename = join(
-                    root, filename.replace(".py", "").strip("_") + "_test.yaml"
-                )
-                examples_filename = join(
-                    root, filename.replace(".py", "").strip("_") + "_examples.yaml"
-                )
-                action_name = plugin_path + " " if plugin_path else ""
-                action_name += " ".join((plugin_name).split(" ")).strip("_")
+                action_name = filename.strip("_")
+                if action_root:
+                    action_name = " ".join(action_root) + " " + action_name
                 find_action = [
                     action for action in action_list if action["name"] == action_name
                 ]
                 if find_action:
                     continue
-                action_metadata = get_action_metadata(action_name, "get_actions_metadata()")
+                action_metadata = get_action_metadata(
+                    action_name, "get_actions_metadata()"
+                )
+                """
                 if exists(examples_filename):
                     action_metadata["examples_file_name"] = examples_filename
                     with open(examples_filename) as examples_filename:
-                        action_metadata["examples_file_content"] = examples_filename.read()
+                        action_metadata[
+                            "examples_file_content"
+                        ] = examples_filename.read()
 
                 if exists(test_filename):
                     action_metadata["test_file_name"] = test_filename
@@ -86,7 +86,10 @@ def get_actions_metadata():
                 # If no examples are available, failback to tests
                 if not action_metadata.get("examples_file_name", None):
                     action_metadata["examples_file_name"] = test_filename
-                    action_metadata["examples_file_content"] = action_metadata["test_file_content"]
+                    action_metadata["examples_file_content"] = action_metadata[
+                        "test_file_content"
+                    ]
+                """
                 action_list.append(action_metadata)
     action_list.sort(key=lambda x: x["name"])
     return action_list

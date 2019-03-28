@@ -33,5 +33,5 @@ class PipelineManager:
             print("Adding library path", library_path)
         sys.path.append(normpath(library_path))
 
-    #  def load_plugin(step_name, step_config, step_line_nr):
+    #  def load_action(step_name, step_config, step_line_nr):
     #      pass

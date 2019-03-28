@@ -3,6 +3,5 @@
 set -eu
 
 black openpipe
-scripts/check_plugin_supportfiles.sh
 
 tox

@@ -90,9 +90,9 @@ class PluginRuntimeBase:
         print(msg, file=stderr)
         self.failed_count += 1
 
-    def extend(self, plugin_path, extension_path):
-        """ Extend plugin by importing modules from extension path """
-        location = join(dirname(plugin_path), extension_path)
+    def extend(self, action_path, extension_path):
+        """ Extend action by importing modules from extension path """
+        location = join(dirname(action_path), extension_path)
         sub_modules = glob(join(location, "*.py"))
         for filename in sub_modules:
             filename = ".".join(filename.split(sep)[-6:])

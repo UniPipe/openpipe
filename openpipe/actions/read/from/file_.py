@@ -21,7 +21,7 @@ class Plugin(PluginRuntime):
     """
 
     optional_config = """
-    # The mime_type will be used by the plugin to identify and automatically
+    # The mime_type will be used by the action to identify and automatically
     # decode the file content.
     # With the default value of 'auto' the action will try to guess the
     # mime type based on the content header or file extension.
@@ -37,7 +37,7 @@ class Plugin(PluginRuntime):
     """
 
     """
-    This plugin can be extended with mime type decoders, on start it will load
+    This action can be extended with mime type decoders, on start it will load
     modules available from the _file directory. Those modules must attach
     a file handler using the class method `attach_file_handler` .
     """

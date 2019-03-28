@@ -6,7 +6,7 @@ import tarfile
 from ..file_ import Plugin
 
 
-def decode_file(fileobj, plugin):
+def decode_file(fileobj, action):
 
     with tarfile.open(fileobj=fileobj) as tar:
         while True:
@@ -20,7 +20,7 @@ def decode_file(fileobj, plugin):
             new_item["filename"] = file_info.name
             new_item["content"] = single_file.read()
             single_file.close()
-            plugin.put(new_item)
+            action.put(new_item)
 
     return True
 

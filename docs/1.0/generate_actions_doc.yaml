@@ -1,5 +1,5 @@
 _libraries:
-    - https://github.com/openpipe-plugins/jinja
+    - https://github.com/openpipe-actions/jinja
 
 start:
     - tag:

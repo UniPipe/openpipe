@@ -10,7 +10,7 @@ DPL is entirely based on the [YAML] format. The knowledge of YAML is fundamental
 ## Concepts
 
 ### Pipeline
-DPL follows the data pipeline design pattern: a set of data processing elements are connected in series, where the output of one element is the input of the next one.
+DPL follows the data pipeline design pattern: a set of data processing elements connected in series, where the output of one element is the input of the next one.
 In DPL the elements are referred as **actions**, and a sequence of actions is referred as a ***segment***. A pipeline document is a single YAML document that contains one or more segments.
 
 #### Segments
@@ -35,42 +35,41 @@ An action must be represented by a dictionary, where the key is an action name a
     ```
 
 !!! Important "The start segment"
-    Runnable pipelines must contain a segment named ***start*** . The first operation in that segment will receive a single input item with the system clock time.
+    Runnable pipelines must contain a segment named ***start*** . The first operation in that segment will receive a single input item with openpipe run arguments.
 
 #### Multiple Segments
-A single pipeline may need to produce distinct outputs from the same input data, in order to support this some actions allow to send data to other segments.
+A single pipeline may need to produce distinct outputs from the same input data, in order to support this some actions can send data to other segments.
 
 ### Integrated Development Environment
 At this time there is no specialized IDE for pipeline editing, any general purpose IDE with a good support for YAML is suitable.
 
 ## Workflow Execution
 
-The command line tool `openpipe` is the software that reads pipeline documents and starts the corresponding workflow.
+### Document Loading
+The command line tool `openpipe` is the software that reads a pipeline document file, loads it into the execution engine and activates the workflow.
 
-### Action Plugins
-After the pipeline document is loaded, openpipe associates each workflow action with a plugin instance, the plugin to be used will be determined by the action name and action config.  Plugins can provide a wide range of action types: collection, filtering, exporting, etc.
+### Action Modules
+The execution engine loads the action modules associated with  action names, and creates action instances for every action defined in the pipeline. Action modules can provide a wide range of action types: collection, filtering, exporting, etc.
 
-You can get the list of available plugins with:
+You can get the list of available actions with:
 ```sh
 openpipe help
 ```
 
-You can get the help for a plugin with:
+You can get the help for an action with:
 ```
-openpipe help «plugin_name»
+openpipe help «action»
 ```
-
-Openpipe action plugins may be polymorphic, meaning the same plugin may be able to handle different input and config types.
 
 ### Data Items
 In DPL any kind of workflow managed data is referred as an _item_, in openpipe _items_ are stored in memory and transmitted as Python object references, as such, items can be of any data type or class available with Python.
 
 ### Data Flow
 
-Action plugins should be observed as independent processing units, the following items will be available to them:
+Action instances should be observed as independent processing units, the following items will be available to them:
 
-- Config Item: the config value that was provided in the pipeline document
-- Input Item: input data provided to the action
+- Input Item: the input data provided to the action
+- Config Item: the config data that is based on the user provided config
 - Output Item: output data produced by the action execution
 - Tag Item: the tag
 
@@ -83,11 +82,14 @@ Action plugins should be observed as independent processing units, the following
 
 ### Dynamic Configuration
 
-The configuration item provided may include dynamic components, this feature provides the ability to embed python expressions and input item related config.
+Action configuration items provided in the pipeline document, can include dynamic components. When an action is executed due to the reception of an input item, it's configuration is updated to reflect any changes in the input. This feature provides the ability to embed python expressions and action input data on it's configuration.
 
-Before invoking an action, any config text found between consecutive dollar signs ($) will be evaluated as a python expression and replaced with it's result. If you need to have $ on your strings, you will need to escape them using \\$ .
+Before invoking the action input handling, any config text found between consecutive dollar signs ($) will be evaluated as a python expression and replaced with it's result. If you need to have '$' in your string, you will need to escape it using \\$ .
 
 During expression evaluation, the "_" symbol is a reference to the full input item. When the input item is a dict, it's keys values will be mapped to variable names so that you can refer to them easily by providing $key$.
+
+!!! Important
+    Several actions use a default configuration of `$_$` which means the full input item will be used as the configuration item. It is the case of the `print` and `assert` actions.
 
 
 Examples:
@@ -163,10 +165,10 @@ When more than two items need to be tagged, a dictionary based tag needs to be u
 
 !!! Warning
 
-    The plugin API is not stable yet, the provided plugins are likely to break with openpipe upgrades.
+    The action API is not stable yet, the provided actions are likely to break with openpipe upgrades.
 
 
-A pipeline may contain a special segment named `libraries`. This segment must contain a list of local directories or urls for libraries containing additional plugins.
+A pipeline may contain a special segment named `libraries`. This segment must contain a list of local directories or urls for libraries containing additional actions.
 
 ## Copyright and License
 

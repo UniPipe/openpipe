@@ -5,10 +5,10 @@ from ..file_ import Plugin
 import xmltodict
 
 
-def decode_file(fileobj, plugin):
+def decode_file(fileobj, action):
     data = fileobj.read()
     xml_data = xmltodict.parse(data)
-    plugin.put(xml_data)
+    action.put(xml_data)
 
 
 Plugin.attach_file_handler(decode_file, "application/xml")

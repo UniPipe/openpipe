@@ -11,11 +11,11 @@ class Errors(Enum):
     CONFIG_UNSUPPORTED_KEY = 22
 
 
-def validate_required_config(module_plugin, action_label, provided_config):
+def validate_required_config(module_action, action_label, provided_config):
     """ """
     resulting_config = {}
     try:
-        required_config_str = getattr(module_plugin, "required_config")
+        required_config_str = getattr(module_action, "required_config")
     except AttributeError:
         return resulting_config
 
@@ -48,11 +48,11 @@ def validate_required_config(module_plugin, action_label, provided_config):
 
 
 def validate_optional_config(
-    required_config, module_plugin, action_label, provided_config
+    required_config, module_action, action_label, provided_config
 ):
     """ validate optional config and return the complete config """
 
-    optional_config_str = getattr(module_plugin, "optional_config", "{}")
+    optional_config_str = getattr(module_action, "optional_config", "{}")
     optional_config = load_yaml(optional_config_str, False)
 
     # config schema accepts a single optional non dict item
@@ -86,35 +86,35 @@ def validate_optional_config(
     if len(final_config) == 0 and provided_config is not None:
         print("Unexpected config for", action_label, file=stderr)
         print("Got", type(provided_config), pformat(provided_config), file=stderr)
-        print("The plugin does not support any kind of configuration", file=stderr)
+        print("The action does not support any kind of configuration", file=stderr)
         exit(20)
 
     return final_config
 
 
-def validate_provided_config(module_plugin, action_label, provided_config):
-    """ Validate that the provided_config is valid per the plugin config schema """
+def validate_provided_config(module_action, action_label, provided_config):
+    """ Validate that the provided_config is valid per the action config schema """
 
-    if hasattr(module_plugin, "required_some_config"):
+    if hasattr(module_action, "required_some_config"):
         if provided_config is None:
             print("Missing config for", action_label, file=stderr)
-            print("The plugin requires config", file=stderr)
+            print("The action requires config", file=stderr)
             exit(25)
         else:
             return provided_config
 
     required_config = validate_required_config(
-        module_plugin, action_label, provided_config
+        module_action, action_label, provided_config
     )
 
     if (
         len(required_config) == 1
         and not isinstance(provided_config, dict)
-        and not hasattr(module_plugin, "optional_config")
+        and not hasattr(module_action, "optional_config")
     ):
         return required_config
     config = validate_optional_config(
-        required_config, module_plugin, action_label, provided_config
+        required_config, module_action, action_label, provided_config
     )
     return config
 

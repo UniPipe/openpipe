@@ -1,5 +1,5 @@
 # Openpipe Action Plugin Development
-This document provides is a quick reference for developers planning to write openpipe  plugins.
+This document provides is a quick reference for developers planning to write openpipe  actions.
 
 
 ### Example Plugin Code
@@ -28,7 +28,7 @@ start:
 ```
 
 ## Introduction
-An openpipe plugin is a regular Python module with the following requirements:
+An openpipe action is a regular Python module with the following requirements:
 
 - Must provide a docstring with a short description, the first line will be displayed on _openpipe help_
 - Must provide a class named `Plugin`, which:

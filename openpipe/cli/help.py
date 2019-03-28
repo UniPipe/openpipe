@@ -25,11 +25,11 @@ def example_markdown(example_string):
 
 
 @click.command(name="help")
-@click.argument("plugin", nargs=-1, required=False)
-def cmd_help(plugin):
-    if len(plugin) == 0:
-        return print_list_of_plugins()
-    action_name = " ".join(plugin)
+@click.argument("action", nargs=-1, required=False)
+def cmd_help(action):
+    if len(action) == 0:
+        return print_list_of_actions()
+    action_name = " ".join(action)
     action = [
         action for action in get_actions_metadata() if action["name"] == action_name
     ]
@@ -40,16 +40,16 @@ def cmd_help(plugin):
         exit(2)
 
     action = action[0]
-    test_filename = action["test_file_name"]
-    examples_filename = action.get("examples_file_name", None) or test_filename
+    test_filename = action["test_filename"]
+    examples_filename = action.get("examples_filename", None) or test_filename
 
-    config_string = action["required_config"]
+    config_string = action.get("required_config", None)
     if config_string is not None:
         config_string = config_markdown(config_string)
         required_config_md = "\n# Required Configuration\n" + config_string + "\n"
     else:
         required_config_md = ""
-    config_string = action["required_config"]
+    config_string = action.get("optional_config", None)
     if config_string is not None:
         config_string = config_markdown(config_string)
         optional_config_md = "\n# Optional Configuration\n" + config_string + "\n"
@@ -76,7 +76,7 @@ def cmd_help(plugin):
     pretty_print_yaml(examples_filename)
 
 
-def print_list_of_plugins():
+def print_list_of_actions():
 
     table_data = [["Action Name", "Purpose"]]
     for action_metadata in get_actions_metadata():
@@ -84,4 +84,4 @@ def print_list_of_plugins():
     table = SingleTable(table_data)
     print(table.table)
     # print("-------------------------------------\n")
-    print("You can get help for a plugin with:\nopenpipe help <plugin_name>")
+    print("You can get help for a action with:\nopenpipe help <action_name>")
