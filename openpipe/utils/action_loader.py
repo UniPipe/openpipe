@@ -22,16 +22,16 @@ def action_module_name(action_name):
 def load_action_module(action_name, action_label):
     """ Load the python module associated with an action name """
     action_path = action_module_name(action_name)
+    tb = TracebackPrinter(tb_base="openpipe", tb_exclude=("core.py",))
     try:
         action_module = import_module(action_path)
     except ModuleNotFoundError as error:
         print("Error loading module", action_path, file=stderr)
-        tb = TracebackPrinter(tb_base="openpipe", tb_exclude=("core.py",))
         error = tb("Module not found:", error.name, tb=traceback.extract_stack())
         raise ModuleNotFoundError(error) from None
     except ImportError as error:
         print("Error loading module", action_path, file=stderr)
-        error = tb("ImportError", error.name, tb=traceback.extract_stack())
+        error = tb("ImportError", error.msg, tb=traceback.extract_stack())
         print("Required for action:", action_label, file=stderr)
         raise ImportError(error) from None
     if not hasattr(action_module, "Plugin"):
