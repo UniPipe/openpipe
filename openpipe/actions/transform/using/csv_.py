@@ -17,12 +17,14 @@ class Plugin(PluginRuntime):
     """
 
     def on_start(self, config):
-        self.is_auto_number = config['auto_number']
-        self.delimiter = config['delimiter']
-        self.quotechar = config['quotechar']
-        self.field_list = config['field_list']
+        self.is_auto_number = config["auto_number"]
+        self.delimiter = config["delimiter"]
+        self.quotechar = config["quotechar"]
+        self.field_list = config["field_list"]
         if self.field_list:
-            self.mapper = CSVMapper(self.field_list, self.delimiter, self.quotechar, config['ignore_errors'])
+            self.mapper = CSVMapper(
+                self.field_list, self.delimiter, self.quotechar, config["ignore_errors"]
+            )
         else:
             self.mapper = None
 
@@ -46,8 +48,7 @@ class Plugin(PluginRuntime):
 
 
 class CSVMapper:
-
-    def __init__(self, field_list, delimiter=',', quotechar='"', ignore_errors=False):
+    def __init__(self, field_list, delimiter=",", quotechar='"', ignore_errors=False):
         self.delimiter, self.quotechar = delimiter, quotechar
         self.build_field_groups(field_list)
         self.ignore_errors = ignore_errors
@@ -62,9 +63,9 @@ class CSVMapper:
         self.field_count = 0
 
         for counter, value in enumerate(field_list):
-            if ':' in value:
+            if ":" in value:
                 print("VALUE:", value)
-                field_name, field_count = value.split(':')
+                field_name, field_count = value.split(":")
                 field_count = int(field_count)
             else:
                 field_name, field_count = value, 1
@@ -81,13 +82,15 @@ class CSVMapper:
                 return
             print("FIELD_LIST", self.field_list, file=stderr)
             print("ROW_LIST  ", row, file=stderr)
-            raise Exception("Expected %d elements, got %d" % (self.field_count, len(row)))
+            raise Exception(
+                "Expected %d elements, got %d" % (self.field_count, len(row))
+            )
         new_item = {}
         field_index = 0
         for field_group in self.field_list:
             field_name, field_count = field_group
-            if field_name[0] != '~':
-                if field_name[0] == '%':
+            if field_name[0] != "~":
+                if field_name[0] == "%":
                     field_name = field_name[1:]
                     try:
                         new_item[field_name] = int(row[field_index])
@@ -97,7 +100,7 @@ class CSVMapper:
                         else:
                             raise
                 else:
-                    field_group = row[field_index:field_index + field_count]
+                    field_group = row[field_index : field_index + field_count]
                     new_item[field_name] = self.delimiter.join(field_group)
             field_index += field_count
         return new_item
