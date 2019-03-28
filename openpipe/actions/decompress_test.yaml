@@ -1,6 +1,7 @@
 start:
     - read from file:
         path: samples/archives/test.gz.xpto
+        mime_type: binary
     - decompress:
         type: gzip
     - iterate: $_.decode().splitlines() $

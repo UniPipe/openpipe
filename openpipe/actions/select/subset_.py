@@ -41,7 +41,7 @@ class Plugin(PluginRuntime):
                     else:
                         try:
                             sub_dict = content[key]
-                        except KeyError:    # We simply ignore keys which are not found
+                        except KeyError:  # We simply ignore keys which are not found
                             continue
                         except TypeError:
                             print("E002 TypeError on XML parsing", file=stderr)
