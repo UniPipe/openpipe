@@ -4,7 +4,7 @@ import sys
 from os.path import join, dirname, abspath
 from os.path import expanduser, exists
 from glob import glob
-from .plugin_loader import plugin_load
+from .plugin_loader import get_action_metadata
 
 
 def get_actions_paths():
@@ -71,7 +71,7 @@ def get_actions_metadata():
                 ]
                 if find_action:
                     continue
-                metadata = plugin_load(action_name, None, None, meta_only=True)
+                metadata = get_action_metadata(action_name, "get_actions_metadata()")
                 purpose = metadata["purpose"].splitlines()[1]
                 action = {
                     "name": action_name,

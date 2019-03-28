@@ -8,7 +8,7 @@ This module provides the plugin_load function which performs the following:
 """
 import traceback
 import re
-from sys import stderr, exit
+from sys import stderr
 from importlib import import_module
 from wasabi import TracebackPrinter
 from .plugin_config_schema import validate_config_schema
@@ -24,10 +24,31 @@ def yaml_attribute(plugin_class, attribute_name):
     return attribute_text
 
 
-def plugin_load(action_name, action_config, action_label, meta_only=False):
+def get_action_metadata(action_name, action_label):
+    action_module = load_action_module(action_name, action_name)
+    plugin_class = action_module.Plugin
+    meta = {
+        "purpose": action_module.__doc__,
+        "required_config": yaml_attribute(plugin_class, "required_config"),
+        "optional_config": yaml_attribute(plugin_class, "optional_config"),
+        "required_some_config": yaml_attribute(plugin_class, "required_some_config"),
+    }
+    return meta
+
+
+def create_action_instance(action_name, action_config, action_label, meta_only=False):
+    action_module = load_action_module(action_name, action_name)
+    plugin_class = action_module.Plugin
+    action_config = validate_provided_config(plugin_class, action_label, action_config)
+    instance = plugin_class(action_config, action_label)
+    return instance
+
+
+def load_action_module(action_name, action_label):
+    """ Load the python module associated with an action name """
     plugin_path = action2module(action_name)
     try:
-        module = import_module(plugin_path)
+        action_module = import_module(plugin_path)
     except ModuleNotFoundError as error:
         print("Error loading module", plugin_path, file=stderr)
         tb = TracebackPrinter(tb_base="openpipe", tb_exclude=("core.py",))
@@ -38,26 +59,12 @@ def plugin_load(action_name, action_config, action_label, meta_only=False):
         error = tb("ImportError", error.name, tb=traceback.extract_stack())
         print("Required for action:", action_label, file=stderr)
         raise ImportError(error) from None
-        exit(2)
-    if not hasattr(module, "Plugin"):
-        print("Module {} does not provide a Plugin class!".format(module), file=stderr)
+    if not hasattr(action_module, "Plugin"):
+        print("Module {} does not provide a Plugin class!".format(action_module), file=stderr)
         print("Required for action:", action_label, file=stderr)
-        exit(2)
-    plugin_class = module.Plugin
-    if meta_only:
-        meta = {
-            "purpose": module.__doc__,
-            "required_config": yaml_attribute(plugin_class, "required_config"),
-            "optional_config": yaml_attribute(plugin_class, "optional_config"),
-            "required_some_config": yaml_attribute(plugin_class, "required_some_config"),
-        }
-        return meta
-    validate_config_schema(plugin_class, action_label)
-    action_config = validate_provided_config(plugin_class, action_label, action_config)
-    instance = module.Plugin(action_config)
-    instance.action_label = action_label
-    instance.plugin_filename = plugin_path
-    return instance
+        raise NotImplementedError
+    validate_config_schema(action_module.Plugin, action_label)
+    return action_module
 
 
 def action2module(action_name):

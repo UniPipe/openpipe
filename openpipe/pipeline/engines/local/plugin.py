@@ -11,10 +11,11 @@ DEBUG = environ.get("DEBUG")
 
 
 class PluginRuntimeBase:
-    def __init__(self, config=None):
+    def __init__(self, action_config, action_label):
+        self.initial_config = action_config
+        self.action_label = action_label
         self._tag = None
-        self.initial_config = config
-        self.config_template = Template(config)
+        self.config_template = Template(action_config)
         self.failed_count = 0
         self.input_sources = []  # List of input sources
         self.init()

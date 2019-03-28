@@ -10,6 +10,8 @@ class Plugin(PluginRuntime):
     $_$     # The item to be inserted
     """
 
+    category = "Data Manipulation"
+
     # Output the config item
     def on_input(self, item):
         self.put(self.config)

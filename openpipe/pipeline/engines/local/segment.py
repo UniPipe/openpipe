@@ -1,5 +1,5 @@
 from os import environ
-from openpipe.utils import plugin_load
+from openpipe.utils import create_action_instance
 from sys import stderr, argv
 from wasabi import Printer
 
@@ -13,7 +13,7 @@ class PipelineSegment:
         self.config_list = []
 
     def add(self, action_name, action_config, action_label):
-        action_instance = plugin_load(action_name, action_config, action_label)
+        action_instance = create_action_instance(action_name, action_config, action_label)
         self.action_list.append(action_instance)
         self.config_list.append(action_config)
 
