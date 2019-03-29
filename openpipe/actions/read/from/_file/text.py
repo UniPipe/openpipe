@@ -1,7 +1,7 @@
 """
 Produce content from a xml file
 """
-from ..file_ import Plugin
+from ..file_ import Action
 
 
 def decode_file(fileobj, action):
@@ -12,4 +12,4 @@ def decode_file(fileobj, action):
         action.put(line)
 
 
-Plugin.attach_file_handler(decode_file, "text/plain")
+Action.attach_file_handler(decode_file, "text/plain")

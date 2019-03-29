@@ -1,11 +1,11 @@
 """
 Produce the list of files matching a pattern
 """
-from openpipe.pipeline.engine import PluginRuntime
+from openpipe.pipeline.engine import ActionRuntime
 from glob import glob
 
 
-class Plugin(PluginRuntime):
+class Action(ActionRuntime):
 
     category = "Data Sourcing"
 

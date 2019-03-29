@@ -1,10 +1,10 @@
 """
 Replace some phrase with other phrase
 """
-from openpipe.pipeline.engine import PluginRuntime
+from openpipe.pipeline.engine import ActionRuntime
 
 
-class Plugin(PluginRuntime):
+class Action(ActionRuntime):
 
     category = "Data Manipulation"
 

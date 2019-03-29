@@ -1,7 +1,3 @@
-.bs-sidebar.well {
-    /* margin-bottom: 0; */
-}
-
 .bs-sidebar .nav > li > a:hover,
 .bs-sidebar .nav > li > a:focus {
     border: none;

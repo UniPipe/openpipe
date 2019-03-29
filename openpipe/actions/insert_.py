@@ -1,10 +1,10 @@
 """
 Insert an item
 """
-from openpipe.pipeline.engine import PluginRuntime
+from openpipe.pipeline.engine import ActionRuntime
 
 
-class Plugin(PluginRuntime):
+class Action(ActionRuntime):
 
     category = "Data Sourcing"
 

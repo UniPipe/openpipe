@@ -3,10 +3,10 @@ Produce dictionary from CSV line based input
 """
 import csv
 from sys import stderr
-from openpipe.pipeline.engine import PluginRuntime
+from openpipe.pipeline.engine import ActionRuntime
 
 
-class Plugin(PluginRuntime):
+class Action(ActionRuntime):
 
     category = "Data Transformation"
 

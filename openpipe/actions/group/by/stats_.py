@@ -1,10 +1,10 @@
 """
 Produce statistics by grouping input items by keys
 """
-from openpipe.pipeline.engine import PluginRuntime
+from openpipe.pipeline.engine import ActionRuntime
 
 
-class Plugin(PluginRuntime):
+class Action(ActionRuntime):
 
     category = "Data Analysis"
 

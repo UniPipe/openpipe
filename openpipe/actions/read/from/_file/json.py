@@ -2,7 +2,7 @@
 Produce content from a json file
 """
 from json import load
-from ..file_ import Plugin
+from ..file_ import Action
 
 
 def decode_file(fileobj, action):
@@ -10,4 +10,4 @@ def decode_file(fileobj, action):
     action.put(json_data)
 
 
-Plugin.attach_file_handler(decode_file, "application/json")
+Action.attach_file_handler(decode_file, "application/json")

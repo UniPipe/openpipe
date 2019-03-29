@@ -1,10 +1,10 @@
 """
 Select items based on a conditional expression
 """
-from openpipe.pipeline.engine import PluginRuntime
+from openpipe.pipeline.engine import ActionRuntime
 
 
-class Plugin(PluginRuntime):
+class Action(ActionRuntime):
 
     category = "Data Selection"
 

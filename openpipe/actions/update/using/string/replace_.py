@@ -1,11 +1,11 @@
 """
 Replace some phrase with other phrase
 """
-from openpipe.pipeline.engine import PluginRuntime
+from openpipe.pipeline.engine import ActionRuntime
 from openpipe.utils import is_nested_dict
 
 
-class Plugin(PluginRuntime):
+class Action(ActionRuntime):
 
     category = "Data Manipulation"
 

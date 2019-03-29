@@ -3,7 +3,7 @@ Produce file metadata and content from a TAR archive
 """
 import tarfile
 
-from ..file_ import Plugin
+from ..file_ import Action
 
 
 def decode_file(fileobj, action):
@@ -25,4 +25,4 @@ def decode_file(fileobj, action):
     return True
 
 
-Plugin.attach_file_handler(decode_file, "application/x-tar")
+Action.attach_file_handler(decode_file, "application/x-tar")

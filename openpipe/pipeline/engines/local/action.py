@@ -10,7 +10,7 @@ from glob import glob
 DEBUG = environ.get("DEBUG")
 
 
-class PluginRuntimeBase:
+class ActionRuntimeBase:
     def __init__(self, action_config, action_label):
         self.initial_config = action_config
         self.action_label = action_label
@@ -42,7 +42,7 @@ class PluginRuntimeBase:
                     print("TAG ITEM:\n" + pformat(tag_item), file=stderr)
                 print_exc(file=stderr)
                 msg = (
-                    "---------- Plugin %s dynamic config resolution failed ----------"
+                    "---------- Action %s dynamic config resolution failed ----------"
                     % self.action_label
                 )
                 print(msg, file=stderr)
@@ -84,7 +84,7 @@ class PluginRuntimeBase:
         if self._tag:
             print("TAG ITEM:\n" + pformat(self._tag), file=stderr)
         print_exc(file=stderr)
-        msg = "---------- Plugin %s execution failed ----------, item content:" % (
+        msg = "---------- Action %s execution failed ----------, item content:" % (
             self.action_label
         )
         print(msg, file=stderr)
@@ -100,7 +100,7 @@ class PluginRuntimeBase:
             import_module(filename)
 
 
-class PluginRuntime(PluginRuntimeBase):
+class ActionRuntime(ActionRuntimeBase):
     def init(self):
         self.next_action = None
 

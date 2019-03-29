@@ -3,10 +3,10 @@ Asserts that input matches the config provided item
 """
 
 from sys import stderr
-from openpipe.pipeline.engine import PluginRuntime
+from openpipe.pipeline.engine import ActionRuntime
 
 
-class Plugin(PluginRuntime):
+class Action(ActionRuntime):
 
     category = "Data Validation"
 

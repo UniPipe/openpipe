@@ -1,10 +1,10 @@
 """
 Limit the max number of items sent to the next action
 """
-from openpipe.pipeline.engine import PluginRuntime
+from openpipe.pipeline.engine import ActionRuntime
 
 
-class Plugin(PluginRuntime):
+class Action(ActionRuntime):
 
     category = "Data Control"
 

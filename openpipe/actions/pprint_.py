@@ -2,11 +2,11 @@
 Pretty print an item
 """
 
-from openpipe.pipeline.engine import PluginRuntime
+from openpipe.pipeline.engine import ActionRuntime
 from pprint import pprint
 
 
-class Plugin(PluginRuntime):
+class Action(ActionRuntime):
 
     category = "Data Analysis"
 

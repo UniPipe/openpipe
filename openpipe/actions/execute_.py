@@ -1,11 +1,11 @@
 """
 Execute a command and produce the execution result
 """
-from openpipe.pipeline.engine import PluginRuntime
+from openpipe.pipeline.engine import ActionRuntime
 from subprocess import Popen, PIPE
 
 
-class Plugin(PluginRuntime):
+class Action(ActionRuntime):
 
     category = "Data Sourcing"
 

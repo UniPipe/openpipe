@@ -4,10 +4,10 @@ Select a subset of data from a dictionary input
 from pprint import pformat
 from sys import stderr
 
-from openpipe.pipeline.engine import PluginRuntime
+from openpipe.pipeline.engine import ActionRuntime
 
 
-class Plugin(PluginRuntime):
+class Action(ActionRuntime):
 
     category = "Data Selection"
 

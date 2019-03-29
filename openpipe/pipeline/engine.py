@@ -2,6 +2,6 @@
 # that in the future it can be extended to support runtime selection
 
 from .engines.local import PipelineManager
-from .engines.local import PluginRuntime
+from .engines.local import ActionRuntime
 
-__all__ = [PipelineManager, PluginRuntime]
+__all__ = [PipelineManager, ActionRuntime]
