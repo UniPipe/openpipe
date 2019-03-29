@@ -14,7 +14,7 @@ class Action(ActionRuntime):
 
     optional_config = """
     stats: [sum, count, max, min]   # List of stats to obtain
-    sorted_fields: []               # When these fields change, produce the sorte
+    sorted_fields: []               # When these fields change, produce the sort
     """
 
     def on_start(self, config):
