@@ -1,0 +1,18 @@
+"""
+Select items based on a conditional expression
+"""
+from openpipe.pipeline.engine import PluginRuntime
+
+
+class Plugin(PluginRuntime):
+
+    category = "Data Selection"
+
+    required_some_config = """ # Boolean Expression
+    # Items are copied to next action only when the expression evaluates
+    # to True
+    """
+
+    def on_input(self, item):
+        if self.config:
+            self.put(item)

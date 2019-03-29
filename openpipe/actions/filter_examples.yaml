@@ -1,9 +1,0 @@
-start:
-    - iterate:
-        - red zone
-        - red pie
-        - blue moon
-    - filter:
-        in: $'red' in _$
-        out: $'pie' in _$
-    - print:

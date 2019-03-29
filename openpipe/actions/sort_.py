@@ -35,7 +35,7 @@ class Plugin(PluginRuntime):
         last_key_value = None
         for key, item in self.data:
             key_value = item[self.config["key"]]
-            if self.config['key_on_first']:
+            if self.config["key_on_first"]:
                 if key_value == last_key_value:
                     del item[self.config["key"]]
                 last_key_value = key_value
