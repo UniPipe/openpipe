@@ -141,6 +141,8 @@ class Plugin(PluginRuntime):
         forced_mime_type = self.config.get("mime_type")
         if forced_mime_type != "auto":
             mime_type = forced_mime_type
+        if mime_type is None:
+            mime_type = "text/plain"
         decoder_function = self.MIME_FILE_HANDLER.get(mime_type)
         if decoder_function:
             decoder_function(fileobj, self)

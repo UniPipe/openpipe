@@ -22,17 +22,18 @@ def action_module_name(action_name):
 def load_action_module(action_name, action_label):
     """ Load the python module associated with an action name """
     action_path = action_module_name(action_name)
+    tb = TracebackPrinter(tb_base="openpipe", tb_exclude=("core.py",))
     try:
         action_module = import_module(action_path)
     except ModuleNotFoundError as error:
         print("Error loading module", action_path, file=stderr)
-        tb = TracebackPrinter(tb_base="openpipe", tb_exclude=("core.py",))
+        print("Required for action:", action_label, file=stderr)
         error = tb("Module not found:", error.name, tb=traceback.extract_stack())
         raise ModuleNotFoundError(error) from None
     except ImportError as error:
         print("Error loading module", action_path, file=stderr)
-        error = tb("ImportError", error.name, tb=traceback.extract_stack())
         print("Required for action:", action_label, file=stderr)
+        error = tb("ImportError", error.msg, tb=traceback.extract_stack())
         raise ImportError(error) from None
     if not hasattr(action_module, "Plugin"):
         print(
@@ -54,7 +55,7 @@ def yaml_attribute(text):
 
 def create_action_instance(action_name, action_config, action_label):
     """ Create an instance for a module, after validating the provided config"""
-    action_module = load_action_module(action_name, action_name)
+    action_module = load_action_module(action_name, action_label)
     action_class = action_module.Plugin
     action_config = validate_provided_config(action_class, action_label, action_config)
     instance = action_class(action_config, action_label)
@@ -63,7 +64,7 @@ def create_action_instance(action_name, action_config, action_label):
 
 def get_action_metadata(action_name, action_label):
     """ Get the metadata from an action module """
-    action_module = load_action_module(action_name, action_name)
+    action_module = load_action_module(action_name, action_label)
     action_class = action_module.Plugin
 
     filename, extension = splitext(action_module.__file__)
