@@ -9,6 +9,8 @@ import bz2
 
 class Plugin(PluginRuntime):
 
+    category = "Data Transformation"
+
     optional_config = """
     path:   ""      # If not provided the input item is used
     type:   gzip    # the type to decompress

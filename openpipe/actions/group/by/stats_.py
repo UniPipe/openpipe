@@ -6,6 +6,8 @@ from openpipe.pipeline.engine import PluginRuntime
 
 class Plugin(PluginRuntime):
 
+    category = "Data Analysis"
+
     required_config = """
     keys:         # List of keys to be used for grouping
     """

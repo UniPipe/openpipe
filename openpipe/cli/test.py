@@ -14,7 +14,7 @@ def cmd_test(action_name, print_source):
     try:
         action = get_action_metadata(action_name, "test")
     except ModuleNotFoundError:
-        print("No action available for action name '%s'" % action_name, file=stderr)
+        print("No action module available for action name '%s'" % action_name, file=stderr)
         exit(2)
     if print_source:
         print("### Pipeline Source")

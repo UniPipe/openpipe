@@ -1,26 +1,41 @@
 start:
     - iterate:
-        - {id: zok}
-        - {id: anc}
-        - {id: zin}
+        - {id: anc, desc: noc}
+        - {id: zok, desc: zona}
+        - {id: anc, desc: sapatos}
+        - {id: zin, desc: botelha}
 
     - send to segment:
         - sort_desc
         - sort_asc
+        - sort heading
 
 sort_asc:
     - sort:
-        key: $id$
+        key: id
     - assert:
-        - {id: anc}
-        - {id: zin}
-        - {id: zok}
+        - {id: anc, desc: noc}
+        - {id: anc, desc: sapatos}
+        - {id: zin, desc: botelha}
+        - {id: zok, desc: zona}
 
 sort_desc:
     - sort:
-        key: $id$
+        key: id
         descendent: True
     - assert:
         - {id: zok}
         - {id: zin}
         - {id: anc}
+        - {id: anc}
+
+
+sort heading:
+        - sort:
+            key: id
+            key_on_first: True   # When the key is found repated on input items
+        - assert:
+            - {'id': 'anc', 'desc': 'noc'}
+            - {'desc': 'sapatos'}
+            - {'id': 'zin', 'desc': 'botelha'}
+            - {'id': 'zok', 'desc': 'zona'}

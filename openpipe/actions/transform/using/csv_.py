@@ -8,6 +8,8 @@ from openpipe.pipeline.engine import PluginRuntime
 
 class Plugin(PluginRuntime):
 
+    category = "Data Transformation"
+
     optional_config = """
         delimiter: ","          # One-character string used to separate fields
         quotechar: '"'          # One-character to wrap string values

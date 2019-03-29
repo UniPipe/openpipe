@@ -6,6 +6,8 @@ from openpipe.pipeline.engine import PluginRuntime
 
 class Plugin(PluginRuntime):
 
+    category = "Data Control"
+
     required_config = """
     name:               # Name or list of of segments to receive the item
     """

@@ -8,6 +8,8 @@ from openpipe.pipeline.engine import PluginRuntime
 
 class Plugin(PluginRuntime):
 
+    category = "Data Control"
+
     required_config = """
     name:   #  The name or list of names for the keys to be tagged
     """

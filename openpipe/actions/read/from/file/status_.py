@@ -8,6 +8,8 @@ from os.path import abspath
 
 class Plugin(PluginRuntime):
 
+    category = "Data Sourcing"
+
     optional_config = """
     $_$         # Path of the file to be checked
     """

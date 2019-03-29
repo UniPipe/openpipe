@@ -7,6 +7,8 @@ from glob import glob
 
 class Plugin(PluginRuntime):
 
+    category = "Data Sourcing"
+
     optional_config = """
     $_$     # The pattern to be used for matching
     """

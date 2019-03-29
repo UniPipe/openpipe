@@ -6,6 +6,8 @@ from openpipe.pipeline.engine import PluginRuntime
 
 class Plugin(PluginRuntime):
 
+    category = "Data Control"
+
     required_config = """
     max:    # The max number of items sent to next action
     """

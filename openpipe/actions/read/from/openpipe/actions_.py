@@ -7,6 +7,8 @@ from openpipe.utils import get_actions_metadata
 
 class Plugin(PluginRuntime):
 
+    category = "Data Sourcing"
+
     optional_config = """
     $_$     # The item to be printed, the default is the input item
     """

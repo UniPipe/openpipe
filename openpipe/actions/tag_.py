@@ -7,6 +7,8 @@ from openpipe.pipeline.engine import PluginRuntime
 
 class Plugin(PluginRuntime):
 
+    category = "Data Control"
+
     optional_config = """
     $_$     #  Default is to tag the entire input item
     """

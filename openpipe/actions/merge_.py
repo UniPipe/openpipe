@@ -6,6 +6,8 @@ from openpipe.pipeline.engine import PluginRuntime
 
 class Plugin(PluginRuntime):
 
+    category = "Data Sourcing"
+
     optional_config = """
     $_tag$ # The item to merge with
     """

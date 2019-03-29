@@ -16,6 +16,8 @@ from openpipe.pipeline.engine import PluginRuntime
 
 class Plugin(PluginRuntime):
 
+    category = "Data Sourcing"
+
     required_config = """
     path:                       # Local path or HTTP/HTTPS/FTP url
     """

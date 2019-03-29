@@ -6,6 +6,8 @@ from openpipe.pipeline.engine import PluginRuntime
 
 class Plugin(PluginRuntime):
 
+    category = "Data Selection"
+
     optional_config = """
         in: True    # Expression to include items
         out: False  # Expression to exclude items

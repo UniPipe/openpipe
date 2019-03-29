@@ -12,6 +12,8 @@ class Plugin(PluginRuntime):
     max_count:  1     # Max number of item insertions
     """
 
+    category = "Data Sourcing"
+
     def on_input(self, item):
         interval = self.config["interval"]
         interval = time2seconds(interval)

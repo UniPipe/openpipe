@@ -6,6 +6,7 @@ from openpipe.pipeline.engine import PluginRuntime
 
 class Plugin(PluginRuntime):
 
+    category = "Data Sourcing"
     optional_config = """
     $_$     # The target reduction format
     """

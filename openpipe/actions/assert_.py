@@ -8,6 +8,8 @@ from openpipe.pipeline.engine import PluginRuntime
 
 class Plugin(PluginRuntime):
 
+    category = "Data Validation"
+
     required_some_config = "# The item with the expected value(s)"
 
     def on_start(self, config):

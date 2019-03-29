@@ -6,6 +6,8 @@ from openpipe.pipeline.engine import PluginRuntime
 
 class Plugin(PluginRuntime):
 
+    category = "Data Manipulation"
+
     required_config = """
     set:            # Dictionary with keys/values to be updated
     """

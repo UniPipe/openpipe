@@ -7,6 +7,8 @@ from re import compile, MULTILINE
 
 class Plugin(PluginRuntime):
 
+    category = "Data Transformation"
+
     required_config = """
     regex:      # A regex expression that must match two groups:
                 # (group1) (group2)

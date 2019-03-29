@@ -9,6 +9,8 @@ from openpipe.pipeline.engine import PluginRuntime
 
 class Plugin(PluginRuntime):
 
+    category = "Data Selection"
+
     required_some_config = """
     # YAML describing the elements to be retrieved
     """

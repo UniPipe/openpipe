@@ -35,3 +35,7 @@
         padding-left: 40px;
     }
 }
+
+.md-typeset .md-typeset__table {
+    width:100%;
+}

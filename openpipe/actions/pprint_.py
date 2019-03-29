@@ -8,6 +8,8 @@ from pprint import pprint
 
 class Plugin(PluginRuntime):
 
+    category = "Data Analysis"
+
     # The default behavior is to print the input item
     optional_config = """
     $_$     # The content to be pretty printed

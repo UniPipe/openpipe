@@ -8,6 +8,8 @@ import json
 
 class Plugin(PluginRuntime):
 
+    category = "Data Export"
+
     required_config = """
     path:                   # Filename of the file to create/overwrite/append
     """

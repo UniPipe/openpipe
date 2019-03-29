@@ -7,6 +7,8 @@ from openpipe.pipeline.engine import PluginRuntime
 
 class Plugin(PluginRuntime):
 
+    category = "Data Manipulation"
+
     required_some_config = "# name or list of names of the keys to be removed"
 
     # Output the config item

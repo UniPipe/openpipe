@@ -7,6 +7,8 @@ from subprocess import Popen, PIPE
 
 class Plugin(PluginRuntime):
 
+    category = "Data Sourcing"
+
     required_config = """
     cmd:    # The command to be executed
     """

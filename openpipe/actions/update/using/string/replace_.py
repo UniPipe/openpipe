@@ -7,8 +7,19 @@ from openpipe.utils import is_nested_dict
 
 class Plugin(PluginRuntime):
 
-    required_some_config = """
-    # The replacement rules dictionary
+    category = "Data Manipulation"
+
+    required_some_config = """ # Dictionary with the replacement rules:
+    # Replacement rules for a single string input item:
+    #
+    #   { "search_string" : "replace_string", ... }
+    #   Replaces all occurrences of search_string with replace_string
+    #
+    #   source_key_name:
+    #       "search_string" : "replace_string"
+    #
+    #  In the 'source_key_name' value replaces all occurrences of
+    # 'search_string' with 'replace_string' in the
     """
 
     def on_start(self, config):

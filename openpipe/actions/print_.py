@@ -6,6 +6,8 @@ from openpipe.pipeline.engine import PluginRuntime
 
 class Plugin(PluginRuntime):
 
+    category = "Data Analysis"
+
     optional_config = """
     $_$     # The item to be printed, the default is the input item
     """
