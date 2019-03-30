@@ -1,0 +1,14 @@
+# Executes openpipe run for all pipeline demos in the demos* folder
+start:
+    # Get list of demos
+    - read from file list: demos/*.yaml
+    # Iterate of the list of files
+    - iterate:
+    # Don't rerun run_all_demos, it would cause a recursive loop
+    - select: $ 'run_all_demos' not in _ $  # Do not run our
+    # Insert  the execution command string
+    - insert: openpipe run $_$
+    # Print it
+    - print: Running $_$
+    # EXecute it
+    - execute: $_$

@@ -56,7 +56,7 @@ openpipe help print
 
 
 
-## Additional Plugins
+## Additional Actions
 
 !!! Warning
 

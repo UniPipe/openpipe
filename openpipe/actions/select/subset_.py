@@ -4,10 +4,12 @@ Select a subset of data from a dictionary input
 from pprint import pformat
 from sys import stderr
 
-from openpipe.pipeline.engine import PluginRuntime
+from openpipe.pipeline.engine import ActionRuntime
 
 
-class Plugin(PluginRuntime):
+class Action(ActionRuntime):
+
+    category = "Data Selection"
 
     required_some_config = """
     # YAML describing the elements to be retrieved
@@ -42,7 +44,6 @@ class Plugin(PluginRuntime):
                         try:
                             sub_dict = content[key]
                         except KeyError:  # We simply ignore keys which are not found
-                            print("KEYERROR")
                             continue
                         except TypeError:
                             print("E002 TypeError on XML parsing", file=stderr)

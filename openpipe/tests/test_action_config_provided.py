@@ -1,9 +1,9 @@
-from openpipe.pipeline.engine import PluginRuntime
+from openpipe.pipeline.engine import ActionRuntime
 from openpipe.utils.action_config import validate_provided_config
 
 
 def test_zero_config():
-    class Plugin(PluginRuntime):
+    class Action(ActionRuntime):
         pass
 
-    validate_provided_config(Plugin, __file__, None)
+    validate_provided_config(Action, __file__, None)

@@ -1,11 +1,12 @@
 """
 Reduce a complex item type into a simpler structure
 """
-from openpipe.pipeline.engine import PluginRuntime
+from openpipe.pipeline.engine import ActionRuntime
 
 
-class Plugin(PluginRuntime):
+class Action(ActionRuntime):
 
+    category = "Data Transformation"
     optional_config = """
     $_$     # The target reduction format
     """

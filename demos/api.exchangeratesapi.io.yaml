@@ -1,0 +1,10 @@
+start:
+    - read from file: https://api.exchangeratesapi.io/latest
+    - pprint:
+    - select subset:
+        date: .
+        rates:
+            USD: .
+    - print: ---
+    - print: On $date$ 1 EUR = $USD$ USD
+    - print: ---

@@ -1,16 +1,16 @@
-# Openpipe Action Plugin Development
+# Openpipe Action Action Development
 This document provides is a quick reference for developers planning to write openpipe  actions.
 
 
-### Example Plugin Code
+### Example Action Code
 ```python
 """
 Print content to the standard output
 """
-from openpipe.pipeline.engine import PluginRuntime
+from openpipe.pipeline.engine import ActionRuntime
 
 
-class Plugin(PluginRuntime):
+class Action(ActionRuntime):
 
     optional_config = """
     $_$     # The content to be printed, default is the input item ($_$)
@@ -21,7 +21,7 @@ class Plugin(PluginRuntime):
         self.put(item)          # No change to the data stream, input -> output
 ```
 
-### Example Plugin Usage
+### Example Action Usage
 ```yaml
 start:
     print: Hello world
@@ -31,8 +31,8 @@ start:
 An openpipe action is a regular Python module with the following requirements:
 
 - Must provide a docstring with a short description, the first line will be displayed on _openpipe help_
-- Must provide a class named `Plugin`, which:
-    - Must be derived from the `PluginRuntime` class
+- Must provide a class named `Action`, which:
+    - Must be derived from the `ActionRuntime` class
     - May provide the following class attributes to be handled by the pipeline engine:
         - `required_config`: string with YAML describing required config
         - `optional_config`: string with YAML describing optional config

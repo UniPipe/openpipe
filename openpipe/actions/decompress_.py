@@ -1,13 +1,15 @@
 """
 Decompress gzip input item
 """
-from openpipe.pipeline.engine import PluginRuntime
+from openpipe.pipeline.engine import ActionRuntime
 import zlib
 import lzma
 import bz2
 
 
-class Plugin(PluginRuntime):
+class Action(ActionRuntime):
+
+    category = "Data Transformation"
 
     optional_config = """
     path:   ""      # If not provided the input item is used

@@ -2,11 +2,13 @@
 Pretty print an item
 """
 
-from openpipe.pipeline.engine import PluginRuntime
+from openpipe.pipeline.engine import ActionRuntime
 from pprint import pprint
 
 
-class Plugin(PluginRuntime):
+class Action(ActionRuntime):
+
+    category = "Data Analysis"
 
     # The default behavior is to print the input item
     optional_config = """

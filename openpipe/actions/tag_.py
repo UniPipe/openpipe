@@ -2,10 +2,12 @@
 Tag input item with the provided configuration tag item
 """
 
-from openpipe.pipeline.engine import PluginRuntime
+from openpipe.pipeline.engine import ActionRuntime
 
 
-class Plugin(PluginRuntime):
+class Action(ActionRuntime):
+
+    category = "Data Control"
 
     optional_config = """
     $_$     #  Default is to tag the entire input item

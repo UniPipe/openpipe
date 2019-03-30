@@ -1,10 +1,12 @@
 """
 Print an item
 """
-from openpipe.pipeline.engine import PluginRuntime
+from openpipe.pipeline.engine import ActionRuntime
 
 
-class Plugin(PluginRuntime):
+class Action(ActionRuntime):
+
+    category = "Data Analysis"
 
     optional_config = """
     $_$     # The item to be printed, the default is the input item

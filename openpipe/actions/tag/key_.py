@@ -3,10 +3,12 @@ Tag a key or list of keys
 # Tagged keys will be stored as _tag[key] = [tem(key]
 """
 
-from openpipe.pipeline.engine import PluginRuntime
+from openpipe.pipeline.engine import ActionRuntime
 
 
-class Plugin(PluginRuntime):
+class Action(ActionRuntime):
+
+    category = "Data Control"
 
     required_config = """
     name:   #  The name or list of names for the keys to be tagged

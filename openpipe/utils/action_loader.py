@@ -35,14 +35,14 @@ def load_action_module(action_name, action_label):
         print("Required for action:", action_label, file=stderr)
         error = tb("ImportError", error.msg, tb=traceback.extract_stack())
         raise ImportError(error) from None
-    if not hasattr(action_module, "Plugin"):
+    if not hasattr(action_module, "Action"):
         print(
-            "Module {} does not provide a Plugin class!".format(action_module),
+            "Module {} does not provide a Action class!".format(action_module),
             file=stderr,
         )
         print("Required for action:", action_label, file=stderr)
         raise NotImplementedError
-    validate_config_schema(action_module.Plugin, action_label)
+    validate_config_schema(action_module.Action, action_label)
     return action_module
 
 
@@ -56,7 +56,7 @@ def yaml_attribute(text):
 def create_action_instance(action_name, action_config, action_label):
     """ Create an instance for a module, after validating the provided config"""
     action_module = load_action_module(action_name, action_label)
-    action_class = action_module.Plugin
+    action_class = action_module.Action
     action_config = validate_provided_config(action_class, action_label, action_config)
     instance = action_class(action_config, action_label)
     return instance
@@ -65,7 +65,7 @@ def create_action_instance(action_name, action_config, action_label):
 def get_action_metadata(action_name, action_label):
     """ Get the metadata from an action module """
     action_module = load_action_module(action_name, action_label)
-    action_class = action_module.Plugin
+    action_class = action_module.Action
 
     filename, extension = splitext(action_module.__file__)
     filename = filename.strip("_")

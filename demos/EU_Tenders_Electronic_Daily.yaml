@@ -1,0 +1,49 @@
+start:
+    - read from file:
+        ftp://guest:guest@ted.europa.eu/daily-packages/2019/03/20190329_2019063.tar.gz
+    - select: $ '.xml' in filename $  # We only care about xml files
+    # Ugly hack to remove <P></P> from htmllified text
+    - insert: $ content.replace(b'</P>', b'\n').replace(b'<P>', b'') $
+    - read from file: { path: "-", mime_type: "text/xml" }
+    - limit: 5  # just one to test with the first 5 files
+    - select subset:
+        TED_EXPORT:
+            CODED_DATA_SECTION:
+                REF_OJS:
+                    DATE_PUB: .
+
+                NOTICE_DATA:
+                    ISO_COUNTRY:
+                        "@VALUE": ISO_COUNTRY
+                    ORIGINAL_CPV: CPV_LIST
+
+                    VALUES:
+                        VALUE: .
+                        VALUE_RANGE: .
+                CODIF_DATA:
+                    DS_DATE_DISPATCH: .
+                    DT_DATE_FOR_SUBMISSION: .
+                    TD_DOCUMENT_TYPE: .
+                    NC_CONTRACT_NATURE: .
+                    PR_PROC: .
+                    MA_MAIN_ACTIVITIES: .
+
+            TRANSLATION_SECTION:
+                ML_TITLES:
+                    ML_TI_DOC: .
+    - update:
+        set:
+            ML_TI_DOC:  $[x for x in ML_TI_DOC if x['@LG']=='EN'][0]$
+    - update:
+        set:
+            COUNTRY:    $ML_TI_DOC['TI_CY']$
+            TOWN:       $ML_TI_DOC['TI_TOWN']$
+            TEXT:       $ML_TI_DOC['TI_TEXT']$
+            TD_DOCUMENT_TYPE:   $TD_DOCUMENT_TYPE['#text']$
+            DOCS:      1   # Inject a dummy count field for stats
+
+    - drop: ML_TI_DOC   # We no longer need the original field
+    - print: |
+        Location: $COUNTRY$/$TOWN$
+        Type: $TD_DOCUMENT_TYPE$
+        Title: $TEXT$

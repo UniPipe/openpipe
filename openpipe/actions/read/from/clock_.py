@@ -2,15 +2,17 @@
 Produce the system clock time at regular intervals
 """
 from time import time, sleep
-from openpipe.pipeline.engine import PluginRuntime
+from openpipe.pipeline.engine import ActionRuntime
 
 
-class Plugin(PluginRuntime):
+class Action(ActionRuntime):
 
     optional_config = """
     interval:   0   # Pause time between insertions, 0 means forever
     max_count:  1     # Max number of item insertions
     """
+
+    category = "Data Sourcing"
 
     def on_input(self, item):
         interval = self.config["interval"]

@@ -1,10 +1,12 @@
 """
 Produce statistics by grouping input items by keys
 """
-from openpipe.pipeline.engine import PluginRuntime
+from openpipe.pipeline.engine import ActionRuntime
 
 
-class Plugin(PluginRuntime):
+class Action(ActionRuntime):
+
+    category = "Data Analysis"
 
     required_config = """
     keys:         # List of keys to be used for grouping
@@ -12,7 +14,7 @@ class Plugin(PluginRuntime):
 
     optional_config = """
     stats: [sum, count, max, min]   # List of stats to obtain
-    sorted_fields: []               # When these fields change, produce the sorte
+    sorted_fields: []               # When these fields change, produce the sort
     """
 
     def on_start(self, config):

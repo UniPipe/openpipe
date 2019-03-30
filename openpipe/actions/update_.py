@@ -1,10 +1,12 @@
 """
 Update values depending on conditional expressions
 """
-from openpipe.pipeline.engine import PluginRuntime
+from openpipe.pipeline.engine import ActionRuntime
 
 
-class Plugin(PluginRuntime):
+class Action(ActionRuntime):
+
+    category = "Data Manipulation"
 
     required_config = """
     set:            # Dictionary with keys/values to be updated

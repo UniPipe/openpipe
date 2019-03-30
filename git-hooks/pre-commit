@@ -5,3 +5,4 @@ set -eu
 black openpipe
 
 tox
+tox -e run demos/run_all_demos.yaml

@@ -1,10 +1,12 @@
 """
 Count the number of elements received
 """
-from openpipe.pipeline.engine import PluginRuntime
+from openpipe.pipeline.engine import ActionRuntime
 
 
-class Plugin(PluginRuntime):
+class Action(ActionRuntime):
+
+    category = "Data Analysis"
 
     optional_config = """
     group_by:   ""  # Expression to use for count aggregation

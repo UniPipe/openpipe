@@ -1,11 +1,13 @@
 """
 Build a dictionary from a key/map regex group expression
 """
-from openpipe.pipeline.engine import PluginRuntime
+from openpipe.pipeline.engine import ActionRuntime
 from re import compile, MULTILINE
 
 
-class Plugin(PluginRuntime):
+class Action(ActionRuntime):
+
+    category = "Data Transformation"
 
     required_config = """
     regex:      # A regex expression that must match two groups:

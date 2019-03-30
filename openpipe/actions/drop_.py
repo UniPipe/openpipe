@@ -2,10 +2,12 @@
 Remove some keys from the input item
 """
 
-from openpipe.pipeline.engine import PluginRuntime
+from openpipe.pipeline.engine import ActionRuntime
 
 
-class Plugin(PluginRuntime):
+class Action(ActionRuntime):
+
+    category = "Data Manipulation"
 
     required_some_config = "# name or list of names of the keys to be removed"
 

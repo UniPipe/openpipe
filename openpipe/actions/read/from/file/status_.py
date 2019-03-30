@@ -1,12 +1,14 @@
 """
 Get path status information
 """
-from openpipe.pipeline.engine import PluginRuntime
+from openpipe.pipeline.engine import ActionRuntime
 from os import stat
 from os.path import abspath
 
 
-class Plugin(PluginRuntime):
+class Action(ActionRuntime):
+
+    category = "Data Sourcing"
 
     optional_config = """
     $_$         # Path of the file to be checked

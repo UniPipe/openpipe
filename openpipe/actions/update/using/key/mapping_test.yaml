@@ -1,0 +1,16 @@
+start:
+    - iterate:
+        - name: Cats
+        - name: Dogs
+        - name: Birds
+    - update using key mapping:
+        priority:
+            name:
+                Dogs: 1
+                Cats: 2
+                Birds: 3
+    - pprint:
+    - assert:
+        - {'name': 'Cats', 'priority': 2}
+        - {'name': 'Dogs', 'priority': 1}
+        - {'name': 'Birds', 'priority': 3}

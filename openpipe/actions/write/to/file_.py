@@ -1,12 +1,14 @@
 """
 Write item to a file
 """
-from openpipe.pipeline.engine import PluginRuntime
+from openpipe.pipeline.engine import ActionRuntime
 from os.path import expanduser
 import json
 
 
-class Plugin(PluginRuntime):
+class Action(ActionRuntime):
+
+    category = "Data Export"
 
     required_config = """
     path:                   # Filename of the file to create/overwrite/append

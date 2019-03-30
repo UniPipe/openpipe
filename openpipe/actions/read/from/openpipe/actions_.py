@@ -1,11 +1,13 @@
 """
 Produce the list of available action actions
 """
-from openpipe.pipeline.engine import PluginRuntime
+from openpipe.pipeline.engine import ActionRuntime
 from openpipe.utils import get_actions_metadata
 
 
-class Plugin(PluginRuntime):
+class Action(ActionRuntime):
+
+    category = "Data Sourcing"
 
     optional_config = """
     $_$     # The item to be printed, the default is the input item

@@ -11,10 +11,12 @@ from re import findall
 from urllib.error import HTTPError
 from io import BytesIO, StringIO
 from os.path import splitext, expanduser
-from openpipe.pipeline.engine import PluginRuntime
+from openpipe.pipeline.engine import ActionRuntime
 
 
-class Plugin(PluginRuntime):
+class Action(ActionRuntime):
+
+    category = "Data Sourcing"
 
     required_config = """
     path:                       # Local path or HTTP/HTTPS/FTP url

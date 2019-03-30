@@ -1,11 +1,21 @@
+{% for action in items %}
+{% if action.new_category %}
+
+**{{ action.new_category }}**
+
 Action | Purpose
 --- | ---
-{% for action in items %}
+{%endif %}
 [{{ action.name }}](#{{ action.name.replace(' ', '-') }})|{{ action.purpose }}
 {% endfor %}
 
 {% for action in items %}
-## {{ action.name }}
+
+{% if action.new_category %}
+## {{ action.new_category }}
+{%endif %}
+
+### {{ action.name }}
 {{ action.purpose }}
 
 

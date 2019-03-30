@@ -1,10 +1,12 @@
 """
 Send a copy of the input item to other segment(s)
 """
-from openpipe.pipeline.engine import PluginRuntime
+from openpipe.pipeline.engine import ActionRuntime
 
 
-class Plugin(PluginRuntime):
+class Action(ActionRuntime):
+
+    category = "Data Control"
 
     required_config = """
     name:               # Name or list of of segments to receive the item

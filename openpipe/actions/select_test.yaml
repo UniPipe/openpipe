@@ -1,5 +1,4 @@
 start:
-    - send to segment: filter what
     - iterate: # Iterate sample data
         - Good line 1
         - Broken line
@@ -11,25 +10,13 @@ start:
 
 filter in test:
     # Select lines with "1"
-    - filter:
-        in: $ "Good" in _ $
+    - select: $ "Good" in _ $
     - assert: [Good line 1, Good word X]
     - print: "Good Result : $_$"
 
 filter out test:
     # Remove lines with "Broken"
-    - filter:
-        out: $ "Broken" in _ $
+    - select: $ "Broken" not in _ $
     - assert: [Good line 1, Good word X, Something Else]
     - print: "Not Broken: $_$"
-
-filter what:
-    - insert:
-        name: John
-        surname: Doe
-    # Filter only the name
-    - filter:
-        what: $name$
-    - assert: John
-    - print:
 

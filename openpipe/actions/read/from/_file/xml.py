@@ -1,7 +1,7 @@
 """
 Produce content from a xml file
 """
-from ..file_ import Plugin
+from ..file_ import Action
 import xmltodict
 
 
@@ -11,5 +11,5 @@ def decode_file(fileobj, action):
     action.put(xml_data)
 
 
-Plugin.attach_file_handler(decode_file, "application/xml")
-Plugin.attach_file_handler(decode_file, "text/xml")
+Action.attach_file_handler(decode_file, "application/xml")
+Action.attach_file_handler(decode_file, "text/xml")
