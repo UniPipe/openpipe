@@ -12,18 +12,6 @@ from openpipe.pipeline.engine import PipelineManager
 @click.option("--start-segment", "-s", type=str, default="start")
 @click.argument("filename", type=click.Path(exists=False), required=True)
 def cmd_run(filename, local_only, start_segment):
-    """
-    if filename.startswith('http:') or filename.startswith('https:'):
-        if local_only:
-            print("ERROR: Attempting to load remote pipeline in !", file=stderr)
-            exit(2)
-        if filename.startswith('https://github.com'):
-            filename += "?raw=1"
-        os.unlink(local_filename)
-    else:
-        pipeline_loader = PipelineFileLoader()
-        pipeline = PipelineRuntime(filename, local_only=local_only, start_segment=start_segment)
-    """
     pipeline_run(filename, local_only, start_segment)
 
 

@@ -3,10 +3,14 @@ import os
 import zipfile
 import urllib.request
 from glob import glob
-from shutil import rmtree
+from shutil import rmtree, copytree
 from os.path import expanduser, join, exists
 from urllib.parse import urlparse
 from wasabi import Printer
+from tempfile import TemporaryDirectory
+import pip._internal.req as pip_req
+from pip._internal import main as pip_main
+from pip._internal.utils.misc import get_installed_distributions
 
 
 def download_and_cache(url, is_upgrade=False):
@@ -36,8 +40,14 @@ def download_and_cache(url, is_upgrade=False):
                 msg.warn("WARNING: Unable to retrieve remote library")
                 return None
         msg.good("Successfully downloaded ", url)
-        with zipfile.ZipFile(zip_file_name) as zf:
-            zf.extractall(cached_lib_name)
+        with TemporaryDirectory() as tmpdirname:
+            with zipfile.ZipFile(zip_file_name) as zf:
+                zf.extractall(tmpdirname)
+                req_pattern = join(tmpdirname, "*", "requirements.txt")
+                req_files = glob(req_pattern)
+                if len(req_files) == 1:
+                    check_requirements(req_files[0])
+                    copytree(tmpdirname, cached_lib_name)
         msg.good("Installed")
 
     actions_dir = glob(join(cached_lib_name, "*"))
@@ -45,3 +55,28 @@ def download_and_cache(url, is_upgrade=False):
         cached_lib_name = actions_dir[0]
 
     return cached_lib_name
+
+
+def check_requirements(requirements_filename):
+    installed_packages = [
+        package.project_name for package in get_installed_distributions()
+    ]
+    missing_packages = []
+    for item in pip_req.parse_requirements(
+        requirements_filename, session="somesession"
+    ):
+        if isinstance(item, pip_req.InstallRequirement):
+            if item.name not in installed_packages:
+                missing_packages.append(item.name)
+    if missing_packages:
+        print("The plugin requires the following packages which are not available:")
+        print("\n".join(['\t' + _ for _ in missing_packages]))
+        #   pip_main(["install", "--user", item.name])
+        answer = input("Do you to install them ? (Y/N)").lower()
+        if answer not in ("y", "yes"):
+            print("Aborted for missing dependencies.")
+            exit(1)
+        for package_name in missing_packages:
+            pip_main(["install", "--user", item.name])
+
+    return
