@@ -70,9 +70,9 @@ def check_requirements(requirements_filename):
                 missing_packages.append(item.name)
     if missing_packages:
         print("The plugin requires the following packages which are not available:")
-        print("\n".join(['\t' + _ for _ in missing_packages]))
+        print("\n".join(["\t" + _ for _ in missing_packages]))
         #   pip_main(["install", "--user", item.name])
-        answer = input("Do you to install them ? (Y/N)").lower()
+        answer = input("Do you want to install them using pip ? (Y/N)").lower()
         if answer not in ("y", "yes"):
             print("Aborted for missing dependencies.")
             exit(1)
