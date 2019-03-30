@@ -13,7 +13,7 @@ from pip._internal import main as pip_main
 from pip._internal.utils.misc import get_installed_distributions
 
 
-def download_and_cache(url, is_upgrade=False):
+def download_and_cache(url, is_upgrade=False, auto_install=False):
     msg = Printer()
     parsed_url = urlparse(url)
     if parsed_url.netloc == "github.com":
@@ -46,7 +46,7 @@ def download_and_cache(url, is_upgrade=False):
                 req_pattern = join(tmpdirname, "*", "requirements.txt")
                 req_files = glob(req_pattern)
                 if len(req_files) == 1:
-                    check_requirements(req_files[0])
+                    check_requirements(req_files[0], auto_install)
                     copytree(tmpdirname, cached_lib_name)
         msg.good("Installed")
 
@@ -57,7 +57,7 @@ def download_and_cache(url, is_upgrade=False):
     return cached_lib_name
 
 
-def check_requirements(requirements_filename):
+def check_requirements(requirements_filename, auto_install):
     installed_packages = [
         package.project_name for package in get_installed_distributions()
     ]
@@ -71,11 +71,11 @@ def check_requirements(requirements_filename):
     if missing_packages:
         print("The plugin requires the following packages which are not available:")
         print("\n".join(["\t" + _ for _ in missing_packages]))
-        #   pip_main(["install", "--user", item.name])
-        answer = input("Do you want to install them using pip ? (Y/N)").lower()
-        if answer not in ("y", "yes"):
-            print("Aborted for missing dependencies.")
-            exit(1)
+        if not auto_install:
+            answer = input("Do you want to install them using pip ? (Y/N)").lower()
+            if answer not in ("y", "yes"):
+                print("Aborted for missing dependencies.")
+                exit(1)
         for package_name in missing_packages:
             pip_main(["install", "--user", item.name])
 

@@ -6,3 +6,4 @@ black openpipe
 
 tox
 tox -e run demos/run_all_demos.yaml
+scripts/test_extra_actions.sh
