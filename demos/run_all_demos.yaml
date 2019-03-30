@@ -7,4 +7,5 @@ start:
     - select: $ 'run_all_demos' not in _ $  # Don't rerun our own pipeline
     - insert: openpipe run $_$              # Insert  the execution command string
     - print: Running $_$                    # Print it
-    - execute: $_$                           # EXecute it
+    - execute: $_$                          # Execute it
+    - print: $stdout$                       # Print the run outout
