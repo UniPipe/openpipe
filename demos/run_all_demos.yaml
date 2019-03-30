@@ -8,4 +8,4 @@ start:
     - insert: openpipe run $_$              # Insert  the execution command string
     - print: Running $_$                    # Print it
     - execute: $_$                          # Execute it
-    - print: $stdout$                       # Print the run outout
+    - print: $stdout$                       # Print the run output
