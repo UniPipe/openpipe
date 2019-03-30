@@ -40,7 +40,6 @@ start:
             TOWN:       $ML_TI_DOC['TI_TOWN']$
             TEXT:       $ML_TI_DOC['TI_TEXT']$
             TD_DOCUMENT_TYPE:   $TD_DOCUMENT_TYPE['#text']$
-            DOCS:      1   # Inject a dummy count field for stats
 
     - drop: ML_TI_DOC   # We no longer need the original field
     - print: |
