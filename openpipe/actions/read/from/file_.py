@@ -62,9 +62,9 @@ class Plugin(PluginRuntime):
         if is_remote:
             self.collect_remote_file(path, mime_type)
         else:
-            self.collect_local_file(path, mime_type)
+            self.collect_local_file(path, mime_type, item)
 
-    def collect_local_file(self, path, mime_type):
+    def collect_local_file(self, path, mime_type, item):
 
         ext_map = {
             ".gz": lambda x: gzip.open(x, "r"),
@@ -84,6 +84,9 @@ class Plugin(PluginRuntime):
         if file_extension in ext_map:
             filename, file_extension = splitext(filename)
             mime_type = mimetypes.guess_type(path)[0]
+
+        if path == "-":
+            return self.decode(BytesIO(item), mime_type)
 
         with open_func(path) as file:
 

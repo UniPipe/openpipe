@@ -12,4 +12,4 @@ def decode_file(fileobj, action):
 
 
 Plugin.attach_file_handler(decode_file, "application/xml")
-Plugin.attach_file_handler(decode_file, "text/xml", decode_file)
+Plugin.attach_file_handler(decode_file, "text/xml")
