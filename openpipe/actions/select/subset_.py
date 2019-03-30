@@ -42,12 +42,14 @@ class Plugin(PluginRuntime):
                         try:
                             sub_dict = content[key]
                         except KeyError:  # We simply ignore keys which are not found
+                            print("KEYERROR")
                             continue
                         except TypeError:
                             print("E002 TypeError on XML parsing", file=stderr)
                             print("xml_dict (%s)" % type(content), file=stderr)
                             print("key=%s" % key, file=stderr)
-                            print("xml_dict=%s" % pformat(content), file=stderr)
+                            print("xml_dict=%s" % pformat(content[:256]), file=stderr)
+                            raise
                         sub_result = self.sub_select(sub_dict, value)
                         current_dict.update(sub_result)
         return current_dict
