@@ -1,5 +1,6 @@
 import sys
 import click
+from .show import cmd_show
 from .run import cmd_run
 from .help import cmd_help
 from .test import cmd_test
@@ -28,8 +29,9 @@ def cli():
     pass
 
 
-cli.add_command(cmd_run)
 cli.add_command(cmd_help)
+cli.add_command(cmd_run)
+cli.add_command(cmd_show)
 cli.add_command(cmd_test)
 cli.add_command(install_action_lib)
 

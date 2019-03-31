@@ -1,3 +1,7 @@
 start:
     - insert: "My Value"
-    - print:
+    - assert: "My Value"
+    - print: Everything ok
+
+    # Thex next assert would abort the pipeline execution
+    # - assert: "Something else"

@@ -44,6 +44,7 @@ def cmd_help(action):
             print(f"    - {action_name}:")
         for line in optional_config.splitlines():
             print(line)
+    print(f"\nYou can see usage examples with:\n    openpipe show {action_name}")
 
 
 def print_list_of_actions():

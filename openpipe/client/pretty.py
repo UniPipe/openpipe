@@ -10,6 +10,6 @@ def pretty_print_yaml(yaml_filename):
             highlight(
                 yaml_content.read(),
                 YamlLexer(),
-                TerminalTrueColorFormatter(style="colorful"),
+                TerminalTrueColorFormatter(style="monokai"),
             )
         )

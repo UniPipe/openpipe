@@ -9,7 +9,7 @@ class Action(ActionRuntime):
     category = "Data Sourcing"
 
     required_some_config = """
-    $_$     # The item to be inserted
+    # Item to be produced as an output
     """
 
     # Output the config item
