@@ -12,7 +12,6 @@ def setup_package():
 
     # Read in package meta from about.py
     about_path = os.path.join(root, package_name, "about.py")
-    print("PATH is", about_path)
     with io.open(about_path, encoding="utf8") as f:
         about = {}
         exec(f.read(), about)
@@ -23,7 +22,7 @@ def setup_package():
         readme = f.read()
 
     # Add meta packages
-    namespace_packages = ["openpipe", "openpipe/actions"]
+    namespace_packages = ["openpipe", "openpipe.actions"]
     all_packages = find_packages()
     all_packages.extend(namespace_packages)
 

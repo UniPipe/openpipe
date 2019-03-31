@@ -1,0 +1,35 @@
+start:
+    - send to segment:
+        #- single item
+        #- multi item
+        - show passwd
+
+single item:
+    - insert:
+        - { cmd: Help, title: Get Help }
+        - { cmd: Info, title: Show info }
+    - transform using terminaltables:
+        header: [Command, Title]
+        keys: [cmd, title]
+    - print:
+
+multi item:
+    - iterate:
+        - { cmd: Help 2, title: Get Help 2 }
+        - { cmd: Info 2, title: Show info 2}
+    - transform using terminaltables:
+        header: [Command, Title]
+        keys: [cmd, title]
+    - print:
+
+show passwd:
+    - limit running platform: Linux
+    - read from file: /etc/passwd
+    - transform using csv:
+        delimiter: ':'
+        field_list: [username, password, uid, gid, gecos, home, shell]
+    - select: $ 'Network'  in gecos $
+    - transform using terminaltables:
+        header: [Username, Name]
+        keys: [username, gecos]
+    - print:

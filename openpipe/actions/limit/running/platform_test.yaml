@@ -1,0 +1,17 @@
+start:
+    - send to segment:
+        - test Linux
+        - test Windows
+        - test Darwin
+
+test Linux:
+    - limit running platform: Linux
+    - print: Running on Linux
+
+test Windows:
+    - limit running platform: Windows
+    - print: Running on Windows
+
+test Darwin:
+    - limit running platform: Darwin
+    - print: Running on Darwin

@@ -32,7 +32,6 @@ class Action(ActionRuntime):
 
     def on_input(self, item):
 
-        print("config", self.config)
         # No field list defined, and getting first entry
         if self.mapper is None:
             self.field_list = item.split(self.delimiter)

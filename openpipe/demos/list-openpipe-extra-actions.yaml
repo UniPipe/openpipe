@@ -1,0 +1,10 @@
+
+# Executes openpipe run for all pipeline demos in the demos* folder
+
+start:
+    - read from file:
+            https://api.github.com/orgs/openpipe-extra-actions/repos?type=all
+    - transform using terminaltables:
+        header: [Library, Description]
+        keys: [name, description]
+    - print: $_$
