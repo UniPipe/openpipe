@@ -1,0 +1,9 @@
+start:
+    - iterate:
+        - jinja
+    - tag: $_$
+    - execute: openpipe install-action-lib $_$
+    - read from openpipe actions:
+    - pprint: $_tag$, $name$
+    - select: $_tag in name$
+    - pprint:

@@ -15,8 +15,8 @@ class PipelineManager:
     def start(self):
         self.segment_manager.start()
 
-    def activate(self):
-        return self.segment_manager.activate()
+    def activate(self, activate_arguments):
+        return self.segment_manager.activate(activate_arguments)
 
     def create_action_links(self):
         """ Create all links required to exchange data between action instances """

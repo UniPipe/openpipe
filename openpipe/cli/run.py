@@ -5,17 +5,25 @@ import click
 #  from sys import stderr
 from openpipe.client import PipelineFileLoader
 from openpipe.pipeline.engine import PipelineManager
+from os.path import exists
+from wasabi import Printer
+
+msg = Printer()
 
 
 @click.command(name="run")
 @click.option("--local-only", "-l", is_flag=True, default=False)
 @click.option("--start-segment", "-s", type=str, default="start")
 @click.argument("filename", type=click.Path(exists=False), required=True)
-def cmd_run(filename, local_only, start_segment):
-    pipeline_run(filename, local_only, start_segment)
+@click.argument('pipeline_arguments', nargs=-1)
+def cmd_run(filename, pipeline_arguments, local_only, start_segment):
+    if not exists(filename):
+        msg.fail(f"File '{filename}' does not exist.")
+        exit(1)
+    pipeline_run(filename, pipeline_arguments, local_only, start_segment)
 
 
-def pipeline_run(filename, local_only=False, start_segment="start", report_error=True):
+def pipeline_run(filename, pipeline_arguments, local_only=False, start_segment="start"):
 
     # Fetch and validate the pipeline
     pipeline_loader = PipelineFileLoader()
@@ -33,4 +41,4 @@ def pipeline_run(filename, local_only=False, start_segment="start", report_error
     pipeline_manager.create_action_links()
 
     # Send the activation element into the pipeline
-    return pipeline_manager.activate()
+    return pipeline_manager.activate(pipeline_arguments)

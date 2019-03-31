@@ -1,6 +1,6 @@
 from os import environ
 from openpipe.utils import create_action_instance
-from sys import stderr, argv
+from sys import stderr
 from wasabi import Printer
 
 DEBUG = environ.get("DEBUG")
@@ -19,10 +19,10 @@ class PipelineSegment:
         self.action_list.append(action_instance)
         self.config_list.append(action_config)
 
-    def activate(self, activation_item=True):
+    def activate(self, activate_arguments):
         self.action_list[0].input_sources.append(self)
         self.action_list[0]._on_input(
-            self, argv, None
+            self, activate_arguments, None
         )  # Send current time to the firs action to activate it
         self.action_list[0]._on_input(
             self, None, None
@@ -74,8 +74,8 @@ class SegmentManager:
         self._segments[segment_name] = segment
         return segment
 
-    def activate(self, start_segment_name="start"):
-        return self._segments[start_segment_name].activate()
+    def activate(self, activate_arguments, start_segment_name="start"):
+        return self._segments[start_segment_name].activate(activate_arguments)
 
     def _segment_linker(self, source, segment_name):
         """ Returns a reference name to a local segment """

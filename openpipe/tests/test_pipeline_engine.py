@@ -23,4 +23,4 @@ def test_runtime_runt():
     pipeline_manager.create_action_links()
 
     # Send the activation element into the pipeline
-    pipeline_manager.activate()
+    pipeline_manager.activate(())
