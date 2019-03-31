@@ -1,54 +1,14 @@
-""" This module provides functions to get metadata from  actions """
+""" This module provides functions to get metadata from actions """
 import os
-import sys
-from os.path import join, dirname, abspath, splitext
-from os.path import expanduser
-from glob import glob
-from .action_loader import get_action_metadata
-
-
-def get_actions_paths():
-    """
-    Return a list of paths that should be used too search for action modules.
-    The following order will be used:
-    """
-    action_search_list = []
-
-    # ../actions/
-    actions_dir = join(dirname(__file__), "..", "actions")
-    action_search_list.append(actions_dir)
-
-    # current directory/openpipe/actions
-    cwd = os.getcwd()
-    actions_dir = join(cwd, "openpipe", "actions")
-    action_search_list.append(actions_dir)
-
-    running_on_tox = os.getenv("TOX_ENV_NAME", False)
-    if not running_on_tox:
-        # ~/openpipe/libraries_cache/*/openpipe/actions
-        search_pattern = join(
-            expanduser("~"),
-            ".openpipe",
-            "libraries_cache",
-            "*",
-            "*",
-            "openpipe",
-            "actions",
-        )
-        for search_dir in glob(search_pattern):
-            action_search_list.append(search_dir)
-
-    action_search_list = [abspath(path) for path in action_search_list]
-    return action_search_list
+from os.path import splitext
+from .action_loader import get_action_metadata, load_actions_paths
 
 
 def get_actions_metadata():
     """ Extract metadata from modules """
     action_list = []
 
-    for action_path in get_actions_paths():
-        base_lib_path = abspath(join(action_path, "..", ".."))
-        sys.path.insert(0, base_lib_path)  # We will need to load the module
+    for action_path in load_actions_paths():
         for root, dirs, files in os.walk(action_path, topdown=True):
             # Skip submodules
             if root.split(os.sep)[-1][0] == "_":

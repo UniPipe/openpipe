@@ -1,7 +1,7 @@
 import click
 from sys import exit
 from wasabi import Printer
-from ..utils import get_action_metadata, get_actions_metadata
+from ..utils import get_action_metadata
 from ..client.pretty import pretty_print_yaml
 
 msg = Printer()
@@ -11,7 +11,6 @@ msg = Printer()
 @click.argument("action_name", nargs=-1, required=True)
 def cmd_show(action_name):
     action_name = " ".join(action_name)
-    _ = get_actions_metadata()  # Just to force the path insert
     try:
         action = get_action_metadata(action_name, "show")
     except ModuleNotFoundError:
@@ -22,4 +21,3 @@ def cmd_show(action_name):
     print("### Pipeline Examples")
     pretty_print_yaml(action["test_filename"])
     print("### End Of Pipeline Examples")
-

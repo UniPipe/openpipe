@@ -2,7 +2,7 @@ import click
 from sys import exit
 from wasabi import Printer
 from .run import pipeline_run
-from ..utils import get_action_metadata, get_actions_metadata
+from ..utils import get_action_metadata
 from ..client.pretty import pretty_print_yaml
 
 msg = Printer()
@@ -13,7 +13,6 @@ msg = Printer()
 @click.argument("action_name", nargs=-1, required=True)
 def cmd_test(action_name, print_source):
     action_name = " ".join(action_name)
-    _ = get_actions_metadata()  # Just to force the path insert
     try:
         action = get_action_metadata(action_name, "test")
     except ModuleNotFoundError:
