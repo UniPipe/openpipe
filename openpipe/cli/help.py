@@ -1,11 +1,13 @@
 import os
 import click
 from os.path import exists
-from sys import stderr
 from mdvl import render
+from wasabi import Printer
 from terminaltables import SingleTable
 from ..utils import get_actions_metadata
 from ..client.pretty import pretty_print_yaml
+
+msg = Printer()
 
 
 def config_markdown(config_string):
@@ -34,9 +36,9 @@ def cmd_help(action):
         action for action in get_actions_metadata() if action["name"] == action_name
     ]
     if not action:
-        print("No action with name: %s" % action_name, file=stderr)
-        print("You can get a list of actions with:")
-        print("openpipe help")
+        msg.fail(f"No action with name '{action_name}'")
+        print("You can get the list of available actions with:")
+        print("\topenpipe help")
         exit(2)
 
     action = action[0]
@@ -83,5 +85,5 @@ def print_list_of_actions():
         table_data.append((action_metadata["name"], action_metadata["purpose"]))
     table = SingleTable(table_data)
     print(table.table)
-    # print("-------------------------------------\n")
-    print("You can get help for a action with:\nopenpipe help <action_name>")
+    print("You can get help for an action with:")
+    print("\topenpipe help «action_name»")

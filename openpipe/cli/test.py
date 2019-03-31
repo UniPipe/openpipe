@@ -1,8 +1,11 @@
 import click
-from sys import stderr, exit
+from sys import exit
+from wasabi import Printer
 from .run import pipeline_run
 from ..utils import get_action_metadata, get_actions_metadata
 from ..client.pretty import pretty_print_yaml
+
+msg = Printer()
 
 
 @click.command(name="test")
@@ -14,9 +17,9 @@ def cmd_test(action_name, print_source):
     try:
         action = get_action_metadata(action_name, "test")
     except ModuleNotFoundError:
-        print(
-            "No action module available for action name '%s'" % action_name, file=stderr
-        )
+        msg.fail(f"No action module available for action name '{action_name}'")
+        print("You can get the list of available actions with:")
+        print("\topenpipe help")
         exit(2)
     if print_source:
         print("### Pipeline Source")
