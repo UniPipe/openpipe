@@ -1,3 +1,5 @@
+""" This module provides the atcion runtime classes """
+
 from dinterpol import Template
 from sys import stderr
 from os import environ, sep

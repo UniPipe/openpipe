@@ -1,3 +1,5 @@
+""" This module provides the segment management classes """
+
 from os import environ
 from openpipe.utils import create_action_instance
 from sys import stderr

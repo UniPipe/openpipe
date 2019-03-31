@@ -15,7 +15,7 @@ msg = Printer()
 @click.option("--local-only", "-l", is_flag=True, default=False)
 @click.option("--start-segment", "-s", type=str, default="start")
 @click.argument("filename", type=click.Path(exists=False), required=True)
-@click.argument('pipeline_arguments', nargs=-1)
+@click.argument("pipeline_arguments", nargs=-1)
 def cmd_run(filename, pipeline_arguments, local_only, start_segment):
     if not exists(filename):
         msg.fail(f"File '{filename}' does not exist.")

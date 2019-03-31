@@ -1,3 +1,5 @@
+""" This module provides the pipeline management class """
+
 import sys
 from os import environ
 from os.path import expanduser, normpath
@@ -32,6 +34,3 @@ class PipelineManager:
         if environ.get("DEBUG"):
             print("Adding library path", library_path)
         sys.path.append(normpath(library_path))
-
-    #  def load_action(step_name, step_config, step_line_nr):
-    #      pass
