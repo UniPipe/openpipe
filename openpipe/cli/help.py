@@ -1,29 +1,9 @@
-import os
 import click
-from os.path import exists
-from mdvl import render
-from wasabi import Printer
+from wasabi import Printer, color
 from terminaltables import SingleTable
 from ..utils import get_actions_metadata
-from ..client.pretty import pretty_print_yaml
 
 msg = Printer()
-
-
-def config_markdown(config_string):
-    config_string = config_string.lstrip("\r\n").rstrip(" ")
-    markdown = ""
-    for line in config_string.splitlines():
-        markdown += line
-        markdown += "\n"
-    return markdown
-
-
-def example_markdown(example_string):
-    markdown = ""
-    for line in example_string.splitlines():
-        markdown += "    " + line + "\n"
-    return markdown
 
 
 @click.command(name="help")
@@ -40,42 +20,30 @@ def cmd_help(action):
         print("You can get the list of available actions with:")
         print("\topenpipe help")
         exit(2)
-
     action = action[0]
-    test_filename = action["test_filename"]
-    examples_filename = action.get("examples_filename", None) or test_filename
 
-    config_string = action.get("required_config", None)
-    if config_string is not None:
-        config_string = config_markdown(config_string)
-        required_config_md = "\n# Required Configuration\n" + config_string + "\n"
-    else:
-        required_config_md = ""
-    config_string = action.get("optional_config", None)
-    if config_string is not None:
-        config_string = config_markdown(config_string)
-        optional_config_md = "\n# Optional Configuration\n" + config_string + "\n"
-    else:
-        optional_config_md = ""
-
-    cols, _ = os.get_terminal_size(0)
-    if not exists(examples_filename) and exists(test_filename):
-        examples_filename = test_filename
-
-    #  if exists(examples_filename):
-    #     example_md = "# Example(s)"
-    #  else:
-    #     example_md = ""
-    example_md = ""
-
-    markdown = """# Purpose\n\
-    {}
-{}{}{}
-    """.format(
-        action["purpose"], required_config_md, optional_config_md, example_md
-    )
-    render(markdown, cols=cols)
-    pretty_print_yaml(examples_filename)
+    #  pretty_print_yaml(examples_filename)
+    print(color("PURPOSE", bold=True))
+    print(f"\t{action['purpose']}")
+    required_some_config = action.get("required_some_config")
+    if required_some_config:
+        print(color("\n# REQUIRED CONFIG", bold=True))
+        print(f"    - {action_name}: ", end='')
+        for line in required_some_config.splitlines():
+            print(line)
+    required_config = action.get("required_config")
+    if required_config:
+        print(color("\n# REQUIRED CONFIG", bold=True))
+        print(f"    - {action_name}:")
+        for line in required_config.splitlines():
+            print(line)
+    optional_config = action.get("optional_config")
+    if optional_config:
+        print(color("\n# OPTIONAL CONFIG", bold=True))
+        if not required_config and not required_some_config:
+            print(f"    - {action_name}:")
+        for line in optional_config.splitlines():
+            print(line)
 
 
 def print_list_of_actions():

@@ -9,6 +9,7 @@ class Errors(Enum):
     CONFIG_MUST_BE_DICT = 20
     CONFIG_MISSING_KEY = 21
     CONFIG_UNSUPPORTED_KEY = 22
+    CONFIG_EMPTY_VALUE = 23
 
 
 def validate_required_config(module_action, action_label, provided_config):
@@ -26,6 +27,10 @@ def validate_required_config(module_action, action_label, provided_config):
     if not isinstance(provided_config, dict):
         if len(required_config) == 1:
             required_config_key = next(iter(required_config.keys()))
+            if provided_config == "":
+                print("Invalid key value on action", action_label, file=stderr)
+                print("The required config option '%s' can not be empty" % required_config_key, file=stderr)
+                exit(Errors.CONFIG_EMPTY_VALUE)
             return {required_config_key: provided_config}
         else:
             print("Invalid config for", action_label, file=stderr)
@@ -37,13 +42,16 @@ def validate_required_config(module_action, action_label, provided_config):
         try:
             resulting_config[key] = provided_config[key]
         except KeyError:
-            print("Invalid config for", action_label, file=stderr)
-            print("The required field '%s' is missing" % key, action_label, file=stderr)
+            print("Invalid config on action", action_label, file=stderr)
+            print("The required field '%s' is missing" % key, file=stderr)
             print(
-                "The following config are required:", required_config_str, file=stderr
+                "\nThe following config is required:", required_config_str, file=stderr
             )
             exit(Errors.CONFIG_MISSING_KEY)
-
+        if provided_config[key] in ["", None]:
+            print("Invalid key value on action", action_label, file=stderr)
+            print("The required config option '%s' can not be empty" % key, file=stderr)
+            exit(Errors.CONFIG_EMPTY_VALUE)
     return resulting_config
 
 

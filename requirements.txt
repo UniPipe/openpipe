@@ -3,7 +3,6 @@ pip > 10
 pyyaml
 click
 xmltodict
-mdvl
 pygments
 terminaltables
 blinker

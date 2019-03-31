@@ -10,7 +10,9 @@ class Action(ActionRuntime):
 
     category = "Data Validation"
 
-    required_some_config = "# The item with the expected value(s)"
+    required_some_config = """
+    # The item with the expected value(s)
+    """
 
     def on_start(self, config):
         if isinstance(config, list):

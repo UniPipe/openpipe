@@ -2,8 +2,9 @@
 """
 from openpipe.utils.yaml_extra import load_yaml, remove_line_info
 from sys import stderr
+from pprint import pformat
 
-SEGMENTS_DOC_URL = "https://www.openpipe.org/OpenpipeLanguage#Segment"
+SEGMENTS_DOC_URL = "https://www.openpipe.org/1.0/language/#segments"
 
 
 class PipelineLoader:
@@ -21,8 +22,8 @@ class PipelineLoader:
 
         if not isinstance(python_data, dict):
             print(
-                "The provided YAML does not provide any segment (key: content).\n"
-                "Instead got:\n{}\n".format(python_data)
+                "Pipeline YAML must start with a dictionary !\n"
+                "Instead got:\n{}\n".format(pformat(python_data))
                 + "You can read more about the segments format at:\n"
                 + SEGMENTS_DOC_URL,
                 file=stderr,
