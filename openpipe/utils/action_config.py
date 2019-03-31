@@ -29,7 +29,11 @@ def validate_required_config(module_action, action_label, provided_config):
             required_config_key = next(iter(required_config.keys()))
             if provided_config == "":
                 print("Invalid key value on action", action_label, file=stderr)
-                print("The required config option '%s' can not be empty" % required_config_key, file=stderr)
+                print(
+                    "The required config option '%s' can not be empty"
+                    % required_config_key,
+                    file=stderr,
+                )
                 exit(Errors.CONFIG_EMPTY_VALUE)
             return {required_config_key: provided_config}
         else:

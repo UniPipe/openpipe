@@ -28,7 +28,7 @@ def cmd_help(action):
     required_some_config = action.get("required_some_config")
     if required_some_config:
         print(color("\n# REQUIRED CONFIG", bold=True))
-        print(f"    - {action_name}: ", end='')
+        print(f"    - {action_name}: ", end="")
         for line in required_some_config.splitlines():
             print(line)
     required_config = action.get("required_config")

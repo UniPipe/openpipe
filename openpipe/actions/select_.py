@@ -1,5 +1,5 @@
 """
-Select items based on a conditional expression
+Select input items based on a conditional expression
 """
 from openpipe.pipeline.engine import ActionRuntime
 
@@ -9,7 +9,7 @@ class Action(ActionRuntime):
     category = "Data Selection"
 
     required_some_config = """ # Boolean Expression
-    # Items are copied to next action only when the expression evaluates
+    # Items are only copied to next action only when the expression evaluates
     # to True
     """
 
