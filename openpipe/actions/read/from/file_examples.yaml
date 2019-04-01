@@ -4,6 +4,6 @@ start:
     - print: Line $_$
 
     # Print a JSON API response
-    - read from file: https://api.exchangeratesapi.io/latest
+    - read from url: https://api.exchangeratesapi.io/latest
     - pprint:
 

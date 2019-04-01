@@ -1,5 +1,5 @@
 start:
-    - read from file:
+    - read from url:
         ftp://guest:guest@ted.europa.eu/daily-packages/2019/03/20190329_2019063.tar.gz
     - select: $ '.xml' in filename $  # We only care about xml files
     # Ugly hack to remove <P></P> from htmllified text
