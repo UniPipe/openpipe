@@ -58,7 +58,6 @@ class Action(ActionRuntime):
             raise
         file_data = reply.read()
         mime_type = mimetypes.guess_type(url)[0]
-        print("MT", mime_type, url)
         encoding = None
         try:
             content_type = reply.getheader("Content-Type")

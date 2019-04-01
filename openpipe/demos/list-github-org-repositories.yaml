@@ -1,0 +1,14 @@
+
+# Prints the list of repositories for an GitGub organization
+
+start:
+    - insert: { org_name: "$_[0] if _ else 'openpipe-extra-actions' $" }
+    - read from url: # Use the first command line argument for the organization
+        https://api.github.com/orgs/$org_name$/repos?type=all
+    - iterate:
+    - select: $description is not None$ # Skip repos with null descriptions
+    - update: { set: { description: "$description[:120]$" } } # Trim to 120 chars
+    - transform using terminaltables:
+        header: [Library, Description]
+        keys: [name, description]     # Trim description to 120 chars
+    - print: $_$
