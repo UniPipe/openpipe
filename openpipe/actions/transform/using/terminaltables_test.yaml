@@ -1,7 +1,7 @@
 start:
     - send to segment:
-        #- single item
-        #- multi item
+        - single item
+        - multi item
         - show passwd
 
 single item:
