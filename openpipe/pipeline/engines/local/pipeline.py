@@ -17,16 +17,21 @@ class PipelineManager:
     def start(self):
         self.segment_manager.start()
 
-    def activate(self, activate_arguments):
-        return self.segment_manager.activate(activate_arguments)
+    def activate(self, activate_arguments, start_segment):
+        return self.segment_manager.activate(
+            activate_arguments, start_segment=start_segment
+        )
 
     def create_action_links(self):
         """ Create all links required to exchange data between action instances """
         self.segment_manager.create_action_links()
 
     def load_library(self, library_path):
-        if library_path.startswith("http:") or library_path.startswith("https:"):
-            library_path = download_and_cache(library_path)
+        auto_download = environ.get("OPENPIPE_AUTO_NETWORK", "False")
+        if library_path.startswith("https:"):
+            if auto_download != "True":
+                return
+            library_path = download_and_cache(library_path, auto_install=True)
             if library_path is None:  # Remote file not found
                 return
         else:

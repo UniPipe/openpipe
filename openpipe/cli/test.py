@@ -12,6 +12,7 @@ msg = Printer()
 @click.option("--print-source", "-p", is_flag=True, default=False)
 @click.argument("action_name", nargs=-1, required=True)
 def cmd_test(action_name, print_source):
+    """ Run tests for an action"""
     action_name = " ".join(action_name)
     try:
         action = get_action_metadata(action_name, "test")

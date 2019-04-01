@@ -2,7 +2,7 @@ from openpipe.client import PipelineFileLoader
 from openpipe.pipeline.engine import PipelineManager
 
 
-def test_runtime_runt():
+def test_runtime_run():
 
     # Load and validate file syntax
     pipeline_loader = PipelineFileLoader()
@@ -23,4 +23,4 @@ def test_runtime_runt():
     pipeline_manager.create_action_links()
 
     # Send the activation element into the pipeline
-    pipeline_manager.activate(())
+    pipeline_manager.activate((), start_segment="start")

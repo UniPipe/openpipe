@@ -76,8 +76,8 @@ class SegmentManager:
         self._segments[segment_name] = segment
         return segment
 
-    def activate(self, activate_arguments, start_segment_name="start"):
-        return self._segments[start_segment_name].activate(activate_arguments)
+    def activate(self, activate_arguments, start_segment):
+        return self._segments[start_segment].activate(activate_arguments)
 
     def _segment_linker(self, source, segment_name):
         """ Returns a reference name to a local segment """

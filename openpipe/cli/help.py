@@ -9,8 +9,10 @@ msg = Printer()
 @click.command(name="help")
 @click.argument("action", nargs=-1, required=False)
 def cmd_help(action):
+    """ List available actions  """
     if len(action) == 0:
         return print_list_of_actions()
+
     action_name = " ".join(action)
     action = [
         action for action in get_actions_metadata() if action["name"] == action_name

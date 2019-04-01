@@ -10,6 +10,7 @@ msg = Printer()
 @click.command(name="show")
 @click.argument("action_name", nargs=-1, required=True)
 def cmd_show(action_name):
+    """ Show examples for an action"""
     action_name = " ".join(action_name)
     try:
         action = get_action_metadata(action_name, "show")

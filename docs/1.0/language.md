@@ -16,6 +16,9 @@ In DPL the elements are referred as **actions**, and a sequence of actions is re
 #### Segments
 A segment must be represented by a dictionary, where the key is the segment name and the value is a sequence of actions.
 
+!!! Warning "_segment name "
+    Segment names started with "_" will not be loaded. They can be used to store configuration to be referenced with YAML anchors. The `_libraries` segment name has a special purpose explained later on this document.
+
 #### Actions
 An action must be represented by a dictionary, where the key is an action name and the value contains the action config, config may be of any of the YAML supported data types.
 
@@ -163,12 +166,7 @@ When more than two items need to be tagged, a dictionary based tag needs to be u
 
 ## Action Libraries
 
-!!! Warning
-
-    The action API is not stable yet, the provided actions are likely to break with openpipe upgrades.
-
-
-A pipeline may contain a special segment named `libraries`. This segment must contain a list of local directories or urls for libraries containing additional actions.
+A pipeline may contain a special segment named `_libraries`. This segment must contain a list of local directories or urls for libraries containing additional actions.
 
 ## Copyright and License
 

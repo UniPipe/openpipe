@@ -4,11 +4,12 @@ from ..utils.download_cache import download_and_cache
 from .run import pipeline_run
 
 
-@click.command(name="install-action-lib")
+@click.command(name="install-actions-lib")
 @click.option("--upgrade", "-u", is_flag=True, default=False)
 @click.option("--auto-install", "-a", is_flag=True, default=False)
 @click.argument("library_name", required=True)
 def cmd_install_action_lib(library_name, upgrade, auto_install):
+    """ Install an actions library """
     library_name = "https://github.com/openpipe-extra-actions/" + library_name
     download_and_cache(library_name, upgrade, auto_install)
 

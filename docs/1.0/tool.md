@@ -40,8 +40,6 @@ To get a list of the action actions available in the standard library, run:
 ```bash
 openpipe help
 ```
-![Parse Text XML](../imgs/help/openpipe_help.png)
-
 To get the help/example for a specific action, run:
 ```bash
 openpipe help action name
@@ -51,18 +49,21 @@ Example:
 ```bash
 openpipe help print
 ```
-![openpipe help print](../imgs/help/openpipe_help_print.png)
 
+## Extra Actions Libraries
 
+Openpipe supports additional actions libraries, you can check for available libraries with:
+```sh
+openpipe list-actions-lib
+```
 
+Install the required library with:
 
-## Additional Actions
+```sh
+openpipe install-actions-lib «library_name»
+```
 
-!!! Warning
+Action libraries are maintained on GitHub repositories under the [openpipe-extra-actions] organization.
 
-    The action API is not stable yet, the provided actions are likely to break with openpipe upgrades.
-
-Additional actions are maintained on GitHub repositories under the [openpipe-actions] organization.
-
-[openpipe-actions]: https://github.com/openpipe-actions/
+[openpipe-extra-actions]: https://github.com/openpipe-extra-actions/
 [DPL language documentation]: /1.0/language
