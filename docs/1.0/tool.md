@@ -25,7 +25,7 @@ Using your preferred text editor, create a file named `pipeline.yaml` with the f
 ```yaml
 # This is a simple example that pretty prints the content of a remote JSON file
 start:
-    - read from file: https://api.exchangeratesapi.io/latest
+    - read from url: https://api.exchangeratesapi.io/latest
     - pprint:
 ```
 

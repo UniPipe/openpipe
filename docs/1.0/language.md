@@ -170,7 +170,7 @@ A pipeline may contain a special segment named `_libraries`. This segment must c
 
 ## Copyright and License
 
-(C) 2019, João Pinto <lamego.pinto@gmail.com>
+© 2019 CCS Group International
 
 This document is distributed under the [Creative Commons Attribution 4.0 International License].
 
