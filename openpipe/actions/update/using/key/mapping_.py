@@ -1,5 +1,5 @@
 """
-Replace some phrase with other phrase
+Map values from source keys to values on target keys
 """
 from openpipe.pipeline.engine import ActionRuntime
 

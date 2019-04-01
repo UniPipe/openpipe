@@ -1,5 +1,5 @@
 """
-Produce items only when running the specified platforms
+Produce items only when running on the specified platform
 """
 import platform
 from openpipe.pipeline.engine import ActionRuntime

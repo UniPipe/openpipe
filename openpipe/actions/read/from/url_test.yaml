@@ -6,20 +6,21 @@ start:
         - test_http_xml_file
         - test_ftp_json_file
 
-# Test automatic parsing of remote json data
+# Test automatic parsing of remote json data (HTTPS)
 test_http_json_file:
     - read from url: https://api.exchangeratesapi.io/latest
     - assert:
         base: 'EUR'
     - print: "OK"
 
+# Test automatic parsing of remote json data (FTP)
 test_ftp_json_file:
     - read from url: ftp://ftp.ebi.ac.uk/pub/databases/genenames/new/json/alternative_loci_chr_1.json
     - assert: $ 'responseHeader' in  _ $
     - print: "OK"
 
 
-# Test automatic parsing of remote json data
+# Test automatic parsing of remote XML data
 test_http_xml_file:
     - read from url: http://data.consumerfinance.gov/api/views.xml
     - assert: $'response' in _.keys()$
