@@ -1,4 +1,3 @@
-
 import click
 from os.path import dirname, join
 from ..utils.download_cache import download_and_cache
@@ -17,5 +16,7 @@ def cmd_install_action_lib(library_name, upgrade, auto_install):
 @click.command(name="list-actions-lib")
 def cmd_list_action_lib():
     """ List installable action libraries """
-    command_pipeline_file = join(dirname(__file__), 'pipelines', 'list-actions-lib.yaml')
+    command_pipeline_file = join(
+        dirname(__file__), "pipelines", "list-actions-lib.yaml"
+    )
     pipeline_run(command_pipeline_file)
