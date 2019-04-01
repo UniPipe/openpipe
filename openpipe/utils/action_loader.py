@@ -132,5 +132,5 @@ def load_actions_paths():
     return action_search_list
 
 
-# We want action paths inserted on PYTHON path for any posteriro loading
+# We want action paths inserted on PYTHON path for any posterior loading
 load_actions_paths()

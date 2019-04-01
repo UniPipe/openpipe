@@ -1,0 +1,7 @@
+start:
+    - read from url:
+        https://api.github.com/orgs/openpipe-extra-actions/repos?type=all
+    - transform using terminaltables:
+        header: [Library, Description]
+        keys: [name, description]
+    - print: $_$

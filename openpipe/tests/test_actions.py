@@ -43,7 +43,7 @@ class TestPipeline(object):
     test_files = test_files_list
 
     def test(self, test_filename):
-        exit_code, exit_message = pipeline_run(test_filename, ())
+        exit_code, exit_message = pipeline_run(test_filename)
         print(exit_code, exit_message)
         if exit_code != 0:
             raise Exception(exit_message)

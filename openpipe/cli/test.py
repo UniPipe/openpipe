@@ -25,4 +25,4 @@ def cmd_test(action_name, print_source):
         pretty_print_yaml(action["test_filename"])
         print("### End Of Pipeline Source")
     print("### Pipeline Execution:")
-    pipeline_run(action["test_filename"], (), False, "start")
+    pipeline_run(action["test_filename"])

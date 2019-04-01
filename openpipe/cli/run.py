@@ -23,7 +23,7 @@ def cmd_run(filename, pipeline_arguments, local_only, start_segment):
     pipeline_run(filename, pipeline_arguments, local_only, start_segment)
 
 
-def pipeline_run(filename, pipeline_arguments, local_only=False, start_segment="start"):
+def pipeline_run(filename, pipeline_arguments=(), local_only=False, start_segment="start"):
 
     # Fetch and validate the pipeline
     pipeline_loader = PipelineFileLoader()

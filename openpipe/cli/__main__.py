@@ -4,7 +4,7 @@ from .show import cmd_show
 from .run import cmd_run
 from .help import cmd_help
 from .test import cmd_test
-from .actionmanager import install_action_lib
+from .actionmanager import cmd_install_action_lib, cmd_list_action_lib
 from ..about import __version__
 from os import environ
 
@@ -33,7 +33,8 @@ cli.add_command(cmd_help)
 cli.add_command(cmd_run)
 cli.add_command(cmd_show)
 cli.add_command(cmd_test)
-cli.add_command(install_action_lib)
+cli.add_command(cmd_install_action_lib)
+cli.add_command(cmd_list_action_lib)
 
 
 def main():

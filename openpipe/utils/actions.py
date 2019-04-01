@@ -26,30 +26,13 @@ def get_actions_metadata():
                 ]
                 if find_action:
                     continue
-                action_metadata = get_action_metadata(
-                    action_name, "get_actions_metadata()"
-                )
-                """
-                if exists(examples_filename):
-                    action_metadata["examples_file_name"] = examples_filename
-                    with open(examples_filename) as examples_filename:
-                        action_metadata[
-                            "examples_file_content"
-                        ] = examples_filename.read()
-
-                if exists(test_filename):
-                    action_metadata["test_file_name"] = test_filename
-                    with open(test_filename) as test_file:
-                        action_metadata["test_file_content"] = test_file.read()
-                else:
-                    raise Exception("Action mustprovide a test file")
-                # If no examples are available, failback to tests
-                if not action_metadata.get("examples_file_name", None):
-                    action_metadata["examples_file_name"] = test_filename
-                    action_metadata["examples_file_content"] = action_metadata[
-                        "test_file_content"
-                    ]
-                """
+                try:
+                    action_metadata = get_action_metadata(
+                        action_name, "get_actions_metadata()"
+                    )
+                except:  # NOQA: E722
+                    # Ignore broken modules
+                    continue
                 action_list.append(action_metadata)
     action_list.sort(key=lambda x: x["name"])
     return action_list
