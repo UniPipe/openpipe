@@ -12,6 +12,7 @@ linux echo:
         stdout: ok
 
 windows echo:
+    - limit running platform: Windows
     - execute: echo ok
     - pprint:
     - assert:
