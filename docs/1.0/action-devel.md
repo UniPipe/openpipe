@@ -1,5 +1,5 @@
-# Openpipe Action Action Development
-This document provides is a quick reference for developers planning to write openpipe  actions.
+# Openpipe Action Development
+This document provides is a quick reference for developers planning to write openpipe action modules.
 
 
 ### Example Action Code
