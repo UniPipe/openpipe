@@ -7,6 +7,10 @@ from .test import cmd_test
 from .actionmanager import cmd_install_action_lib, cmd_list_action_lib
 from ..about import __version__
 from os import environ
+import colorama
+
+# ANSI chars conversion for Windows
+colorama.init()
 
 
 def tracefunc(frame, event, arg, indent=[0]):

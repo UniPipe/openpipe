@@ -11,3 +11,4 @@ start:
     - assert:
         - {'age': 17, 'discount': 0.2, 'gender': 'female', 'name': 'Rose'}
         - {'age': 75, 'discount': 0.1, 'gender': 'male', 'name': 'Bob'}
+    - print:

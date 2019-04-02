@@ -2,8 +2,7 @@
 Produce the list of files matching a pattern
 """
 from openpipe.pipeline.engine import ActionRuntime
-from glob import glob
-from os.path import normpath
+from pathlib import Path
 
 
 class Action(ActionRuntime):
@@ -15,6 +14,6 @@ class Action(ActionRuntime):
     """
 
     def on_input(self, item):
-        glob_pattern = normpath(self.config)
-        file_list = sorted(glob(glob_pattern))
+        file_list = sorted(Path('.').glob(self.config))
+        file_list = [filename.as_posix() for filename in file_list]
         self.put(file_list)

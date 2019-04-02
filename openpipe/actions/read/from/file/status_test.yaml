@@ -3,4 +3,4 @@ start:
     - read from file status: samples/non_existent
     - assert: $ _ == {} $
     - read from file status: samples/test.txt
-    - assert: { size: 27 }
+    - assert: { "$size in [27, 29]$" }  # Linux / Win Size

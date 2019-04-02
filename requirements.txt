@@ -5,5 +5,5 @@ click
 xmltodict
 pygments
 terminaltables
-blinker
 wasabi
+colorama

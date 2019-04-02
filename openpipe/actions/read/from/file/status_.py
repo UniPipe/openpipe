@@ -3,7 +3,7 @@ Get path status information
 """
 from openpipe.pipeline.engine import ActionRuntime
 from os import stat
-from os.path import abspath
+from pathlib import Path
 
 
 class Action(ActionRuntime):
@@ -15,7 +15,7 @@ class Action(ActionRuntime):
     """
 
     def on_input(self, item):
-        path = self.config
+        path = Path(self.config)
         try:
             path_stat = stat(path)
         except FileNotFoundError:
@@ -25,5 +25,5 @@ class Action(ActionRuntime):
             stat_item = {}
             for st_field in stat_fields:
                 stat_item[st_field[3:]] = getattr(path_stat, st_field)
-            stat_item["abspath"] = abspath(path)
+            stat_item["path"] = path.resolve()
             self.put(stat_item)
