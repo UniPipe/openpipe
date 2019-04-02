@@ -14,6 +14,6 @@ class Action(ActionRuntime):
     """
 
     def on_input(self, item):
-        file_list = sorted(Path('.').glob(self.config))
+        file_list = sorted(Path(".").glob(self.config))
         file_list = [filename.as_posix() for filename in file_list]
         self.put(file_list)
