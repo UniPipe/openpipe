@@ -60,7 +60,7 @@ class PipelineSegment(threading.Thread):
                     print("Failed starting", action.action_label, file=stderr)
                     self.output_queue.put((-1, action.action_label))
                     return
-            self.output_queue.put((0, "OK"))
+        self.output_queue.put((0, "OK " + self.segment_name))
 
         # Block waiting for input
         while True:
@@ -92,15 +92,18 @@ class SegmentManager:
         self.activate_queue = Queue()
 
     def start(self):
+
         """ Runs the start code for every segment created on this manager """
         for segment_name, segment in self._segments.items():
             segment._segment_linker = self._segment_linker
             segment.start()
+
         for segment_name, segment in self._segments.items():
             start_status, start_msg = segment.output_queue.get()
             if start_status != 0:
                 print("Failure starting action", start_msg)
                 exit(1)
+
         self.kill_dead_segments()
 
     def kill_dead_segments(self):
@@ -144,7 +147,6 @@ class SegmentManager:
                 file=stderr,
             )
             exit(2)
-
         segment.add_source(source)
         return segment.input_queue
 
