@@ -9,6 +9,7 @@ from .segment import SegmentManager
 
 class PipelineManager:
     def __init__(self, start_segment_name):
+        self.start_segment_name = start_segment_name
         self.segment_manager = SegmentManager(start_segment_name)
 
     def create_segment(self, segment_name):

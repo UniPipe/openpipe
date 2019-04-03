@@ -19,7 +19,6 @@ class ActionRuntimeBase:
         self._tag = None
         self.config_template = Template(action_config)
         self.failed_count = 0
-        self.input_sources = []  # List of input sources
         self.init()
 
     def segment_linker(self, segment_name):
@@ -53,21 +52,12 @@ class ActionRuntimeBase:
                 exit(1)
 
         if item is None:
-            self.input_sources.remove(caller)
-            reference_count = len(self.input_sources)
-            if reference_count == 0:
-                on_finish_func = getattr(self, "on_finish", None)
-                if on_finish_func:
-                    if DEBUG or _debug:
-                        print("on_finish %s [Tag: %s]" % (self.action_label, self._tag))
-                    on_finish_func(True)
-                self.put(item)
-            else:
+            on_finish_func = getattr(self, "on_finish", None)
+            if on_finish_func:
                 if DEBUG or _debug:
-                    print(
-                        "input_close %s [Tag: %s], input sources: %s"
-                        % (self.action_label, self._tag, self.input_sources)
-                    )
+                    print("on_finish %s [Tag: %s]" % (self.action_label, self._tag))
+                on_finish_func(True)
+            self.put(item)
         else:
             try:
                 self.on_input(item)
@@ -113,7 +103,7 @@ class ActionRuntime(ActionRuntimeBase):
             self.next_action._on_input(self, item, self._tag)
 
     def put_target(self, item, target):
-        target._on_input(self, item, self._tag)
+        target.put((self, item, self._tag))
 
     def set_tag(self, tag_item):
         if DEBUG:

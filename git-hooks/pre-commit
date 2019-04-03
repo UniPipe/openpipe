@@ -3,7 +3,10 @@
 set -eu
 
 black openpipe
-
-tox
-tox -e run openpipe/demos/run_all_demos.yaml
-scripts/test_extra_actions.sh
+ENGINES="local local_multi_thread"
+for engine in $ENGINES; do
+    export OPENPIPE_ENGINE="$engine"
+    tox
+    tox -e run openpipe/demos/run_all_demos.yaml
+    scripts/test_extra_actions.sh
+done

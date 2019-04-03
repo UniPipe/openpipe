@@ -10,7 +10,7 @@ def test_runtime_run():
     pipeline_loader.validate()
 
     # Create a pipeline manager
-    pipeline_manager = PipelineManager()
+    pipeline_manager = PipelineManager("start")
 
     # Load will create all the action instances into provided pipeline manager
     # using the Pipeline Manager API
@@ -23,4 +23,4 @@ def test_runtime_run():
     pipeline_manager.create_action_links()
 
     # Send the activation element into the pipeline
-    pipeline_manager.activate((), start_segment="start")
+    pipeline_manager.activate(())

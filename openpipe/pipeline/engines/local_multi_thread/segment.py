@@ -3,16 +3,24 @@
 from os import environ
 from openpipe.utils import create_action_instance
 from sys import stderr
+import threading
 from wasabi import Printer
+from queue import Queue
 
 DEBUG = environ.get("DEBUG")
 
 
-class PipelineSegment:
+class PipelineSegment(threading.Thread):
     def __init__(self, segment_name):
+        threading.Thread.__init__(self)
+        self.input_queue = Queue()
+        self.output_queue = Queue()
+        self.name = segment_name
         self.segment_name = segment_name
         self.action_list = []
         self.config_list = []
+        self.input_sources = []
+        self.lock_sources = threading.RLock()
 
     def add(self, action_name, action_config, action_label):
         action_instance = create_action_instance(
@@ -22,18 +30,24 @@ class PipelineSegment:
         self.config_list.append(action_config)
 
     def activate(self, activate_arguments):
-        self.action_list[0].input_sources.append(self)
-        self.action_list[0]._on_input(
-            self, activate_arguments, None
-        )  # Send current time to the firs action to activate it
-        self.action_list[0]._on_input(
-            self, None, None
-        )  # Send end-of-input «None» to trigger on_finish()
-        return 0, None  # exit code, exit message
+        if activate_arguments is not None:
+            self.add_source(self)
+        item = (self, activate_arguments, {})
+        self.input_queue.put(item)
 
-    def start(self, _segment_linker):
+    def add_source(self, source):
+        with self.lock_sources:
+            self.input_sources.append(source)
+
+    def run(self):
+
+        _segment_linker = self._segment_linker
+
         """ Run the on start method for all the actions in this segment """
         for i, action in enumerate(self.action_list):
+            action.action_label = (
+                "Thread-'" + self.segment_name + "' :" + action.action_label
+            )
             on_start_func = getattr(action, "on_start", None)
             if on_start_func:
                 if DEBUG:
@@ -44,33 +58,62 @@ class PipelineSegment:
                     action._segment_linker = None
                 except:  # NOQA: E722
                     print("Failed starting", action.action_label, file=stderr)
-                    raise
+                    self.output_queue.put((-1, action.action_label))
+                    return
+            self.output_queue.put((0, "OK"))
+
+        # Block waiting for input
+        while True:
+            source, input_item, tag = self.input_queue.get()
+            if input_item is None:
+                if source is not None:
+                    with self.lock_sources:
+                        self.input_sources.remove(source)
+                self.action_list[0]._on_input(
+                    source, None, tag
+                )  # Send end-of-input «None» to trigger on_finish()
+                with self.lock_sources:
+                    if len(self.input_sources) == 0:
+                        return
+            else:
+                self.action_list[0]._on_input(
+                    source, input_item, tag
+                )  # Send current time to the firs action to activate it
 
 
 class SegmentManager:
+
+    source_lock = threading.RLock()
+
     def __init__(self, start_segment_name):
         self.start_segment_name = start_segment_name
         self._segments = {}
         self.msg = Printer()
+        self.activate_queue = Queue()
 
     def start(self):
         """ Runs the start code for every segment created on this manager """
         for segment_name, segment in self._segments.items():
-            segment.start(self._segment_linker)
+            segment._segment_linker = self._segment_linker
+            segment.start()
+        for segment_name, segment in self._segments.items():
+            start_status, start_msg = segment.output_queue.get()
+            if start_status != 0:
+                print("Failure starting action", start_msg)
+                exit(1)
+        self.kill_dead_segments()
 
+    def kill_dead_segments(self):
         # We must remove all references from segments which have
         # no input sources (inactive)
         for origin_segment_name, origin_segment in self._segments.items():
-            origin_action = origin_segment.action_list[0]
-            segment_sources = origin_action.input_sources
+            segment_sources = origin_segment.input_sources
             if len(segment_sources) == 0:
                 if origin_segment_name == self.start_segment_name:
                     continue
                 self.msg.warn("Segment '%s' is not referenced" % origin_segment_name)
-                for target_segment_name, target_segment in self._segments.items():
-                    target_action = target_segment.action_list[0]
-                    if origin_action in target_action.input_sources:
-                        target_action.input_sources.remove(origin_action)
+                # Kill the thread
+                origin_segment.input_queue.put((None, None, None))
 
     def create(self, segment_name):
         segment = PipelineSegment(segment_name)
@@ -78,7 +121,15 @@ class SegmentManager:
         return segment
 
     def activate(self, activate_arguments):
-        return self._segments[self.start_segment_name].activate(activate_arguments)
+        # On activation we set the called to the start segment because
+        # the first element on the activated pipeline is always delivered from
+        # the start segment
+        start_segment = self._segments[self.start_segment_name]
+        start_segment.activate(activate_arguments)
+        start_segment.activate(None)
+        for segment in self._segments.values():
+            segment.join()
+        return 0, "OK"
 
     def _segment_linker(self, source, segment_name):
         """ Returns a reference name to a local segment """
@@ -94,8 +145,8 @@ class SegmentManager:
             )
             exit(2)
 
-        segment.action_list[0].input_sources.append(source)
-        return segment.action_list[0]
+        segment.add_source(source)
+        return segment.input_queue
 
     def create_action_links(self):
         """ Create links between consecutive action and on segment references
@@ -107,4 +158,3 @@ class SegmentManager:
             # Create links to next on all actions  except for the last
             for i, action in enumerate(action_list[:-1]):
                 action.next_action = action_list[i + 1]
-                action_list[i + 1].input_sources.append(action)

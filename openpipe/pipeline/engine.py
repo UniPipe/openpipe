@@ -1,7 +1,12 @@
-# This module provides just a reference to the default runtime, so
-# that in the future it can be extended to support runtime selection
+# Load the engine specific managers and runtimes
 
-from .engines.local import PipelineManager
-from .engines.local import ActionRuntime
+from importlib import import_module
+from os import environ
+
+engine_name = ".engines." + environ.get("OPENPIPE_ENGINE", "local")
+
+engine_package = import_module(engine_name, "openpipe.pipeline")
+PipelineManager = engine_package.PipelineManager
+ActionRuntime = engine_package.ActionRuntime
 
 __all__ = [PipelineManager, ActionRuntime]

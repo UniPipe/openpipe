@@ -40,7 +40,7 @@ def pipeline_run(filename, pipeline_arguments=(), start_segment="start"):
     pipeline_loader.validate(start_segment=start_segment)
 
     # Create a pipeline manager
-    pipeline_manager = PipelineManager()
+    pipeline_manager = PipelineManager(start_segment)
     pipeline_loader.load(pipeline_manager, start_segment=start_segment)
 
     # Runs the start method of all actions
@@ -50,4 +50,4 @@ def pipeline_run(filename, pipeline_arguments=(), start_segment="start"):
     pipeline_manager.create_action_links()
 
     # Send the activation element into the pipeline
-    return pipeline_manager.activate(pipeline_arguments, start_segment=start_segment)
+    return pipeline_manager.activate(pipeline_arguments)
