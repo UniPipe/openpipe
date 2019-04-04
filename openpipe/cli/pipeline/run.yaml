@@ -1,0 +1,15 @@
+start:
+    - read from argument parse:
+        help: Run a pipeline
+        options:
+            -   switch: [-n, --enable-network]
+                default: False
+                help: "automatically download libraries from https"
+
+            -   switch: [-s, --start-segment]
+                default: "start"
+                help: "select segment to be started"
+        required:
+            filename:
+                help: The path for the file of the pipeline document
+

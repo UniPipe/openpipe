@@ -1,0 +1,14 @@
+start:
+    - send to segment:
+        name: version
+        when: $arguments and arguments[0] =="--version"$
+
+_zero:
+    - read from argument group:
+        Pipeline Commands: $directory$/pipeline
+        Action Commands: $directory$/action
+        Action Library Commands: $directory$/library
+
+version:
+    #- read from openpipe: version
+    - print: openpipe, version 1.0
