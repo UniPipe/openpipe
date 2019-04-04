@@ -13,6 +13,7 @@ DEBUG = environ.get("DEBUG")
 class PipelineSegment(threading.Thread):
     def __init__(self, segment_name):
         threading.Thread.__init__(self)
+        self.input_queue_list = []
         self.input_queue = Queue()
         self.output_queue = Queue()
         self.name = segment_name
@@ -32,8 +33,7 @@ class PipelineSegment(threading.Thread):
     def activate(self, activate_arguments):
         if activate_arguments is not None:
             self.add_source(self)
-        item = (self, activate_arguments, {})
-        self.input_queue.put(item)
+        self.input_queue.put(activate_arguments)
 
     def add_source(self, source):
         with self.lock_sources:

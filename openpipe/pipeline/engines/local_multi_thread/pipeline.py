@@ -9,6 +9,7 @@ from .segment import SegmentManager
 
 class PipelineManager:
     def __init__(self, start_segment_name):
+        self.thread_pools_config = {}
         self.start_segment_name = start_segment_name
         self.segment_manager = SegmentManager(start_segment_name)
 
@@ -38,3 +39,10 @@ class PipelineManager:
         if environ.get("DEBUG"):
             print("Adding library path", library_path)
         sys.path.append(normpath(library_path))
+
+    def plan(self, pipeline_document):
+        config = pipeline_document.get("_local_multi_thread", None)
+        if config:
+            self.thread_pools_config = config.get("thread_pools", {})
+
+        print("CFG PLAN IS", self.thread_pools_config)

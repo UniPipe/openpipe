@@ -49,5 +49,5 @@ def pipeline_run(filename, pipeline_arguments=(), start_segment="start"):
     # Create links between actions
     pipeline_manager.create_action_links()
 
-    # Send the activation element into the pipeline
+    # Send the activation element to the pipeline start segment
     return pipeline_manager.activate(pipeline_arguments)

@@ -80,21 +80,23 @@ class PipelineLoader:
 
         self._document_dict = python_data
 
-    def load(self, pipeline_runtime, start_segment="start"):
+    def load(self, pipeline_manager, start_segment="start"):
         """ Load the document into a pipeline runtime """
 
-        pipeline_runtime.start_segment = start_segment
+        pipeline_manager.start_segment = start_segment
         libraries = self._document_dict.get("_libraries")
         if libraries:
             del self._document_dict["_libraries"]
             for library in libraries:
-                pipeline_runtime.load_library(library)
+                pipeline_manager.load_library(library)
+
+        pipeline_manager.plan(self._document_dict)
 
         for segment_name, action_list in self._document_dict.items():
             # segments with a leading _ can be used as config placeholders
             if segment_name[0] == "_":
                 continue
-            segment_manager = pipeline_runtime.create_segment(segment_name)
+            segment_manager = pipeline_manager.create_segment(segment_name)
             for action in action_list:
                 line_nr = action["__line__"]
                 remove_line_info(action)
