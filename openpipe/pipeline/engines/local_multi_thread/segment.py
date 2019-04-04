@@ -11,17 +11,20 @@ DEBUG = environ.get("DEBUG")
 
 
 class PipelineSegment(threading.Thread):
-    def __init__(self, segment_name):
+    def __init__(self, segment_name, thread_number=0):
         threading.Thread.__init__(self)
+        self.thread_number = thread_number
         self.input_queue_list = []
         self.input_queue = Queue()
-        self.output_queue = Queue()
+        self.control_queue = Queue()
         self.name = segment_name
         self.segment_name = segment_name
         self.action_list = []
         self.config_list = []
         self.input_sources = []
         self.lock_sources = threading.RLock()
+        self.thread_count = 0
+        self.lock_thread_count = thread_number
 
     def add(self, action_name, action_config, action_label):
         action_instance = create_action_instance(
@@ -33,7 +36,8 @@ class PipelineSegment(threading.Thread):
     def activate(self, activate_arguments):
         if activate_arguments is not None:
             self.add_source(self)
-        self.input_queue.put(activate_arguments)
+        new_item = self, activate_arguments, {}
+        self.input_queue.put(new_item)
 
     def add_source(self, source):
         with self.lock_sources:
@@ -58,13 +62,14 @@ class PipelineSegment(threading.Thread):
                     action._segment_linker = None
                 except:  # NOQA: E722
                     print("Failed starting", action.action_label, file=stderr)
-                    self.output_queue.put((-1, action.action_label))
+                    self.control_queue.put((-1, action.action_label))
                     return
-        self.output_queue.put((0, "OK " + self.segment_name))
+        self.control_queue.put((0, "OK " + self.segment_name))
 
-        # Block waiting for input
+        # Loop waiting for input
         while True:
-            source, input_item, tag = self.input_queue.get()
+            item = self.input_queue.get()
+            source, input_item, tag = item
             if input_item is None:
                 if source is not None:
                     with self.lock_sources:
@@ -74,11 +79,13 @@ class PipelineSegment(threading.Thread):
                 )  # Send end-of-input «None» to trigger on_finish()
                 with self.lock_sources:
                     if len(self.input_sources) == 0:
+                        self.input_queue.task_done()
                         return
             else:
                 self.action_list[0]._on_input(
                     source, input_item, tag
                 )  # Send current time to the firs action to activate it
+            self.input_queue.task_done()
 
 
 class SegmentManager:
@@ -99,7 +106,7 @@ class SegmentManager:
             segment.start()
 
         for segment_name, segment in self._segments.items():
-            start_status, start_msg = segment.output_queue.get()
+            start_status, start_msg = segment.control_queue.get()
             if start_status != 0:
                 print("Failure starting action", start_msg)
                 exit(1)

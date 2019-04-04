@@ -1,12 +1,15 @@
 from openpipe.client import PipelineFileLoader
 from openpipe.pipeline.engine import PipelineManager
+from os.path import abspath, dirname
 
 
 def test_runtime_run():
 
+    filename = "samples/test.yaml"
+
     # Load and validate file syntax
     pipeline_loader = PipelineFileLoader()
-    pipeline_loader.fetch("samples/test.yaml")
+    pipeline_loader.fetch(filename)
     pipeline_loader.validate()
 
     # Create a pipeline manager
@@ -23,5 +26,6 @@ def test_runtime_run():
     pipeline_manager.create_action_links()
 
     # Send the activation element into the pipeline
-    activation_item = {"name": "samples/test.yaml", "arguments": ()}
+    path = abspath(dirname("samples/test.yaml"))
+    activation_item = {"path": path, "filename": filename, "arguments": ()}
     pipeline_manager.activate(activation_item)

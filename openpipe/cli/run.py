@@ -5,7 +5,7 @@ import click
 #  from sys import stderr
 from openpipe.client import PipelineFileLoader
 from openpipe.pipeline.engine import PipelineManager
-from os.path import exists
+from os.path import exists, abspath, dirname
 from os import environ
 from wasabi import Printer
 
@@ -50,5 +50,6 @@ def pipeline_run(filename, pipeline_arguments=(), start_segment="start"):
     pipeline_manager.create_action_links()
 
     # Send the activation element to the pipeline start segment
-    activation_item = {"name": filename, "arguments": pipeline_arguments}
+    path = abspath(dirname(filename))
+    activation_item = {"path": path, "name": filename, "arguments": pipeline_arguments}
     return pipeline_manager.activate(activation_item)
