@@ -23,4 +23,5 @@ def test_runtime_run():
     pipeline_manager.create_action_links()
 
     # Send the activation element into the pipeline
-    pipeline_manager.activate(())
+    activation_item = {"name": "samples/test.yaml", "arguments": ()}
+    pipeline_manager.activate(activation_item)

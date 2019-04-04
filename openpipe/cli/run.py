@@ -50,4 +50,8 @@ def pipeline_run(filename, pipeline_arguments=(), start_segment="start"):
     pipeline_manager.create_action_links()
 
     # Send the activation element to the pipeline start segment
-    return pipeline_manager.activate(pipeline_arguments)
+    activation_item = {
+        "name": filename,
+        "arguments": pipeline_arguments,
+    }
+    return pipeline_manager.activate(activation_item)

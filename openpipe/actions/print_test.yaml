@@ -1,2 +1,3 @@
 start:
-    - print: Dummy test
+    - print: My name is $name$
+    - print: Got arguments $arguments$

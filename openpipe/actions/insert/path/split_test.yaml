@@ -1,0 +1,5 @@
+start:
+    - insert path split: $name$
+    - pprint:
+    - assert:
+        file: split_test.yaml
