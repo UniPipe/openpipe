@@ -26,6 +26,9 @@ def setup_package():
     all_packages = find_packages()
     all_packages.extend(namespace_packages)
 
+    with io.open('requirements.txt', encoding="utf8") as f:
+        requirements = f.read()
+
     setup(
         name=package_name,
         description=about["__summary__"],
@@ -39,6 +42,7 @@ def setup_package():
         packages=all_packages,
         zip_safe=True,
         entry_points={"console_scripts": ["openpipe = openpipe.cli.__main__:main"]},
+        install_requires=[x for x in requirements.splitlines() if x],
     )
 
 
