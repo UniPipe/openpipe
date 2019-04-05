@@ -1,0 +1,9 @@
+start:
+    - print: Downloading ...
+    - read from url:
+        https://transparencia.sns.gov.pt/explore/dataset/atividade-de-prestacao-do-sns-24/download/?format=json&timezone=Europe/London
+    - iterate:
+    - insert: $fields$
+    - select: $indicador == 'Encaminhamentos p/ Outros'$
+    - limit:
+    - print: Na data $periodo$, $valor_absoluto$ pacientes foram encaminhados para outros serviços

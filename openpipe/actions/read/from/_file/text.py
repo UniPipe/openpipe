@@ -13,3 +13,4 @@ def decode_file(fileobj, action):
 
 
 Action.attach_file_handler(decode_file, "text/plain")
+Action.attach_file_handler(decode_file, "text/csv")
