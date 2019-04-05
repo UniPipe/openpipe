@@ -1,3 +1,4 @@
+import io
 from openpipe.client import PipelineLoader
 from os.path import normpath
 
@@ -5,7 +6,7 @@ from os.path import normpath
 class PipelineFileLoader(PipelineLoader):
     def get(self, pipeline_name):
         pipeline_name = normpath(pipeline_name)
-        with open(pipeline_name) as document_file:
+        with io.open(pipeline_name, encoding="utf8") as document_file:
             return document_file.read()
 
 

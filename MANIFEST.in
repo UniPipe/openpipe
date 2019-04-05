@@ -4,3 +4,4 @@ recursive-include openpipe *
 recursive-include docs *
 recursive-include samples *
 recursive-exclude * *.py[co]
+include requirements.txt
