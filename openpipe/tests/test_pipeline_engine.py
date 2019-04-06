@@ -1,6 +1,8 @@
 from openpipe.client import PipelineFileLoader
 from openpipe.pipeline.engine import PipelineManager
+from openpipe.utils import get_platform_info
 from os.path import abspath, dirname
+from os import environ
 
 
 def test_runtime_run():
@@ -27,5 +29,11 @@ def test_runtime_run():
 
     # Send the activation element into the pipeline
     path = abspath(dirname("samples/test.yaml"))
-    activation_item = {"path": path, "filename": filename, "arguments": ()}
+    activation_item = {
+        "platform": get_platform_info(),
+        "environment": environ.copy(),
+        "path": path,
+        "name": filename,
+        "arguments": (),
+    }
     pipeline_manager.activate(activation_item)

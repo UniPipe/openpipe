@@ -36,9 +36,9 @@ start:
             ML_TI_DOC:  $[x for x in ML_TI_DOC if x['@LG']=='EN'][0]$
     - update:
         set:
-            COUNTRY:    $ML_TI_DOC['TI_CY']$
-            TOWN:       $ML_TI_DOC['TI_TOWN']$
-            TEXT:       $ML_TI_DOC['TI_TEXT']$
+            COUNTRY:    $ML_TI_DOC.TI_CY$
+            TOWN:       $ML_TI_DOC.TI_TOWN$
+            TEXT:       $ML_TI_DOC.TI_TEXT$
             TD_DOCUMENT_TYPE:   $TD_DOCUMENT_TYPE['#text']$
 
     - drop: ML_TI_DOC   # We no longer need the original field

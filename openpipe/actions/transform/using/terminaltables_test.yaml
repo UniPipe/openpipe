@@ -23,7 +23,7 @@ multi item:
     - print:
 
 show passwd:
-    - limit running platform: Linux
+    - select: $platform['system'] == 'Linux'$
     - read from file: /etc/passwd
     - transform using csv:
         delimiter: ':'

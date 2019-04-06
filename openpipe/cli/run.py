@@ -1,10 +1,8 @@
 import click
 
-#  import urllib.request
-#  import os
-#  from sys import stderr
 from openpipe.client import PipelineFileLoader
 from openpipe.pipeline.engine import PipelineManager
+from openpipe.utils import get_platform_info
 from os.path import exists, abspath, dirname
 from os import environ
 from wasabi import Printer
@@ -51,5 +49,11 @@ def pipeline_run(filename, pipeline_arguments=(), start_segment="start"):
 
     # Send the activation element to the pipeline start segment
     path = abspath(dirname(filename))
-    activation_item = {"path": path, "name": filename, "arguments": pipeline_arguments}
+    activation_item = {
+        "platform": get_platform_info(),
+        "environment": environ.copy(),
+        "path": path,
+        "name": filename,
+        "arguments": pipeline_arguments,
+    }
     return pipeline_manager.activate(activation_item)

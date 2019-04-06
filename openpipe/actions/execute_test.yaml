@@ -4,7 +4,7 @@ start:
         - windows echo
 
 linux echo:
-    - limit running platform: Linux
+    - select: $platform['system'] == 'Linux'$
     - execute: echo -n ok
     - pprint:
     - assert:
@@ -12,7 +12,7 @@ linux echo:
         stdout: ok
 
 windows echo:
-    - limit running platform: Windows
+    - select: $platform['system'] == 'Windows'$
     - execute: echo ok
     - pprint:
     - assert:
