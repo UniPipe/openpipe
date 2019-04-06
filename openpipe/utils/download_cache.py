@@ -77,6 +77,7 @@ def check_requirements(requirements_filename, auto_install):
                 print("Aborted for missing dependencies.")
                 exit(1)
         for package_name in missing_packages:
-            pip_main(["install", "--user", item.name])
+            print("Running pip install", package_name)
+            pip_main(["install", "--user", package_name])
 
     return

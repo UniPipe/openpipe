@@ -26,7 +26,7 @@ def setup_package():
     all_packages = find_packages()
     all_packages.extend(namespace_packages)
 
-    with io.open('requirements.txt', encoding="utf8") as f:
+    with io.open("requirements.txt", encoding="utf8") as f:
         requirements = f.read()
 
     setup(
