@@ -1,0 +1,6 @@
+start:
+    - iterate: $[n for n in range(100)]$
+    - send to segment: do_something
+
+do_something:
+    - print:

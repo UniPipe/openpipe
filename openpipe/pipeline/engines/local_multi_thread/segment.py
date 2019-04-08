@@ -1,13 +1,19 @@
 """ This module provides the segment management classes """
 
+import threading
 from os import environ
 from openpipe.utils import create_action_instance
 from sys import stderr
-import threading
+from time import time
 from wasabi import Printer
-from queue import Queue
+from queue import Queue, Empty
+
 
 DEBUG = environ.get("DEBUG")
+
+MAX_THREADS_PER_SEGMENT = int(environ.get("MAX_THREADS_PER_SEGMENT", "10"))
+QSIZE_CHECK_INTERVAL = 1  # Interval between qsize checks
+QSIZE_THREAD_TRIGGER = 2  # Qsize to trigger that should trigger a new thread
 
 
 class PipelineSegment(threading.Thread):
@@ -25,6 +31,7 @@ class PipelineSegment(threading.Thread):
         self.lock_sources = threading.RLock()
         self.thread_count = 0
         self.lock_thread_count = thread_number
+        self.base_segment_info = []
 
     def add(self, action_name, action_config, action_label):
         action_instance = create_action_instance(
@@ -32,6 +39,8 @@ class PipelineSegment(threading.Thread):
         )
         self.action_list.append(action_instance)
         self.config_list.append(action_config)
+        if self.thread_number == 0:
+            self.base_segment_info.append((action_name, action_config, action_label))
 
     def activate(self, activate_arguments):
         if activate_arguments is not None:
@@ -65,12 +74,28 @@ class PipelineSegment(threading.Thread):
                     self.control_queue.put((-1, action.action_label))
                     return
         self.control_queue.put((0, "OK " + self.segment_name))
+        self.loop_on_input_data()
+
+    def loop_on_input_data(self):
+
+        previous_time = time()
 
         # Loop waiting for input
         while True:
             item = self.input_queue.get()
             source, input_item, tag = item
+
             if input_item is None:
+
+                # If we are not thread 0, we simply repeat the None and terminate
+                # The repeated None will be used be consumed by the remaning
+                # threads on the pool that need to die
+                if self.thread_number != 0:
+                    print("GOT NONE KILLING ME", self, self.thread_number)
+                    self.input_queue.put(item)
+                    self.control_queue.put((None, self))
+                    return
+
                 if source is not None:
                     with self.lock_sources:
                         self.input_sources.remove(source)
@@ -79,9 +104,30 @@ class PipelineSegment(threading.Thread):
                 )  # Send end-of-input «None» to trigger on_finish()
                 with self.lock_sources:
                     if len(self.input_sources) == 0:
+                        print("Killing me", self)
                         self.input_queue.task_done()
+                        # Put None to kill any remaning threads in the pool
+                        self.input_queue.put(item)
+                        self.control_queue.put((None, self))
                         return
             else:
+                current_time = time()
+                elapsed_time = current_time - previous_time
+                #  if self.thread_number == 0:
+                #  input_qsize = self.input_queue.qsize()
+                #  print("QSIZE", self, input_qsize, elapsed_time)
+                #  If we are thread 0 and queue is increasing, report our size
+                if (
+                    self.thread_number == 0 and elapsed_time > QSIZE_CHECK_INTERVAL
+                ):  # Only the first thread checks and reports status
+                    input_qsize = self.input_queue.qsize()
+                    control_qsize = self.control_queue.qsize()
+                    # Don't send new qsize until a previous one was delivered
+                    if control_qsize == 0 and input_qsize > QSIZE_THREAD_TRIGGER:
+                        print("REPORTING needs queue", input_qsize)
+                        self.control_queue.put((input_qsize, self))
+                    previous_time = current_time
+
                 self.action_list[0]._on_input(
                     source, input_item, tag
                 )  # Send current time to the firs action to activate it
@@ -89,7 +135,7 @@ class PipelineSegment(threading.Thread):
 
 
 class SegmentManager:
-    """ This class implementes the segment manager API """
+    """ This class implements the segment manager API """
 
     source_lock = threading.RLock()
 
@@ -131,8 +177,8 @@ class SegmentManager:
                     # Kill the thread
                     origin_segment.input_queue.put((None, None, None))
 
-    def create(self, segment_name):
-        segment = PipelineSegment(segment_name)
+    def create(self, segment_name, thread_number=0):
+        segment = PipelineSegment(segment_name, thread_number)
         self._segments[segment_name] = [segment]
         return segment
 
@@ -143,9 +189,50 @@ class SegmentManager:
         start_segment = self._segments[self.start_segment_name][0]
         start_segment.activate(activate_arguments)
         start_segment.activate(None)
-        for segment_list in self._segments.values():
-            for segment in segment_list:
-                segment.join()
+        active_segments = 1
+        while active_segments > 0:
+            active_segments = 0
+            needs_more_threads = (
+                []
+            )  # List of segments that need more threads because input queue size is increasing
+            finished_segments = []
+            for segment_name, segment_list in self._segments.items():
+                pivot_segment = segment_list[0]
+                try:
+                    print("STATUS WAIT ")
+                    segment_status = pivot_segment.control_queue.get(timeout=1)
+                    print("AFTER STATUS WAIT ")
+                except Empty:
+                    print("EMPTY", segment_name)
+                    active_segments += 1
+                    continue
+                status_item, status_sender = segment_status
+                print("STATUS", status_item, status_sender)
+                if status_item is None:
+                    # Wait for all the other segments threads to complete
+                    for segment in segment_list[1:]:
+                        segment.control_queue.get()
+                    finished_segments.append(segment_name)
+                else:
+                    threads_count = len(segment_list)
+                    if (
+                        status_item > QSIZE_THREAD_TRIGGER
+                        and threads_count < MAX_THREADS_PER_SEGMENT
+                    ):
+                        needs_more_threads.append((segment_list[0], threads_count))
+                    active_segments += 1
+
+            # Add theads to segments that are queing work
+            for segment, threads_count in needs_more_threads:
+                self.add_thread(segment, threads_count)
+
+            # Remove finished_segments
+            for segment_name in finished_segments:
+                print("DELETING SEGMENT", segment_name)
+                del self._segments[segment_name]
+
+            print("ACTS", active_segments)
+
         return 0, "OK"
 
     def _segment_linker(self, source, segment_name):
@@ -175,3 +262,28 @@ class SegmentManager:
                 # Create links to next on all actions  except for the last
                 for i, action in enumerate(action_list[:-1]):
                     action.next_action = action_list[i + 1]
+
+    def add_thread(self, segment, thread_number):
+        """ Create a new thread for the provided segment """
+        if not segment.is_alive():
+            print("DEAD", segment.name)
+            return
+        print("NEW THREAD", segment, thread_number)
+        segment_name = segment.name
+        new_segment_thread = PipelineSegment(segment_name, thread_number)
+        self._segments[segment_name].append(new_segment_thread)
+
+        # New threads use the same input queue
+        new_segment_thread.input_queue = segment.input_queue
+
+        # Replicate the actions from the existing thread
+        for action_name, action_config, action_label in segment.base_segment_info:
+            new_segment_thread.add(action_name, action_config, action_label)
+
+        new_segment_thread._segment_linker = self._segment_linker
+        new_segment_thread.start()
+        start_status, start_msg = new_segment_thread.control_queue.get()
+
+        if start_status != 0:
+            print("Failure starting action", start_msg)
+            exit(1)
