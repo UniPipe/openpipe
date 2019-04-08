@@ -1,0 +1,11 @@
+start:
+    - set:
+        a_new_key: A new value
+    # Do we got the expected value ?
+    - assert:
+        a_new_key: A new value
+    - pprint: $a_new_key$
+
+    # Make sure we didnt't lost the startup variables, e.g pipeline name
+    - assert: $'_test' in name$
+    - print: $name$

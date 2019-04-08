@@ -1,0 +1,23 @@
+start:
+    - tag:
+        supported_commands: ["help", "version", "do_something"]
+    - send to segment:
+        missing_arguments: $len(arguments) < 2$
+    - set:
+        arguments: [cmd, argument]
+    - send to segment:
+        invalid_command: $cmd not in _tag.supported_commands$
+    - send to segment:
+        print_help: $ cmd == "help" $
+        print_version: $ cmd == "version" $
+        do_something: $ cmd == "do_something" $
+
+missing_arguments:
+    - print: "Usage: $name$ command argument"
+
+invalid_command:
+    - print: "Unknown command $cmd$ !"
+    - print: "Available commands are: $_tag.supported_commands$"
+
+do_something:
+    - print: Doing something with $argument$
