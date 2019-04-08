@@ -23,9 +23,12 @@ edit_uri: ''
 
 extra_css:
     - css/extra.css
+    - https://cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.1.0/cookieconsent.min.css
 
 extra_javascript:
     - js/autoexpand.js
+    - https://cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.1.0/cookieconsent.min.js
+    - js/consentinit.js
 
 nav:
     - Home: index.md
