@@ -89,6 +89,7 @@ class PipelineSegment(threading.Thread):
 
 
 class SegmentManager:
+    """ This class implementes the segment manager API """
 
     source_lock = threading.RLock()
 
@@ -101,50 +102,56 @@ class SegmentManager:
     def start(self):
 
         """ Runs the start code for every segment created on this manager """
-        for segment_name, segment in self._segments.items():
-            segment._segment_linker = self._segment_linker
-            segment.start()
+        for segment_name, segment_list in self._segments.items():
+            for segment in segment_list:
+                segment._segment_linker = self._segment_linker
+                segment.start()
 
-        for segment_name, segment in self._segments.items():
-            start_status, start_msg = segment.control_queue.get()
-            if start_status != 0:
-                print("Failure starting action", start_msg)
-                exit(1)
+        for segment_name, segment_list in self._segments.items():
+            for segment in segment_list:
+                start_status, start_msg = segment.control_queue.get()
+                if start_status != 0:
+                    print("Failure starting action", start_msg)
+                    exit(1)
 
         self.kill_dead_segments()
 
     def kill_dead_segments(self):
         # We must remove all references from segments which have
         # no input sources (inactive)
-        for origin_segment_name, origin_segment in self._segments.items():
-            segment_sources = origin_segment.input_sources
-            if len(segment_sources) == 0:
-                if origin_segment_name == self.start_segment_name:
-                    continue
-                self.msg.warn("Segment '%s' is not referenced" % origin_segment_name)
-                # Kill the thread
-                origin_segment.input_queue.put((None, None, None))
+        for origin_segment_name, origin_segment_list in self._segments.items():
+            for origin_segment in origin_segment_list:
+                segment_sources = origin_segment.input_sources
+                if len(segment_sources) == 0:
+                    if origin_segment_name == self.start_segment_name:
+                        continue
+                    self.msg.warn(
+                        "Segment '%s' is not referenced" % origin_segment_name
+                    )
+                    # Kill the thread
+                    origin_segment.input_queue.put((None, None, None))
 
     def create(self, segment_name):
         segment = PipelineSegment(segment_name)
-        self._segments[segment_name] = segment
+        self._segments[segment_name] = [segment]
         return segment
 
     def activate(self, activate_arguments):
         # On activation we set the called to the start segment because
         # the first element on the activated pipeline is always delivered from
         # the start segment
-        start_segment = self._segments[self.start_segment_name]
+        start_segment = self._segments[self.start_segment_name][0]
         start_segment.activate(activate_arguments)
         start_segment.activate(None)
-        for segment in self._segments.values():
-            segment.join()
+        for segment_list in self._segments.values():
+            for segment in segment_list:
+                segment.join()
         return 0, "OK"
 
     def _segment_linker(self, source, segment_name):
         """ Returns a reference name to a local segment """
         try:
-            segment = self._segments[segment_name]
+            segment = self._segments[segment_name][0]
         except KeyError:
             print(
                 "A reference was found for segment '{}' which does not exist.\n"
@@ -162,8 +169,9 @@ class SegmentManager:
         In a simple single threaded pipeline, the link is just a memory reference """
 
         # Links for consecutive steps for each segment
-        for segment_name, segment in self._segments.items():
-            action_list = segment.action_list
-            # Create links to next on all actions  except for the last
-            for i, action in enumerate(action_list[:-1]):
-                action.next_action = action_list[i + 1]
+        for segment_name, segment_list in self._segments.items():
+            for segment in segment_list:
+                action_list = segment.action_list
+                # Create links to next on all actions  except for the last
+                for i, action in enumerate(action_list[:-1]):
+                    action.next_action = action_list[i + 1]
