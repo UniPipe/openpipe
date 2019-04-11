@@ -29,14 +29,15 @@ class Action(ActionRuntime):
                 table_data.append(row_data)
             table = SingleTable(table_data)
             self.table_data = []
-            self.put(table.table)
+            print(table.table)
         else:
             row_data = []
             for key in self.config["keys"]:
                 row_data.append(item[key])
         table_data.append(row_data)
+        self.put(item)
 
     def on_finish(self, reason):
         if len(self.table_data) > 1:
             table = SingleTable(self.table_data)
-            self.put(table.table)
+            print(table.table)
