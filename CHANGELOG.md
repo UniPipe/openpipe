@@ -5,3 +5,6 @@
 This minor release brings the following improvements:
 
 * Add "set" action for setting key values (closes #4)
+* Rename 'transform using terminaltables' to 'print to terminaltables' (closes #11)
+* Rename 'transform using regex assign' to 'transform from regex assign' (closes #13)
+* Rename 'transform using csv' to 'transform from csv' (closes #14)
