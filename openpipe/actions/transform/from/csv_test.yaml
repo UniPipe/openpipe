@@ -5,7 +5,7 @@ start:
         '2018-06-05 00:10:07 myserver.localhost 10.16.70.14 80 GET /sapatos/ "" 10.6.16.17 10.6.16.67 - "HTTPClient" someid someid someid someid someid HTTP/1.1 200 641 23748'
 
     ## Parse using the csv Action
-    - transform using csv:
+    - transform from csv:
         delimiter: " "
         field_list:
             [ # date and time are merged into 2 values (:2), fields names with a leading ~ are filtered out
@@ -27,7 +27,7 @@ start:
         '2018-06-05 00:10:07 myserver.localhost 10.16.70.14 80 GET /sapatos/ "" 10.6.16.17 10.6.16.67 - "HTTPClient" someid someid someid someid someid HTTP/1.1 200 641 23748'
 
     ## Parse using the csv Action
-    - transform using csv:
+    - transform from csv:
         delimiter: " "
         field_list:
             [ # date and time are merged into 2 values (:2), fields names with a leading ~ are filtered out
@@ -49,7 +49,7 @@ start:
         - 2018-06-05 00:10:07 myserver.localhost 10.16.70.14 80 GET /sapatos/ "" 10.6.16.17 10.6.16.67 - "HTTPClient" someid someid someid someid someid HTTP/1.1 200 641 23748
         - 2018-06-05 00:10:07 myserver.localhost 10.16.70.14 80 GET /sapatos/ "" 10.6.16.17 10.6.16.67 - "HTTPClient" someid someid someid someid someid HTTP/1.1 201 642
 
-    - transform using csv:
+    - transform from csv:
         ignore_errors: True
         delimiter: " "
         field_list:
@@ -73,7 +73,7 @@ start:
         '2018-06-05 00:10:07 myserver.localhost 10.16.70.14 80 GET /sapatos/ "" 10.6.16.17 10.6.16.67 - "HTTPClient" someid someid someid someid someid HTTP/1.1 200 641 23748'
 
     ## Parse using the csv Action
-    - transform using csv:
+    - transform from csv:
         auto_number: true
         delimiter: " "
         field_list:

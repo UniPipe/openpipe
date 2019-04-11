@@ -23,7 +23,7 @@ multi item:
 show passwd:
     - select: $platform['system'] == 'Linux'$
     - read from file: /etc/passwd
-    - transform using csv:
+    - transform from csv:
         delimiter: ':'
         field_list: [username, password, uid, gid, gecos, home, shell]
     - select: $ 'Network'  in gecos $
