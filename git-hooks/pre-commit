@@ -3,7 +3,7 @@
 set -eu
 
 black openpipe
-ENGINES="local local_multi_thread"
+ENGINES="local" # local_multi_thread"
 for engine in $ENGINES; do
     export OPENPIPE_ENGINE="$engine"
     tox
