@@ -29,3 +29,43 @@ def action2module(action_name):
         module_name = action_words[-1] + "_"
     return "openpipe.actions." + ('.'.join(package_name + [module_name]))
 ```
+
+
+read from archive... (.tar, .zip)
+write to archive... (.tar, .zip)
+
+
+read from... file/url
+    auto_decoding based on mime type (gz/bz2/xv/text/json/yaml/xml)
+
+write to... file/url
+    auto_encoding based on mime type (gz/bz2/xv/text/json/yaml/xml)
+
+transform from csv ... into dict
+transform into csv ... from dict
+
+transform from regex assign
+transform from regex groups
+
+update from string replace:
+    "" :  [red: blue, big: small]
+    "key_name1" : [red: blue, big: small]
+
+update from regex replace:
+    "" : [source_regex: target_string]
+
+update from mapping:
+    "x": [ "source_key_value": "target_key_value" ]
+
+update from matching:
+    "": [ "*abc*": "target_key_value" ]
+
+update from regex matching:
+    "": [ ".*abc*": "target_key_value" ]
+
+update into date:
+    timestamp: "%Y %M"
+
+update from date:
+    timestamp: "%Y %M"
+
