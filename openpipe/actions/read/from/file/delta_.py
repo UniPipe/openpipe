@@ -3,41 +3,42 @@ Produce text file changes between consecutive executions
 """
 
 
-from glob import glob
 from os import stat
-from os.path import expanduser
-from datetime import datetime
-from mdatapipe.engine import PluginRuntime
+from openpipe.pipeline.engine import ActionRuntime
 
 
-class Plugin(PluginRuntime):
+class Action(ActionRuntime):
+
+    optional_config = """
+    path: $_$               # Path to the file to be read
+    headers_always: False   # Always send header lines of file
+    """
+
     def on_start(self, config):
-        self.persistent_state = config.get("persistent_state", False)
-        self.default_line = config.get("default_line", None)
-        self.max_delta_time = config.get("max_delta_time", False)
         self._state = {}
         self.first_run = True
-        if config.get("headers_always"):
+        if config["headers_always"]:
             self.on_input = self.on_first
         else:
             self.on_input = self.on_input_delta
 
     def on_first(self, item):
-        if self.config.get("headers_always"):
-            path = self._get_path(item)
-            # On the first run, if "headers_always", we read and produce the headers
-            with open(path) as data_file:
-                for line in data_file:
-                    line = str(line).strip("\r\n")
-                    if line and line[0] == "#":
-                        self.put(line)
-                    else:
-                        break
+
+        path = self.config["path"]
+        # On the first run, if "headers_always", we read and produce the headers
+        with open(path) as data_file:
+            for line in data_file:
+                line = str(line).strip("\r\n")
+                if line and line[0] == "#":
+                    self.put(line)
+                else:
+                    break
+
         self.on_input = self.on_input_delta
         self.on_input(item)
 
     def on_input_delta(self, item):  # NOQA: C901
-        path = self._get_path(item)
+        path = self.config["path"]
 
         # Get saved info from last execution
         saved_mod_time, saved_last_size = self._get_last_run_info(path)
@@ -46,21 +47,10 @@ class Plugin(PluginRuntime):
         statbuf = stat(path)
         current_mod_time, current_size = int(statbuf.st_mtime), statbuf.st_size
 
-        if (
-            self.max_delta_time
-            and saved_mod_time
-            and current_mod_time - saved_mod_time > self.max_delta_time
-        ):
-            # If modified time is too old, ignore saved time
-            saved_mod_time = None
-
         # If no saved info was found, save current info, and do nothing
         if saved_mod_time is None:
             self._set_last_run_info(path, current_mod_time, current_size)
             return
-
-        if self.default_line is not None:
-            self.put(path + " " + self.default_line)
 
         file_was_changed = (
             current_mod_time != saved_mod_time or current_size != saved_last_size
@@ -74,9 +64,6 @@ class Plugin(PluginRuntime):
         if current_size < saved_last_size:
             saved_last_size = 0
         line_prefix = None
-
-        if self.config.get("prefix_timestamp"):
-            line_prefix = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
         with open(path) as data_file:
 
@@ -95,16 +82,6 @@ class Plugin(PluginRuntime):
             current_size = data_file.tell()
         self._set_last_run_info(path, current_mod_time, current_size)
 
-    def _get_path(self, item):
-        item_path = self.config.get("path", item)
-        path = expanduser(item_path)
-        if "*" in path:
-            path = glob(path)
-            if not path:
-                raise Exception("No file found at " + path)
-            path = path[-1]
-        return path
-
     def _seek_position(self, file, position):
         """
         Check if there are any changes to the file since last run
@@ -114,31 +91,8 @@ class Plugin(PluginRuntime):
         file.seek(position)
 
     def _set_last_run_info(self, path, mod_time, size):
-        if not self.persistent_state:
-            self._state[path] = mod_time, size
-            return
-
-        self.cursor.execute(
-            "INSERT OR IGNORE INTO last_run_info VALUES('{0}', {1}, {2})".format(
-                path, mod_time, size
-            )
-        )
-        self.cursor.execute(
-            "UPDATE last_run_info SET modified={1}, size={2} WHERE path='{0}'".format(
-                path, mod_time, size
-            )
-        )
-        self.conn.commit()
+        self._state[path] = mod_time, size
 
     def _get_last_run_info(self, path):
-        if not self.persistent_state:
-            mod_time, size = self._state.get(path, (None, None))
-            return mod_time, size
-        self.cursor.execute(
-            "SELECT modified, size FROM last_run_info WHERE path = '%s'" % path
-        )
-        result = self.cursor.fetchone()
-        if result:
-            return result
-        else:
-            return None, None
+        mod_time, size = self._state.get(path, (None, None))
+        return mod_time, size

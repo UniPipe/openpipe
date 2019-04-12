@@ -62,6 +62,7 @@
         "strptime",
         "swrite",
         "tarfile",
+        "terminaltables",
         "termios",
         "timegm",
         "tiocgwinsz",
