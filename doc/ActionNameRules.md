@@ -63,9 +63,9 @@ update from matching:
 update from regex matching:
     "": [ ".*abc*": "target_key_value" ]
 
-update into date:
+transform into date:
     timestamp: "%Y %M"
 
-update from date:
+transform from date:
     timestamp: "%Y %M"
 

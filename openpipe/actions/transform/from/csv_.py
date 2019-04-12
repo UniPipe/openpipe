@@ -65,7 +65,6 @@ class CSVMapper:
 
         for counter, value in enumerate(field_list):
             if ":" in value:
-                print("VALUE:", value)
                 field_name, field_count = value.split(":")
                 field_count = int(field_count)
             else:
