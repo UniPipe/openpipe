@@ -1,0 +1,7 @@
+start:
+    - read from file delta:
+        path: tmp/test.txt
+        state_file: tmp/file.state
+
+    - assert:
+        - Line 3

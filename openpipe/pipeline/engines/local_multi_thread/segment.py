@@ -16,12 +16,70 @@ QSIZE_CHECK_INTERVAL = 1  # Interval between qsize checks
 QSIZE_THREAD_TRIGGER = 2  # Qsize to trigger that should trigger a new thread
 
 
+class PipelineSegmentRun(threading.Thread):
+    def __init__(self, controller_queue):
+        threading.Thread.__init__(self, controller_queue)
+        self.action_list = []
+        self.control_queue = Queue()
+        self.controller_queue = controller_queue
+
+    def add(self, action_name, action_config, action_label):
+        action_instance = create_action_instance(
+            action_name, action_config, action_label
+        )
+        self.action_list.append(action_instance)
+
+    def run(self):
+        """ Run the on start method for all the actions in this segment """
+        for i, action in enumerate(self.action_list):
+            action.action_label = (
+                "Thread-'" + self.segment_name + "' :" + action.action_label
+            )
+            on_start_func = getattr(action, "on_start", None)
+            if on_start_func:
+                if DEBUG:
+                    print("on_start %s " % action.action_label)
+                try:
+                    action.controller_queue = self.controller_queue
+                    on_start_func(action.initial_config)
+                    action._segment_linker = None
+                except:  # NOQA: E722
+                    self.control_queue.put(("failed", action.action_label))
+                    return
+        self.control_queue.put(("started", i))
+
+
+class PipelineSegmentControl(threading.Thread):
+    def __init__(self, segment_name, thread_number):
+        threading.Thread.__init__(self)
+        self.segment_name = segment_name
+        self.control_queue = Queue()
+        self.thread_list = [PipelineSegmentRun()]
+        self.action_config_list = []
+        self.controller_queue = Queue()
+
+    def run(self):
+        run_thread = self.thread_list[0]
+        run_thread.start(self.controller_queue)
+
+        while True:
+            status, detail = run_thread.control_queue.get()
+            if status in ["started", "failed"]:
+                break
+
+        if status == "failed":
+            self.start_failure_list.append((self.segment_name, detail))
+
+    def add(self, action_name, action_config, action_label):
+        self.thread_list[0].add(self, action_name, action_config, action_label)
+        self.self.action_config_list.append((action_name, action_config, action_label))
+
+
 class PipelineSegment(threading.Thread):
-    def __init__(self, segment_name, thread_number=0):
+    def __init__(self, segment_name, thread_number):
         threading.Thread.__init__(self)
         self.thread_number = thread_number
         self.input_queue_list = []
-        self.input_queue = Queue()
         self.control_queue = Queue()
         self.name = segment_name
         self.segment_name = segment_name
@@ -32,15 +90,6 @@ class PipelineSegment(threading.Thread):
         self.thread_count = 0
         self.lock_thread_count = thread_number
         self.base_segment_info = []
-
-    def add(self, action_name, action_config, action_label):
-        action_instance = create_action_instance(
-            action_name, action_config, action_label
-        )
-        self.action_list.append(action_instance)
-        self.config_list.append(action_config)
-        if self.thread_number == 0:
-            self.base_segment_info.append((action_name, action_config, action_label))
 
     def activate(self, activate_arguments):
         if activate_arguments is not None:
@@ -54,26 +103,8 @@ class PipelineSegment(threading.Thread):
 
     def run(self):
 
-        _segment_linker = self._segment_linker
+        self._segment_linker = self._segment_linker
 
-        """ Run the on start method for all the actions in this segment """
-        for i, action in enumerate(self.action_list):
-            action.action_label = (
-                "Thread-'" + self.segment_name + "' :" + action.action_label
-            )
-            on_start_func = getattr(action, "on_start", None)
-            if on_start_func:
-                if DEBUG:
-                    print("on_start %s " % action.action_label)
-                try:
-                    action._segment_linker = _segment_linker
-                    on_start_func(action.initial_config)
-                    action._segment_linker = None
-                except:  # NOQA: E722
-                    print("Failed starting", action.action_label, file=stderr)
-                    self.control_queue.put((-1, action.action_label))
-                    return
-        self.control_queue.put((0, "OK " + self.segment_name))
         self.loop_on_input_data()
 
     def loop_on_input_data(self):
@@ -147,20 +178,32 @@ class SegmentManager:
 
     def start(self):
 
-        """ Runs the start code for every segment created on this manager """
-        for segment_name, segment_list in self._segments.items():
-            for segment in segment_list:
-                segment._segment_linker = self._segment_linker
-                segment.start()
+        # Runs the start code for every segment created on this manage
+        for segment_name, segment in self._segments.items():
+            segment.start()
 
-        for segment_name, segment_list in self._segments.items():
-            for segment in segment_list:
-                start_status, start_msg = segment.control_queue.get()
-                if start_status != 0:
-                    print("Failure starting action", start_msg)
-                    exit(1)
+        start_failure_list = []
 
-        self.kill_dead_segments()
+        # Get the start control data for each segment
+        for segment_name, segment in self._segments.items():
+            while True:
+                status, detail = segment.control_queue.get()
+                if status in ["started", "failed"]:
+                    break
+                if status == "link":
+                    self.link_to_segment(detail)
+            if status == "failed":
+                start_failure_list.append((segment_name, detail))
+
+        if start_failure_list:
+            # Send "stop" so that all segment threads terminate
+            for segment_name, segment in self._segments.items():
+                segment.control_queue.put("stop")
+            for failure in start_failure_list:
+                print(
+                    f"Failed starting segment {segment_name}, reason: {detail}",
+                    file=stderr,
+                )
 
     def kill_dead_segments(self):
         # We must remove all references from segments which have
@@ -177,9 +220,9 @@ class SegmentManager:
                     # Kill the thread
                     origin_segment.input_queue.put((None, None, None))
 
-    def create(self, segment_name, thread_number=0):
-        segment = PipelineSegment(segment_name, thread_number)
-        self._segments[segment_name] = [segment]
+    def create(self, segment_name):
+        segment = PipelineSegment(segment_name, 0)
+        self._segments[segment_name] = segment
         return segment
 
     def activate(self, activate_arguments):

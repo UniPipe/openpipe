@@ -4,6 +4,7 @@ Produce text file changes between consecutive executions
 
 
 from os import stat
+from os.path import exists
 from openpipe.pipeline.engine import ActionRuntime
 
 
@@ -12,6 +13,7 @@ class Action(ActionRuntime):
     optional_config = """
     path: $_$               # Path to the file to be read
     headers_always: False   # Always send header lines of file
+    state_file: ""          # If set it will be used save state between executions
     """
 
     def on_start(self, config):
@@ -93,6 +95,17 @@ class Action(ActionRuntime):
     def _set_last_run_info(self, path, mod_time, size):
         self._state[path] = mod_time, size
 
+        if self.config["state_file"]:
+            with open(self.config["state_file"], "w") as file:
+                file.write(f"{mod_time}:{size}\n")
+
     def _get_last_run_info(self, path):
+        state_filename = self.config["state_file"]
+        if state_filename and exists(state_filename):
+            with open(state_filename, "r") as file:
+                line = file.read()
+            if ":" in line:
+                mtime, msize = line.split(":")
+                return int(mtime), int(msize)
         mod_time, size = self._state.get(path, (None, None))
         return mod_time, size
