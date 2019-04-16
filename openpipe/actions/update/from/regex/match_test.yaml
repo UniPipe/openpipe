@@ -1,0 +1,16 @@
+start:
+    - iterate:
+        - { vhost: osb01sapo02, source_ip: 10.10.10.11 }
+        - { vhost: sapo01app02, source_ip: 10.10.10.11 }
+        - { vhost: app01sapo02, source_ip: 12.10.10.11 }
+    - update from regex match:
+        vhost :
+            - "osb.*" : "OSB"
+            - "app.*" : "APP"
+        source_ip:
+            - "10.10.*" : "net_10"
+    - pprint:
+    - assert:
+        - {'source_ip': 'net_10', 'vhost': 'OSB'}
+        - {'source_ip': 'net_10', 'vhost': 'sapo01app02'}
+        - {'source_ip': '12.10.10.11', 'vhost': 'APP'}

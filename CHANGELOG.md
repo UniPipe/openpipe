@@ -9,3 +9,4 @@ This minor release brings the following improvements:
 * Rename 'transform using terminaltables' to 'print to terminaltables' (closes #11)
 * Rename 'transform using regex assign' to 'transform from regex assign' (closes #13)
 * Rename 'transform using csv' to 'transform from csv' (closes #14)
+* Add action 'update from regex match' (closes #16) 
