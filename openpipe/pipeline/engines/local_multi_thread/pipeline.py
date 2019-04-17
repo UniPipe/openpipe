@@ -9,15 +9,50 @@ from .segment import SegmentManager
 
 class PipelineManager:
     def __init__(self, start_segment_name):
-        self.thread_pools_config = {}
+        self.segment_managers = {}
         self.start_segment_name = start_segment_name
-        self.segment_manager = SegmentManager(start_segment_name)
 
     def create_segment(self, segment_name):
+        segment_manager = SegmentManager(segment_name)
+        self.segment_managers[segment_name] = segment_manager
         return self.segment_manager.create(segment_name)
 
     def start(self):
-        self.segment_manager.start()
+        started_segments = []
+        pending_link_requests = []
+        start_segment_manager = self.segment_managers[self.start_segment_name]
+        start_segment_manager.control_in.put("GET LINK")
+        pending_link_requests.append(self, start_segment_manager)
+
+        while True:
+            resolved_requests = []
+            for requester, requested_segment_manager in pending_link_requests:
+                status, argument = requested_segment_manager.control_out.get()
+                if status == "GET LINK":
+                    new_requested_segment_manager = self.segment_managers[argument]
+                    pending_link_requests.append(
+                        requested_segment_manager, new_requested_segment_manager
+                    )
+                elif status == "USE LINK":
+                    if requester == self:  # Got link for the start segment
+                        break
+                    if requested_segment_manager not in started_segments:
+                        started_segments.append(requested_segment_manager)
+                    requester.control_in.send("USE LINK", argument)
+                    resolved_requests.append(requester, requested_segment_manager)
+                elif status == "ERROR":
+                    print(
+                        "ERROR starting segment",
+                        requested_segment_manager,
+                        file=sys.stderrr,
+                    )
+                    exit(2)
+
+            for delete_request in resolved_requests:
+                pending_link_requests.remove(delete_request)
+
+        for segment_manager in started_segments:
+            segment_manager.send("ACTIVATE", None)
 
     def activate(self, activate_arguments):
         return self.segment_manager.activate(activate_arguments)
