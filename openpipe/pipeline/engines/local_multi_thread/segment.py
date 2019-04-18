@@ -49,48 +49,37 @@ class PipelineSegmentRun(threading.Thread):
 
 
 class SegmentController(threading.Thread):
-
     def __init__(self, segment_name):
         threading.Thread.__init__(self)
+        self.control_in = Queue()
+        self.control_out = Queue()
         self.segment_name = segment_name
         self.control_queue = Queue()
         self.thread_list = []
         self.action_config_list = []
         self.input_queue_list = []
-        self.action_list = []
 
-    def input_request(request):
-        pass
+    def get(self):
+        return self.control_out.get()
+
+    def put(self, *args, **kwargs):
+        return self.control_in.put(*args, **kwargs)
 
     def run(self):
-        # First we send all the ones we need
-        # Then we wait for link requests
-
+        print("RUNNING CONTROLLER", len(self.action_config_list))
+        runner_thread = SegmentRunner(self.segment_name, 0, self.input_queue_list)
+        for action_name, action_config, action_label in self.action_config_list:
+            runner_thread.add_action(action_name, action_config, action_label)
+        runner_thread.start()
         while True:
-            requester = self.control_in.get()
-            if requester is None:
+            needed_segment = runner_thread.get()
+            self.control_out.put(needed_segment)
+            if needed_segment is None:
                 break
-            input_queue = Queue()
-            self.input_queue_list.append(input_queue)
-            self.control_out.send("INACTIVE")
+        self.thread_list.append(runner_thread)
 
-        # Got no input requests
-        if len(self.input_queue_list) > 0:
-            self.control_out.send("INACTIVE")
-            return
-
-        # Now let's run the start code, which may send input requests
-        run_thread = SegmentRunner(self.segment_name, self, self.input_queue_list)
-        for action_item in self.action_list:
-            run_thread.add(action_item)
-
-        # Signal that our start was completed
-        #  request = self.control_out.send("STARTED")
-
-        while True:
-            run_thread.input_queue.get()
-
-    def add(self, action_name, action_config, action_label):
+    def add_action(self, action_name, action_config, action_label):
+        print("ADDING action to me")
         self.action_config_list.append((action_name, action_config, action_label))
 
 

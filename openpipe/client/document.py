@@ -103,7 +103,7 @@ class PipelineLoader:
                 action_label = "'{}', file \"{}\", line {}".format(
                     action_name, self._name, line_nr
                 )
-                segment_manager.add(action_name, action_config, action_label)
+                segment_manager.add_action(action_name, action_config, action_label)
 
     def get(self, document_name):
         """ Get a document content by name """

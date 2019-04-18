@@ -14,7 +14,7 @@ class PipelineSegment:
         self.action_list = []
         self.config_list = []
 
-    def add(self, action_name, action_config, action_label):
+    def add_action(self, action_name, action_config, action_label):
         action_instance = create_action_instance(
             action_name, action_config, action_label
         )

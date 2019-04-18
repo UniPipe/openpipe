@@ -8,7 +8,6 @@ from .segment import SegmentController
 
 
 class PipelineManager(object):
-
     def __init__(self, start_segment_name):
         self.controllers = {}
         self.start_segment_name = start_segment_name
@@ -19,26 +18,27 @@ class PipelineManager(object):
         self.controllers[segment_name] = controller
         return controller
 
-    def start_segment(self, controller):
+    def start_segment(self, controller: SegmentController):
+        print("\nSTARTING SEGMENT", controller.name)
         controller.start()
         while True:
-            needed_input, reply_queue = controller.get()
-            if needed_input is None:
+            print("Waiting for input request")
+            need_request = controller.get()
+            print(", needed_input")
+            if need_request is None:
                 break
+            needed_input, reply_queue = need_request
             needed_controller = self.controllers[needed_input]
             if needed_controller in self.started_controllers:
                 needed_controller.provide_input_for(reply_queue)
                 self.started_controllers.append(needed_controller)
             else:
                 self.start_segment(needed_controller)
-        controller.send(None)
+        controller.put(None)
 
     def start(self):
         """
-        From each segment controller:
-        - Get a status from each active controller
         """
-        print("SELF is", self, self.start_segment)
         start_controller = self.controllers[self.start_segment_name]
         self.start_segment(start_controller)
 
