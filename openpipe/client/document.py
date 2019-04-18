@@ -80,10 +80,9 @@ class PipelineLoader:
 
         self._document_dict = python_data
 
-    def load(self, pipeline_manager, start_segment="start"):
+    def load(self, pipeline_manager):
         """ Load the document into a pipeline runtime """
 
-        pipeline_manager.start_segment = start_segment
         libraries = self._document_dict.get("_libraries")
         if libraries:
             del self._document_dict["_libraries"]

@@ -8,7 +8,15 @@ This engine provides concurrent processing of pipelines, this is achieved by run
 
 The pipeline manager is responsible for:
 
-- Load libraries
+    needs_segment_manager = [start_segment]
+    for segment_manager in needs_segment_manager
+        segment_manager.start()
+        input_link = segment_manager.control_out.read()
+        needs_more = segment_manager.get()
+        while needs_more:
+            needs_segment_manager.append[needs_more]
+            needs_more = segment_manager.get()
+
 
 
 - For each segment in the pipeline:

@@ -4,55 +4,43 @@ import sys
 from os import environ
 from os.path import expanduser, normpath
 from openpipe.utils.download_cache import download_and_cache
-from .segment import SegmentManager
+from .segment import SegmentController
 
 
-class PipelineManager:
+class PipelineManager(object):
+
     def __init__(self, start_segment_name):
-        self.segment_managers = {}
+        self.controllers = {}
         self.start_segment_name = start_segment_name
+        self.started_controllers = []
 
     def create_segment(self, segment_name):
-        segment_manager = SegmentManager(segment_name)
-        self.segment_managers[segment_name] = segment_manager
-        return self.segment_manager.create(segment_name)
+        controller = SegmentController(segment_name)
+        self.controllers[segment_name] = controller
+        return controller
+
+    def start_segment(self, controller):
+        controller.start()
+        while True:
+            needed_input, reply_queue = controller.get()
+            if needed_input is None:
+                break
+            needed_controller = self.controllers[needed_input]
+            if needed_controller in self.started_controllers:
+                needed_controller.provide_input_for(reply_queue)
+                self.started_controllers.append(needed_controller)
+            else:
+                self.start_segment(needed_controller)
+        controller.send(None)
 
     def start(self):
-        started_segments = []
-        pending_link_requests = []
-        start_segment_manager = self.segment_managers[self.start_segment_name]
-        start_segment_manager.control_in.put("GET LINK")
-        pending_link_requests.append(self, start_segment_manager)
-
-        while True:
-            resolved_requests = []
-            for requester, requested_segment_manager in pending_link_requests:
-                status, argument = requested_segment_manager.control_out.get()
-                if status == "GET LINK":
-                    new_requested_segment_manager = self.segment_managers[argument]
-                    pending_link_requests.append(
-                        requested_segment_manager, new_requested_segment_manager
-                    )
-                elif status == "USE LINK":
-                    if requester == self:  # Got link for the start segment
-                        break
-                    if requested_segment_manager not in started_segments:
-                        started_segments.append(requested_segment_manager)
-                    requester.control_in.send("USE LINK", argument)
-                    resolved_requests.append(requester, requested_segment_manager)
-                elif status == "ERROR":
-                    print(
-                        "ERROR starting segment",
-                        requested_segment_manager,
-                        file=sys.stderr,
-                    )
-                    exit(2)
-
-            for delete_request in resolved_requests:
-                pending_link_requests.remove(delete_request)
-
-        for segment_manager in started_segments:
-            segment_manager.send("ACTIVATE", None)
+        """
+        From each segment controller:
+        - Get a status from each active controller
+        """
+        print("SELF is", self, self.start_segment)
+        start_controller = self.controllers[self.start_segment_name]
+        self.start_segment(start_controller)
 
     def activate(self, activate_arguments):
         return self.segment_manager.activate(activate_arguments)
@@ -72,8 +60,4 @@ class PipelineManager:
         sys.path.append(normpath(library_path))
 
     def plan(self, pipeline_document):
-        config = pipeline_document.get("_local_multi_thread", None)
-        if config:
-            self.thread_pools_config = config.get("thread_pools", {})
-
-        print("CFG PLAN IS", self.thread_pools_config)
+        pass
