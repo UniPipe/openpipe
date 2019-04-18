@@ -24,9 +24,6 @@ def test_runtime_run():
     # Runs the start method of all actions
     pipeline_manager.start()
 
-    # Create links between actions
-    pipeline_manager.create_action_links()
-
     # Send the activation element into the pipeline
     path = abspath(dirname("samples/test.yaml"))
     activation_item = {

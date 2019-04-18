@@ -44,9 +44,6 @@ def pipeline_run(filename, pipeline_arguments=(), start_segment="start"):
     # Runs the start method of all actions
     pipeline_manager.start()
 
-    # Create links between actions
-    pipeline_manager.create_action_links()
-
     # Send the activation element to the pipeline start segment
     path = abspath(dirname(filename))
     activation_item = {

@@ -16,13 +16,10 @@ class PipelineManager:
 
     def start(self):
         self.segment_manager.start()
+        self.segment_manager.create_action_links()
 
     def activate(self, activate_arguments):
         return self.segment_manager.activate(activate_arguments)
-
-    def create_action_links(self):
-        """ Create all links required to exchange data between action instances """
-        self.segment_manager.create_action_links()
 
     def load_library(self, library_path):
         auto_download = environ.get("OPENPIPE_AUTO_NETWORK", "False")
