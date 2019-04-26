@@ -8,21 +8,27 @@ from pprint import pformat
 from os.path import join, dirname
 from importlib import import_module
 from glob import glob
+from queue import Queue
 
 DEBUG = environ.get("DEBUG")
 
 
 class ActionRuntimeBase:
-    def __init__(self, action_config, action_label):
+
+    def __init__(self, action_config, action_label, resource_linker):
         self.initial_config = action_config
         self.action_label = action_label
         self._tag = None
         self.config_template = Template(action_config)
         self.failed_count = 0
+        self.resource_linker = resource_linker
         self.init()
 
     def segment_linker(self, segment_name):
-        return self._segment_linker(self, segment_name)
+        reply_queue = Queue()
+        request = ("request input", segment_name, reply_queue)
+        input_queue = self.resource_linker(request)
+        return input_queue
 
     def _on_input(self, caller, item, tag_item):
         _debug = isinstance(tag_item, dict) and tag_item.get("_debug", False)

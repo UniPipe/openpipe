@@ -16,7 +16,7 @@ class PipelineSegment:
 
     def add_action(self, action_name, action_config, action_label):
         action_instance = create_action_instance(
-            action_name, action_config, action_label
+            action_name, action_config, action_label, self.get_resource
         )
         self.action_list.append(action_instance)
         self.config_list.append(action_config)
@@ -45,6 +45,9 @@ class PipelineSegment:
                 except:  # NOQA: E722
                     print("Failed starting", action.action_label, file=stderr)
                     raise
+
+    def get_resource(self, request):
+        pass
 
 
 class SegmentManager:

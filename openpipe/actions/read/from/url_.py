@@ -37,7 +37,7 @@ class Action(ActionRuntime):
 
     def on_start(self, config):
         self.extend(__file__, "_file")
-        self.file_action = FileAction(self.action_label, None)
+        self.file_action = FileAction(self.action_label, None, None)
         self.file_action.extend(__file__, "_file")
 
     def on_input(self, item):

@@ -56,12 +56,12 @@ def yaml_attribute(text):
     return text
 
 
-def create_action_instance(action_name, action_config, action_label):
-    """ Create an instance for a module, after validating the provided config"""
+def create_action_instance(action_name, action_config, action_label, resource_linker):
+    """ Create an instance from the module's Action class , after validating the provided config """
     action_module = load_action_module(action_name, action_label)
     action_class = action_module.Action
     action_config = validate_provided_config(action_class, action_label, action_config)
-    instance = action_class(action_config, action_label)
+    instance = action_class(action_config, action_label, resource_linker)
     return instance
 
 

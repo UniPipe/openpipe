@@ -2,7 +2,6 @@
 
 import threading
 from os import environ
-from openpipe.utils import create_action_instance
 from time import time
 from queue import Queue
 from .runner import SegmentRunner
@@ -15,42 +14,10 @@ QSIZE_CHECK_INTERVAL = 1  # Interval between qsize checks
 QSIZE_THREAD_TRIGGER = 2  # Qsize to trigger that should trigger a new thread
 
 
-class PipelineSegmentRun(threading.Thread):
-    def __init__(self, segment_name, controller_queue):
-        threading.Thread.__init__(self, segment_name)
-        self.action_list = []
-        self.control_queue = Queue()
-        self.controller_queue = controller_queue
-
-    def add(self, action_name, action_config, action_label):
-        action_instance = create_action_instance(
-            action_name, action_config, action_label
-        )
-        self.action_list.append(action_instance)
-
-    def run(self):
-        """ Run the on start method for all the actions in this segment """
-        for i, action in enumerate(self.action_list):
-            action.action_label = (
-                "Thread-'" + self.segment_name + "' :" + action.action_label
-            )
-            on_start_func = getattr(action, "on_start", None)
-            if on_start_func:
-                if DEBUG:
-                    print("on_start %s " % action.action_label)
-                try:
-                    action.controller_queue = self.controller_queue
-                    on_start_func(action.initial_config)
-                    action._segment_linker = None
-                except:  # NOQA: E722
-                    self.control_queue.put(("failed", action.action_label))
-                    return
-        self.control_queue.put(("started", i))
-
-
 class SegmentController(threading.Thread):
     def __init__(self, segment_name):
         threading.Thread.__init__(self)
+        self.name = "Controller_" + segment_name
         self.control_in = Queue()
         self.control_out = Queue()
         self.segment_name = segment_name
@@ -65,22 +32,40 @@ class SegmentController(threading.Thread):
     def put(self, *args, **kwargs):
         return self.control_in.put(*args, **kwargs)
 
+    def provide_input_to(self, reply_queue):
+        input_queue = Queue()
+        self.input_queue_list.append(input_queue)
+        reply_queue.put(input_queue)
+
     def run(self):
-        print("RUNNING CONTROLLER", len(self.action_config_list))
+        # Create a runner thread
         runner_thread = SegmentRunner(self.segment_name, 0, self.input_queue_list)
+
+        # Add all actions to the runner thread
         for action_name, action_config, action_label in self.action_config_list:
             runner_thread.add_action(action_name, action_config, action_label)
         runner_thread.start()
+
+        # Wait for link requests from the runner thread
         while True:
-            needed_segment = runner_thread.get()
-            self.control_out.put(needed_segment)
-            if needed_segment is None:
+            start_reply = runner_thread.get()
+            status, title, detail = start_reply
+            # Send link requests to the pipeline manager
+            self.control_out.put(start_reply)
+            if status == "started":
                 break
+
+        # Waiting for all dependent segments to be started
+        start_reply = self.control_in.get()
+        assert(start_reply == "running")
         self.thread_list.append(runner_thread)
 
     def add_action(self, action_name, action_config, action_label):
-        print("ADDING action to me")
         self.action_config_list.append((action_name, action_config, action_label))
+
+    def activate(self, activation_arguments):
+        """ Activate a segment by sending the activation item to the input """
+        self.input_queue_list[0].put(activation_arguments)
 
 
 class PipelineSegment(threading.Thread):
@@ -110,8 +95,6 @@ class PipelineSegment(threading.Thread):
             self.input_sources.append(source)
 
     def run(self):
-
-        self._segment_linker = self._segment_linker
 
         self.loop_on_input_data()
 

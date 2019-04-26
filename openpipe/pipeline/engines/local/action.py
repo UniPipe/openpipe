@@ -13,7 +13,7 @@ DEBUG = environ.get("DEBUG")
 
 
 class ActionRuntimeBase:
-    def __init__(self, action_config, action_label):
+    def __init__(self, action_config, action_label, resource_linker):
         self.initial_config = action_config
         self.action_label = action_label
         self._tag = None
