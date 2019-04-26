@@ -57,7 +57,7 @@ class SegmentController(threading.Thread):
 
         # Waiting for all dependent segments to be started
         start_reply = self.control_in.get()
-        assert(start_reply == "running")
+        assert start_reply == "running"
         self.thread_list.append(runner_thread)
 
     def add_action(self, action_name, action_config, action_label):

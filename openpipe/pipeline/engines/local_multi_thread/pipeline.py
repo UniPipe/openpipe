@@ -32,10 +32,10 @@ class PipelineManager(object):
         # are started
         while True:
             # First wait for the list of  needed segments
-            if controller.name == 'Controller_do_something':
+            if controller.name == "Controller_do_something":
                 print("Waiting for the list of needed segments", controller.name)
             start_reply = controller.get()
-            if controller.name == 'Controller_do_something':
+            if controller.name == "Controller_do_something":
                 print("Got list of needed segments", start_reply)
             status, title, detail = start_reply
             if status == "failed":
