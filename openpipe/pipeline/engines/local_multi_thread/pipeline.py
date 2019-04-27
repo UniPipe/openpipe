@@ -8,7 +8,7 @@ from openpipe.utils.download_cache import download_and_cache
 from .segment import SegmentController
 
 
-class PipelineManager(object):
+class PipelineManager:
     def __init__(self, start_segment_name):
         self.controllers = {}
         self.start_segment_name = start_segment_name
@@ -21,7 +21,7 @@ class PipelineManager(object):
         self.controllers[segment_name] = controller
         return controller
 
-    def start_segment(self, controller: SegmentController):
+    def start_controller(self, controller: SegmentController):
         """
         Start a segment controller.
         If this segment requires additional segments which have not been loaded,
@@ -62,7 +62,7 @@ class PipelineManager(object):
         else:
             print("Starting new controller for", segment_name)
             self.started_controllers.append(needed_controller)
-            self.start_segment(needed_controller)
+            self.start_controller(needed_controller)
             needed_controller.provide_input_to(reply_queue)
         print("Done - handle_request_input", segment_name)
 

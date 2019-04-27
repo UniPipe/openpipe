@@ -2,205 +2,95 @@
 
 This engine provides concurrent processing of pipelines, this is achieved by running each segment on it's own thread.
 
-## Architecture
+## Pipeline Manager
 
-### Pipeline Manager
+The pipeline manager is responsible for the functions described in the next sections.
 
-The pipeline manager is responsible for:
+### Segment Controllers Creation
 
-    needs_segment_manager = [start_segment]
-    for segment_manager in needs_segment_manager
-        segment_manager.start()
-        input_link = segment_manager.control_out.read()
-        needs_more = segment_manager.get()
-        while needs_more:
-            needs_segment_manager.append[needs_more]
-            needs_more = segment_manager.get()
+The engine client document loader invokes `create_segment(...)` for each segment found in the pipeline. This method will create a `SegmentController` thread, which is only started if `start_controller(...)` is called later.
 
+The created controller is returned to the document loader, its `add_action(...)` method will be called later, for each action set in the segment sequence.
 
+#### Pipeline Start
 
-- For each segment in the pipeline:
-    - Create a pipeline manager, providing him a "control_in" and "control_out" queue
+When the engine client invokes `start(...)` to start the pipeline, this method  invokes the `start_controller(...)` with the _start_ segment controller.
 
-load()
-- For each segment manager:
-    - Send to the "control_in" the segment content
+Put a _"provide input"_ to the _start_ segment controller `from_manager` queue.
+Fetch the input link item from the request reply queue, store it as `start_input_link` .
 
-start()
-    - For each segment manager:
-        Get status from "control_in"
-    
-- Add the (self, sm "start") o the needs_started list:
-- Send "start", to the sm start
+##### Segment Controller Start
 
-- while needs_started or needs_links:
-    for request, link in needs_links:
+The `start_controller(...)` method starts the specified controller thread.
 
-    clear needs_started
-    Send "Get Link" to the sm contol_in
-    Read "Reply" from sm control_ouy
-    if reply == ("Link", link object)
-        if requester == self:
-            break
-        to the requester control in send:
+Loop fetching items from the controller's `to_manager` queue:
 
-    if reply == ("Requests Link", link name)
-        needed_links.append(sm, sm link name)
+- If a _"request input"_ request is received:
+    - If the controller for the requested segment name was not started, start it by calling `start_controller(...)`
+    - put a _"provide input"_ to the requested segment controller `from_manager` queue.
+- Until a _"started"_ or _"failed"_ is received
 
-- For each segment manager in the "links_needed" list:
+Fetch the "activation_item" from the `from_manager` queue
 
-    - Read messages from the control_out which may be:
-        - "Get link", segment_name  - Add segment name to the "links_needed"
-        - "Start completed", (number of actions)) - Remove from "links_needed"
-        - "Start failed", reason    - Remove from "not stated"
+#### Pipeline Activation
 
-- Validate for any cross-link requests (avoid dead lock)
+When the engine client invokes `activate(...)`.
 
-- For each "Get link to segment name":
-    - Send "Request link" to the control_in of the "names" segment manager:
-    - Read the response from the control_out
-    - Send the response to the "Get link to segment" manager
+Loop the started controllers list:
+- Put _"activate"_ into the controller's `from_manager` queue
 
+Put the activation item into the `start_input_link` queue.
+Put `None` into the `start_input_link` queue.
 
-activate()
-    - "
-    - For each segment manager (not started):
+Loop the started controllers list:
+- Fetch termination item (must be _"terminated"_) from the controller's `to_manager` queue
 
-#### Bootstraping segment managers
+## Segment Controller
 
-- For each segment found in the pipeline:
-    - Create a segment manager instance
+The segment controller is responsible for the functions described in the next sections.
 
-- For each segment manager:
-    - Send the list of additional libraries to the segment manager instance [PM->SM]#a1
+### Segment Runner Creation
 
-- For each segment manager:
-    - Wait for the load result, interrupt if there was an error[SM->PM]#a2
+When a segment controller is started it creates a `SegmentRunner` thread, it invokes the _runner's_ `add_action(...)` for each action container in the _controller's_ action list. It starts the `runner` thread.
 
-- For each segment manager:
-    - Send the list of actions to the segment manager instance[PM->SM]#a3
+Looping fetching items from the runners's `to_controller` queue:
 
-- For each segment manager:
-    - Wait for the load result, interrupt if there was an error[SM->PM]#a4
+- Send it to the `to_manager` queue
+- Until a _"started"_ or _"failed"_ is received
 
-- For each segment manager:
-    - Send the "start" request[PM->SM]#a5
+Loop fetching items from the `from_manager` queue:
 
-- For each segment manager:
-    - Wait for the start result, interrupt if there was an error[SM->PM]#a6
+- if a _"provide input"_ is received:
+    - increase _input_link_count_
+    - put the input link to the _provide_ reply queue
+- until an _"activate"_ is received
 
-- For each segment manager:
-    - Read the list of resource offers ["segment", {'name': 'x'}, offer_queue] [SM->PM]#a7
+Looping fetching items from the runners's `to_controller` queue:
 
-- For each segment manager:
-    - Send all the offers[PM->SM]#a8
+- if a `None` is received:
+    - decrease _input_link_count_
+    - if _input_link_count_ is zero:
+        - put `False` to the runners's `from_controller` queue
+    - else:
+        - put `True` to the runners's `from_controller` queue
+- until _input_link_count_ is zero
 
-- For each segment manager:
-    - Wait for the run result, interrupt if there was an error
+- put _"terminated"_ into the `to_manager` queue
 
-- For each segment manager:
+## Segment Runner
 
-#### Segment manager start
-- Create a segment runner instance
-- Wait for the list of additional libraries[PM->SM]#a1
-- Send the list of additional libraries to the segment runner[SM->SR]#b1
-- Wait for result[SR->SM]#b2
-- send the result back[SM->PM#]#a2
+When a segment runner is started.
 
-- Wait for the list of actions[PM->SM]#a3
-- Send the list of actions to the segment runner[SM->SR]#b3
-- Wait for result[SR->SM]#b4
-- send the result back[SM->PM]#a4
+Loop the runner actions list:
+- Call the action `on_start(...)`
+- If it fails, abort loop and put "failed" into the `to_controller` queue
 
-- Wait for the "start" request[PM->SM]#a5
-- Send the "start" request to the segment runner[SM->SR]#b5
-- Wait for the result[SR->SM]#b6
-- Send the result back[SM->PM]#a6
-- Send the list of offers[SM->PM]#a7
-- Wait for the list of claims from the segment runner[SR->SM]#b7
-- Wait for list of offers[PM->SM]#a8
-- Match claims with offers
+Put _"started"_ into the `to_controller` queue
 
-
-
-
-
-
-#### Activating the pipeline
-- With the `start` segment manager:
-    - Send a _"get link"_ instruction
-    - Send the "activate" item to the received link
-    - Send "None"" item to the received link
-- For each segment manager:
-    - Send the _"run"_ instruction «to get segments in the wait for input loop»
-- For each segment manager:
-    - Wait for run result, which may be "completed", "failed" or "aborted"
-
-
-### Segment manager
-
-The segment managers are responsible for:
-
-#### Bootstraping segment runners
-- Creating a segment runner instance
-- Wait for the list of additional libraries
-- Send the list of additional libraries to the segment runner
-- Wait for the result and send it back, interrupt on failure
-- Wait for the list of actions
-- Send the list of actions to the segment runner
-- Wait for the result and send it back, interrupt on failure
-- Wait for the "start" request
-- Run the `on_start()` method for all actions in the segment
-- Wait for control requests:
-    - "get link"
-    - "run"
-
-- Wait for control instructions from the pipeline manager:
-    - "start:
-        - Run the `on_start()` method for all actions in the segment
-        - Waits for the result, wich may be _"started"_ or _"failed"_
-        - Send the result back to the pipeline manager
-
-# Segment Manager
-The segment manager is responsible for creating the segment (threads), it will also create a control queue for each segment, this control queue will be used to managed the segment threads.
-
-# Segment Manager Algorithm (Main Thread)
-The segment manager `start()` method  will `start()` all segment threads.
-
-For each segment thread it will get items from the control which may be:
-
-- "link segment_name"
-    - segment manager will create a queue
-    - add it to the target segment input que list
-    - send it to the control queue
-- "started"
-- "failed"
-
-For each segment thread it will put in the control queue:
-- "True": Segment thread should enter the wait for input loop
-- "False": Segment thread should terminate (there was a start error)
-
-If there was a start error, stop here.
-
-For each segment, get the pipeline execution result (None or an error).
-
-
-# Segment Thread Algorithm
-
-Run the `on_start()` method, get boolean "should enter input loop ?" fromc ontrol queue, if False, exit.
-
-If input queue lengh size is 0, report "No references" and exit.
-
-Loop waiting for input:
-
-- Loop:
-    - If input queue list is empty, quit loop
-    - Get an input_queue from input_queue_list (using round robin)
-    - Get and item from input queue
-    - If item is None remove queue from input queue list
-- Run the `on_finish()`
-- Put _None_ or _Error_ in the control queue
-
-
-Send to controlo queue None or Error
-
+Loop fetching items from the `input_queue`:
+- If item is `None`:
+    - Put `None` into `to_controller` queue
+    - Fetch item from the `from_controller` queue
+        - If is `False` break loop
+        - If is `True` continue loop
+- Call first's action `_on_input_` method
