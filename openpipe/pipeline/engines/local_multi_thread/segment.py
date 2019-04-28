@@ -4,6 +4,7 @@ import threading
 from os import environ
 from time import time
 from queue import Queue
+from threading import Thread
 from .runner import SegmentRunner
 
 
@@ -12,6 +13,42 @@ DEBUG = environ.get("DEBUG")
 MAX_THREADS_PER_SEGMENT = int(environ.get("MAX_THREADS_PER_SEGMENT", "10"))
 QSIZE_CHECK_INTERVAL = 1  # Interval between qsize checks
 QSIZE_THREAD_TRIGGER = 2  # Qsize to trigger that should trigger a new thread
+
+
+class SegmentManager(Thread):
+    """
+    The segment manager runs on it's own thread, it loops waiting for message
+    from it's input bus. To ensure thread safety, all interactions with the
+    segment manager are performed through submit_message()
+
+    The following messages are supported:
+
+    The following message will be sent to the tartet segment controller input queue
+
+        A segment controller/pipeline client requests an input link to a segment:
+            submit_message(type="request input link", segment="name", reply_link=reply_queue)
+
+    The following messages will be sent to the "output" queue.
+        A segment controller requests the action list for a segment:
+            submit_message(type="get action list", segment="name", reply_link=reply_queue)
+        A segment controller reports that an action segment was started with success:
+            submit_message(type="started", segment="start", start_time=120s)
+        A segment controller reports that an action segment received end of input:
+            submit_message(type="finished", segment="start", reply_link=input_queue)
+        A segment controller reports that an error happened:
+            submit_message(type="error", where="on_start", message=120s)
+    """
+
+    def __init__(self):
+        self.controllers = []
+        self._input_queue = Queue()
+
+    def submit_message(self, **kwargs):
+        self._input_bus.put(kwargs)
+
+    def run(self, output_queue):
+        message = self._input_bus.get()
+        print(message)
 
 
 class SegmentController(threading.Thread):

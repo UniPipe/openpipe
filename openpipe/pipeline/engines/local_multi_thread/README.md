@@ -4,6 +4,9 @@ This engine provides concurrent processing of pipelines, this is achieved by run
 
 ## Pipeline Manager
 
+The pipeline manager provides the following two major roles.
+
+
 The pipeline manager is responsible for the functions described in the next sections.
 
 ### Segment Controllers Creation
