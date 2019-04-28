@@ -23,7 +23,7 @@ class SegmentManager(Thread):
 
     The following messages are supported:
 
-    The following message will be sent to the tartet segment controller input queue
+    The following message will be sent to the target segment controller input queue
 
         A segment controller/pipeline client requests an input link to a segment:
             submit_message(type="request input link", segment="name", reply_link=reply_queue)
@@ -37,6 +37,10 @@ class SegmentManager(Thread):
             submit_message(type="finished", segment="start", reply_link=input_queue)
         A segment controller reports that an error happened:
             submit_message(type="error", where="on_start", message=120s)
+
+    The pipeline client requests the segment manager termination:
+        submit_message(type="terminate")
+
     """
 
     def __init__(self):
