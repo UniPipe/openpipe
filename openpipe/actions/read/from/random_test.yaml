@@ -1,0 +1,5 @@
+start:
+    - generate: 10
+    - read from random: 5
+    - print:
+    - assert: $_ in [0, 1, 2, 3, 4, 5]$
