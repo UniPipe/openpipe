@@ -1,0 +1,4 @@
+start:
+    - generate: 5
+    - print: Number $_$
+    - assert: [0, 1, 2, 3, 4]

@@ -98,8 +98,8 @@ class Action(ActionRuntime):
                 assert item == assert_data
             except AssertionError:
                 print(
-                    "AssertionError: Expected %s, got %s"
-                    % (str(assert_data), str(item)),
+                    "AssertionError: Expected %s%s got %s%s"
+                    % (type(assert_data), str(assert_data), type(item), str(item)),
                     file=stderr,
                 )
                 raise

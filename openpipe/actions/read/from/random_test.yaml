@@ -1,0 +1,25 @@
+start:
+    - send to segment:
+        - single_number
+        - single_range
+        - multiple_keys
+
+single_range:
+    - generate: 10
+    - read from random: 4..6
+    - assert: $_ in [4, 5, 6]$
+
+single_number:
+    - generate: 10
+    - read from random: 5
+    - print:
+    - assert: $_ in [0, 1, 2, 3, 4, 5]$
+
+multiple_keys:
+    - read from random:
+        key1: 5
+        key2: 10
+
+    - assert:
+        - $key1 in [0, 1, 2, 3, 4, 5] and
+            key2 in [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]$

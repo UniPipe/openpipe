@@ -1,0 +1,4 @@
+start:
+    - insert: 12
+    - tag as: test
+    - print: $_tag$
