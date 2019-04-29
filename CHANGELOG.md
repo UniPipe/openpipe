@@ -14,3 +14,4 @@ This minor release brings the following improvements:
 * Add 'generate' action to generate integer numbers (closes #18)
 * Add 'read from random' action to fetch random numbers (closes #19)
 * Add 'queue' action to queue input items into a list (closes #20)
+* Add 'join' action to join elements from an input list item (closes #21)

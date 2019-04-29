@@ -1,0 +1,4 @@
+start:
+    - insert: [a, b, c]
+    - join: "."
+    - assert: a.b.c
