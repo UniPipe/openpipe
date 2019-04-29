@@ -12,3 +12,4 @@ This minor release brings the following improvements:
 * Add action 'update from regex match' (closes #16)
 * Handle full paths on "read from file list": (closes #15)
 * Add 'generate' action to generate integer numbers (closes #18)
+* Add 'read from random' action to fetch random numbers (closes #19)
