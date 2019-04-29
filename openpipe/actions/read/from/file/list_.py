@@ -14,6 +14,15 @@ class Action(ActionRuntime):
     """
 
     def on_input(self, item):
-        file_list = sorted(Path(".").glob(self.config))
+        path = Path(self.config).expanduser().as_posix()
+        # Because PathLib's glob() does not support absolute patterns
+        # Transform them into a relative pattern to "/"
+        if path[0] == "/":
+            root_path = "/"
+            pattern = path[1:]
+        else:
+            root_path = "."
+            pattern = path
+        file_list = sorted(Path(root_path).glob(pattern))
         file_list = [filename.as_posix() for filename in file_list]
         self.put(file_list)
