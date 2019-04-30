@@ -1,5 +1,5 @@
 start:
-    - iterate: $[n for n in range(100)]$
+    - generate: 10
     - send to segment: do_something
 
 do_something:

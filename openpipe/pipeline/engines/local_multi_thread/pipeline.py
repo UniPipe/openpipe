@@ -1,85 +1,75 @@
 """ This module provides the pipeline management class """
 
 import sys
-from queue import Queue
 from os import environ
+from queue import Queue
 from os.path import expanduser, normpath
 from openpipe.utils.download_cache import download_and_cache
 from .segment import SegmentController
+from pprint import pprint
+from wasabi import Printer
+
+printer = Printer()
 
 
 class PipelineManager:
     def __init__(self, start_segment_name):
-        self.controllers = {}
+        self.controller_queue = Queue()
+        # We need a reply queue to get the link to the "start" input segment
+        self.start_input_reply_queue = Queue()
+        self.segment_controller = SegmentController(self.controller_queue)
         self.start_segment_name = start_segment_name
-        self.started_controllers = []
-        self.activate_queue = None
+        self.start_completed = False
+        self.input_completed = False
+        self.load_error = False
+        self.running_segments = 0
 
     def create_segment(self, segment_name):
         """ Create the controller associated with a segment """
-        controller = SegmentController(segment_name)
-        self.controllers[segment_name] = controller
-        return controller
+        return self.segment_controller.create_segment(segment_name)
 
-    def start_controller(self, controller: SegmentController):
-        """
-        Start a segment controller.
-        If this segment requires additional segments which have not been loaded,
-        start then first.
-        """
-        controller.start()
-        # Loop until the segment and any dependent segment controllers
-        # are started
-        while True:
-            # First wait for the list of  needed segments
-            if controller.name == "Controller_do_something":
-                print("Waiting for the list of needed segments", controller.name)
-            start_reply = controller.get()
-            if controller.name == "Controller_do_something":
-                print("Got list of needed segments", start_reply)
-            status, title, detail = start_reply
-            if status == "failed":
-                print("Startup failed")
-                print(detail)
-                print(title)
-                exit(1)
-            elif status == "request input":
-                segment_name, reply_queue = title, detail
-                return self.handle_request_input(segment_name, reply_queue)
-            elif status == "started":
-                break
-            else:
-                raise NotImplementedError(status)
-        controller.put("running")
+    def is_completed(self):
+        return self.running_segments == 0
 
-    def handle_request_input(self, segment_name, reply_queue):
-        """ Answer to an input request """
-        print("handle_request_input", segment_name)
-        # This segment requires additional segments
-        needed_controller = self.controllers[segment_name]
-        if needed_controller in self.started_controllers:
-            needed_controller.provide_input_to(reply_queue)
-        else:
-            print("Starting new controller for", segment_name)
-            self.started_controllers.append(needed_controller)
-            self.start_controller(needed_controller)
-            needed_controller.provide_input_to(reply_queue)
-        print("Done - handle_request_input", segment_name)
+    def is_started(self):
+        return (self.start_completed or self.load_error) is True
 
     def start(self):
-        """
-        """
-        start_controller = self.controllers[self.start_segment_name]
-        self.start_segment(start_controller)
-        reply_queue = Queue()
-        # start_controller.put("request input", self.start_segment_name, reply_queue)
-        # reply = reply_queue.get()
-        start_controller.provide_input_to(reply_queue)
-        self.activate_queue = reply_queue.get()
+        self.segment_controller.start()
+        self.segment_controller.submit_message(
+            cmd="request input link",
+            target_segment=self.start_segment_name,
+            reply_queue=self.start_input_reply_queue,
+        )
+        self.run_control_loop_until(self.is_started)
+
+    def run_control_loop_until(self, loop_exit_func):
+        while not loop_exit_func():
+            message = self.controller_queue.get()
+            try:
+                cmd = message["cmd"]
+                handle_func_name = "_handle_" + (cmd.replace(" ", "_"))
+            except TypeError:
+                print("Got invalid message:", message)
+                raise
+            del message["cmd"]
+            try:
+                getattr(self, handle_func_name)(**message)
+            except:  # NOQA: E722
+                print("Error processing message:")
+                pprint(message)
+                raise
 
     def activate(self, activate_arguments):
-        self.activate_queue.put(activate_arguments)
-        print("Activation completed")
+        start_input_queue = self.start_input_reply_queue.get()
+        if start_input_queue is None:
+            self.segment_controller.submit_message(cmd="terminate")
+            sys.exit(99)
+        start_input_queue.put((activate_arguments, None))
+        start_input_queue.put((None, None))
+        self.run_control_loop_until(self.is_completed)
+        self.segment_controller.submit_message(cmd="terminate")
+        return 0, "OK"
 
     def load_library(self, library_path):
         auto_download = environ.get("OPENPIPE_AUTO_NETWORK", "False")
@@ -97,3 +87,25 @@ class PipelineManager:
 
     def plan(self, pipeline_document):
         pass
+
+    def _handle_error(self, where, msg):
+        if where == "module load":
+            self.load_error = True
+        printer.fail(f"Error during {where}")
+        print(msg, file=sys.stderr)
+
+    def _handle_started(self, segment_name):
+        printer.good(f"Segment {segment_name} was started")
+        if segment_name == self.start_segment_name:
+            self.start_completed = True
+        self.running_segments += 1
+
+    def _handle_completed(self, segment_name):
+        printer.good(f"Segment {segment_name} input processing completed")
+
+    def _handle_finished(self, segment_name):
+        printer.good(f"Segment {segment_name} finished")
+        self.running_segments -= 1
+
+    def _handle_debug(self, msg):
+        print(msg)

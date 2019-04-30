@@ -31,7 +31,11 @@ def load_action_module(action_name, action_label):
     except ModuleNotFoundError as error:
         print("Error loading module", action_path, file=stderr)
         print("Required for action:", action_label, file=stderr)
-        error = tb("Module not found:", error.name, tb=traceback.extract_stack())
+        error = tb(
+            "Module not found:",
+            error.name + f" '{action_name}:'",
+            tb=traceback.extract_stack(),
+        )
         raise ModuleNotFoundError(error) from None
     except ImportError as error:
         print("Error loading module", action_path, file=stderr)

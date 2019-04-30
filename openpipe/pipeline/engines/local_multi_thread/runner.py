@@ -8,17 +8,19 @@ DEBUG = environ.get("DEBUG")
 
 
 class SegmentRunner(threading.Thread):
-    def __init__(self, segment_name, thread_number, input_queue_list):
+    def __init__(
+        self, segment_name, action_list, thread_number, input_queue, controller
+    ):
         threading.Thread.__init__(self)
         self.name = segment_name
-        self.input_queue_list = input_queue_list.copy()
-        self.input_iter = iter(self.input_queue_list)
-        self.control_in = Queue()
-        self.control_out = Queue()
+        self.input_queue = input_queue
+        self.controller = controller
         self.action_list = []
+        for action_name, action_config, action_label in action_list:
+            self.add_action(action_name, action_config, action_label)
 
-    def get(self):
-        return self.control_out.get()
+    def submit_message(self, **kwargs):
+        self.controller.submit_message(**kwargs)
 
     def run(self):
         """ Run the on start method for all the actions in this segment """
@@ -27,44 +29,58 @@ class SegmentRunner(threading.Thread):
             on_start_func = getattr(action, "on_start", None)
             if on_start_func:
                 if DEBUG:
-                    print("on_start %s " % action.action_label)
+                    self.submit_message(
+                        cmd="debug", msg="on_start %s " % action.action_label
+                    )
                 try:
                     on_start_func(action.initial_config)
                 except:  # NOQA: E722
                     detail = format_exc()
-                    failed_reply = ("failed", action.action_label, detail)
-                    self.control_out.put(failed_reply)
+                    self.submit_message(cmd="error", where="on_start", msg=detail)
                     return
-        start_reply = ("started", i, None)
-        self.control_out.put(start_reply)
-        while True:
-            # Wait for some input element before getting into "running"
-            request = self.control_in.get()
-            raise NotImplementedError(request)
+        self.submit_message(cmd="started", segment_name=self.name)
         self.loop_on_input_data()
 
     def loop_on_input_data(self):
-        while True:
-            item = self.get_next_input.get()
-            if item is None:
-                break
 
-    def get_next_input(self):
-        """ Retrieve the next available input item """
-        if self.current_queue is None:
-            current_iter = self.input_iter = iter(self.input_queue_list)
-            current_queue = self.current_queue = next(current_iter)
-        else:
-            current_queue = self.current_queue
-        while True:
-            # Wait 0.5s before going for next queue check
-            current_queue.get(timeout=0.5)
+        # Loop until no more input links are available
+        first_action = self.action_list[0]
+        input_links_available = True
+        while input_links_available:
+            item = self.input_queue.get()
+            data_item, tag_item = item
+            if data_item is None:
+                reply_queue = Queue()
+                self.controller.submit_message(
+                    cmd="end of link", segment=self.name, reply_queue=reply_queue
+                )
+                input_links_available = reply_queue.get()
+                if input_links_available:
+                    continue
+            first_action._on_input(data_item, tag_item)
+
+        self.controller.submit_message(cmd="finished", segment_name=self.name)
 
     def add_action(self, action_name, action_config, action_label):
-        action_instance = create_action_instance(
-            action_name, action_config, action_label, self.get_resource
-        )
+        try:
+            action_instance = create_action_instance(
+                action_name, action_config, action_label, self.get_resource
+            )
+        except Exception as ex:
+            self.submit_message(cmd="error", where="module load", msg=str(ex))
+            raise
+            return
+        action_instance.controller = self.controller
+        if len(self.action_list) > 0:
+            # Create the link from the previous actions
+            self.action_list[-1].next_action = action_instance
         self.action_list.append(action_instance)
 
-    def get_resource(self, request):
-        self.control_out.put(request)
+    def get_resource(self, segment_name):
+        reply_queue = Queue()
+        self.controller.submit_message(
+            cmd="request input link",
+            target_segment=segment_name,
+            reply_queue=reply_queue,
+        )
+        return reply_queue.get()

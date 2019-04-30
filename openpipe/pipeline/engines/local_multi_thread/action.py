@@ -8,7 +8,6 @@ from pprint import pformat
 from os.path import join, dirname
 from importlib import import_module
 from glob import glob
-from queue import Queue
 
 DEBUG = environ.get("DEBUG")
 
@@ -24,17 +23,18 @@ class ActionRuntimeBase:
         self.init()
 
     def segment_linker(self, segment_name):
-        reply_queue = Queue()
-        request = ("request input", segment_name, reply_queue)
-        input_queue = self.resource_linker(request)
-        return input_queue
+        link = self.resource_linker(segment_name)
+        if link is None:
+            raise NotImplementedError(link)
+        return link
 
-    def _on_input(self, caller, item, tag_item):
+    def _on_input(self, item, tag_item):
         _debug = isinstance(tag_item, dict) and tag_item.get("_debug", False)
         if DEBUG or _debug:
-            print(
-                "on_input %s: \n\tInput: %s\n\tTag: %s"
-                % (self.action_label, item, tag_item)
+            self.controller.submit_message(
+                cmd="debug",
+                msg="on_input %s: \n\tInput: %s\n\tTag: %s"
+                % (self.action_label, item, tag_item),
             )
         if item is not None:
             self._tag = tag_item
@@ -55,12 +55,14 @@ class ActionRuntimeBase:
                 #  raise(
                 self.failed_count += 1
                 exit(1)
-
         if item is None:
             on_finish_func = getattr(self, "on_finish", None)
             if on_finish_func:
                 if DEBUG or _debug:
-                    print("on_finish %s [Tag: %s]" % (self.action_label, self._tag))
+                    self.controller.submit_message(
+                        cmd="debug",
+                        msg="on_finish %s [Tag: %s]" % (self.action_label, self._tag),
+                    )
                 on_finish_func(True)
             self.put(item)
         else:
@@ -105,10 +107,10 @@ class ActionRuntime(ActionRuntimeBase):
 
         # Put on next
         if self.next_action:
-            self.next_action._on_input(self, item, self._tag)
+            self.next_action._on_input(item, self._tag)
 
     def put_target(self, item, target):
-        target.put((self, item, self._tag))
+        target.put((item, self._tag))
 
     def set_tag(self, tag_item):
         if DEBUG:
