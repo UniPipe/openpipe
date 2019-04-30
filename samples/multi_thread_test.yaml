@@ -1,6 +1,8 @@
 start:
     - generate: 10
-    - send to segment: do_something
+    - send to segment: other
 
-do_something:
-    - print:
+other:
+    - count:
+    - print: $_$
+    - execute: sleep 10

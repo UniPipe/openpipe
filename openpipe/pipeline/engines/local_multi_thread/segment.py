@@ -1,7 +1,7 @@
 """ This module provides the segment management classes """
 
 from os import environ
-from queue import Queue
+from queue import Queue, Empty
 from threading import Thread
 from pprint import pprint
 from .runner import SegmentRunner
@@ -9,9 +9,17 @@ from .runner import SegmentRunner
 
 DEBUG = environ.get("DEBUG")
 
-MAX_THREADS_PER_SEGMENT = int(environ.get("MAX_THREADS_PER_SEGMENT", "10"))
-QSIZE_CHECK_INTERVAL = 1  # Interval between qsize checks
-QSIZE_THREAD_TRIGGER = 2  # Qsize to trigger that should trigger a new thread
+
+# Perform autoscale if qsize is larger than this value
+AUTOSCALE_QSIZE_MIN = int(environ.get("AUTOSCALE_QSIZE_MIN", "10"))
+# Can autoscale until this max number of threads
+AUTOSCALE_THREAD_MAX = int(environ.get("AUTOSCALE_THREAD_MAX", "10"))
+# Check queue size every AUTOSCALE_CHECK_INTERVAL (seconds)
+AUTOSCALE_CHECK_INTERVAL = float(environ.get("AUTOSCALE_CHECK_INTERVAL", "10.0"))
+# If an autoscale is performed, next queue size check is performed
+# after AUTOSCALE_RECHECK_INTERVAL(in seconds)
+# This will allow the previous autoscale operation to eventually change throughput
+AUTOSCALE_RECHECK_INTERVAL = float(environ.get("AUTOSCALE_CHECK_INTERVAL", "20.0"))
 
 
 class SegmentController(Thread):
@@ -48,7 +56,11 @@ class SegmentController(Thread):
 
     def run(self):
         while True:
-            message = self._input_queue.get()
+            try:
+                message = self._input_queue.get(timeout=1)
+            except Empty:
+                self.run_queue_size_control()
+            continue
             try:
                 cmd = message["cmd"]
                 handle_func_name = "_handle_" + (cmd.replace(" ", "_"))
@@ -103,3 +115,10 @@ class SegmentController(Thread):
                 else:
                     runner_thread.start()
         reply_queue.put(reply)
+
+    def run_queue_size_control(self):
+        for segment_name, segment_info in self.segment_info.items():
+            if segment_info.input_link_count == 0:  # Finished queue
+                continue
+            qsize = segment_info.input_queue.qsize()
+            print(qsize)
