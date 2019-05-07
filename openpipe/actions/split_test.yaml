@@ -3,6 +3,8 @@ start:
     - send to segment:
         - default_test
         - sep_test
+        - sep_test_max_split
+        - field_test
 
 default_test:
     - split:
@@ -14,3 +16,14 @@ sep_test:
         separator: b
     - assert:
         - [a, "c d z"]
+
+sep_test_max_split:
+    - split:
+        max_split: 1
+    - assert:
+        - [abc, "d z"]
+
+field_test:
+    - split:
+        field_list: [name, type, size]
+    - assert: { name: abc, type: d, size: z}
