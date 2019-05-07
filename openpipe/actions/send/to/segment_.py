@@ -46,9 +46,6 @@ class Action(ActionRuntime):
         else:
             self.put(item)
 
-    def on_finish(self, reason):
-        self.send_to_all_targets(None)
-
     def send_to_all_targets(self, item):
         for target_segment in self.target_segments:
             if isinstance(item, (list, dict)):

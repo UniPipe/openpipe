@@ -5,6 +5,7 @@ from queue import Queue, Empty
 from threading import Thread
 from pprint import pprint
 from .runner import SegmentRunner
+from openpipe.utils.debug import debug_print
 
 
 DEBUG = environ.get("DEBUG")
@@ -37,9 +38,13 @@ class SegmentController(Thread):
             self.input_link_count = 0  # Number of received links requests
             self.thread_list = []  # List of segment runner threads
             self.action_list = []  # List of the segment actions config
+            self.features = {}
 
         def add_action(self, action_name, action_config, action_label):
-            self.action_list.append((action_name, action_config, action_label))
+            if action_name == "enable":
+                self.features.update(action_config)
+            else:
+                self.action_list.append((action_name, action_config, action_label))
 
     def __init__(self, output_queue: Queue):
         Thread.__init__(self)
@@ -57,10 +62,11 @@ class SegmentController(Thread):
     def run(self):
         while True:
             try:
+                debug_print("Waiting for control requests")
                 message = self._input_queue.get(timeout=1)
             except Empty:
                 self.run_queue_size_control()
-            continue
+                continue
             try:
                 cmd = message["cmd"]
                 handle_func_name = "_handle_" + (cmd.replace(" ", "_"))
@@ -91,6 +97,10 @@ class SegmentController(Thread):
         else:
             reply = False
             self.output_queue.put({"cmd": "completed", "segment_name": segment})
+            # Send end-of-link for all threads
+            concurrency = segment_info.features.get("concurrency", 1)
+            for _ in range(concurrency):
+                segment_info.input_queue.put((None, None))
         reply_queue.put(reply)
 
     def _handle_request_input_link(self, target_segment, reply_queue):
@@ -102,23 +112,25 @@ class SegmentController(Thread):
             thread_list = segment_info.thread_list
             # If this is the first request, create the runner thread
             if len(thread_list) == 0:
-                try:
-                    runner_thread = SegmentRunner(
-                        segment_name=target_segment,
-                        action_list=segment_info.action_list,
-                        thread_number=0,
-                        input_queue=input_queue,
-                        controller=self,
-                    )
-                except Exception:
-                    reply = None
-                else:
-                    runner_thread.start()
+                concurrency = segment_info.features.get("concurrency", 1)
+                for thread_nr in range(concurrency):
+                    try:
+                        runner_thread = SegmentRunner(
+                            segment_name=target_segment,
+                            action_list=segment_info.action_list,
+                            thread_number=thread_nr,
+                            input_queue=input_queue,
+                            controller=self,
+                        )
+                    except Exception:
+                        reply = None
+                    else:
+                        runner_thread.start()
         reply_queue.put(reply)
 
     def run_queue_size_control(self):
         for segment_name, segment_info in self.segment_info.items():
             if segment_info.input_link_count == 0:  # Finished queue
                 continue
-            qsize = segment_info.input_queue.qsize()
-            print(qsize)
+            #  qsize = segment_info.input_queue.qsize()
+            #  print(qsize)

@@ -9,14 +9,17 @@ DEBUG = environ.get("DEBUG")
 
 
 class PipelineSegment:
-    def __init__(self, segment_name):
+    def __init__(self, segment_name, segment_manager):
+        self.segment_manager = segment_manager
         self.segment_name = segment_name
         self.action_list = []
         self.config_list = []
 
     def add_action(self, action_name, action_config, action_label):
+        if action_name == "enable":
+            return
         action_instance = create_action_instance(
-            action_name, action_config, action_label, self.get_resource
+            action_name, action_config, action_label, self.segment_manager
         )
         self.action_list.append(action_instance)
         self.config_list.append(action_config)
@@ -31,7 +34,7 @@ class PipelineSegment:
         )  # Send end-of-input «None» to trigger on_finish()
         return 0, None  # exit code, exit message
 
-    def start(self, _segment_linker):
+    def start(self):
         """ Run the on start method for all the actions in this segment """
         for i, action in enumerate(self.action_list):
             on_start_func = getattr(action, "on_start", None)
@@ -39,15 +42,15 @@ class PipelineSegment:
                 if DEBUG:
                     print("on_start %s " % action.action_label)
                 try:
-                    action._segment_linker = _segment_linker
+                    #  action._segment_manager = _segment_manager
                     on_start_func(action.initial_config)
-                    action._segment_linker = None
+                    action._segment_manager = None
                 except:  # NOQA: E722
                     print("Failed starting", action.action_label, file=stderr)
                     raise
 
-    def get_resource(self, request):
-        pass
+    def link_to(self, segment_name):
+        return
 
 
 class SegmentManager:
@@ -59,7 +62,7 @@ class SegmentManager:
     def start(self):
         """ Runs the start code for every segment created on this manager """
         for segment_name, segment in self._segments.items():
-            segment.start(self._segment_linker)
+            segment.start()
 
         # We must remove all references from segments which have
         # no input sources (inactive)
@@ -76,14 +79,26 @@ class SegmentManager:
                         target_action.input_sources.remove(origin_action)
 
     def create(self, segment_name):
-        segment = PipelineSegment(segment_name)
+        segment = PipelineSegment(segment_name, self)
         self._segments[segment_name] = segment
         return segment
 
     def activate(self, activate_arguments):
         return self._segments[self.start_segment_name].activate(activate_arguments)
 
-    def _segment_linker(self, source, segment_name):
+    def create_action_links(self):
+        """ Create links between consecutive action and on segment references
+        In a simple single threaded pipeline, the link is just a memory reference """
+
+        # Links for consecutive steps for each segment
+        for segment_name, segment in self._segments.items():
+            action_list = segment.action_list
+            # Create links to next on all actions  except for the last
+            for i, action in enumerate(action_list[:-1]):
+                action.next_action = action_list[i + 1]
+                action_list[i + 1].input_sources.append(action)
+
+    def link_to(self, source, segment_name):
         """ Returns a reference name to a local segment """
         try:
             segment = self._segments[segment_name]
@@ -99,15 +114,3 @@ class SegmentManager:
 
         segment.action_list[0].input_sources.append(source)
         return segment.action_list[0]
-
-    def create_action_links(self):
-        """ Create links between consecutive action and on segment references
-        In a simple single threaded pipeline, the link is just a memory reference """
-
-        # Links for consecutive steps for each segment
-        for segment_name, segment in self._segments.items():
-            action_list = segment.action_list
-            # Create links to next on all actions  except for the last
-            for i, action in enumerate(action_list[:-1]):
-                action.next_action = action_list[i + 1]
-                action_list[i + 1].input_sources.append(action)

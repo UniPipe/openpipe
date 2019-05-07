@@ -5,9 +5,11 @@ from os import environ
 from queue import Queue
 from os.path import expanduser, normpath
 from openpipe.utils.download_cache import download_and_cache
+from openpipe.utils.debug import debug_print
 from .segment import SegmentController
 from pprint import pprint
 from wasabi import Printer
+
 
 printer = Printer()
 
@@ -25,6 +27,7 @@ class PipelineManager:
         self.running_segments = 0
 
     def create_segment(self, segment_name):
+        debug_print(f"Creating segment {segment_name}")
         """ Create the controller associated with a segment """
         return self.segment_controller.create_segment(segment_name)
 
@@ -35,6 +38,7 @@ class PipelineManager:
         return (self.start_completed or self.load_error) is True
 
     def start(self):
+        debug_print(f"Starting pipeline")
         self.segment_controller.start()
         self.segment_controller.submit_message(
             cmd="request input link",
@@ -42,10 +46,13 @@ class PipelineManager:
             reply_queue=self.start_input_reply_queue,
         )
         self.run_control_loop_until(self.is_started)
+        debug_print(f"Start completed")
 
     def run_control_loop_until(self, loop_exit_func):
+        debug_print("Entered run_control_loop_until() loop")
         while not loop_exit_func():
             message = self.controller_queue.get()
+            debug_print(f"Got control message", message)
             try:
                 cmd = message["cmd"]
                 handle_func_name = "_handle_" + (cmd.replace(" ", "_"))
@@ -94,7 +101,7 @@ class PipelineManager:
         printer.fail(f"Error during {where}")
         print(msg, file=sys.stderr)
 
-    def _handle_started(self, segment_name):
+    def _handle_started(self, segment_name, thread_number):
         printer.good(f"Segment {segment_name} was started")
         if segment_name == self.start_segment_name:
             self.start_completed = True

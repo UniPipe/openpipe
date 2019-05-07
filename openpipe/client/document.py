@@ -62,7 +62,7 @@ class PipelineLoader:
                     file=stderr,
                 )
                 exit(1)
-
+            non_enable = 0
             for action in action_sequence:
                 if not isinstance(action, dict):
                     print(
@@ -77,6 +77,23 @@ class PipelineLoader:
                         file=stderr,
                     )
                     exit(2)
+                action_name, action_config = next(iter(action.items()))
+                if action_name == "enable":
+                    if non_enable > 0:
+                        print(
+                            "ERROR on file \"{}\", segment '{}:'\n".format(
+                                self._name, segment_name
+                            )
+                            + "'enable' must be the first action in the segment\n\n".format(
+                                type(action), action
+                            )
+                            + "You can read more about pipeline segments at:\n"
+                            + SEGMENTS_DOC_URL,
+                            file=stderr,
+                        )
+                        exit(2)
+                else:
+                    non_enable += 1
 
         self._document_dict = python_data
 

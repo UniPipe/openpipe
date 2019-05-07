@@ -1,8 +1,10 @@
 start:
     - generate: 10
+    - tag as: count
     - send to segment: other
 
 other:
-    - count:
-    - print: $_$
-    - execute: sleep 10
+    - enable:
+        concurrency: 10
+    - print: $_tag.count$
+    - execute: sleep 1

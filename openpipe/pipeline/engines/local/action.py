@@ -13,7 +13,8 @@ DEBUG = environ.get("DEBUG")
 
 
 class ActionRuntimeBase:
-    def __init__(self, action_config, action_label, resource_linker):
+    def __init__(self, action_config, action_label, segment_manager):
+        self.segment_manager = segment_manager
         self.initial_config = action_config
         self.action_label = action_label
         self._tag = None
@@ -23,7 +24,10 @@ class ActionRuntimeBase:
         self.init()
 
     def segment_linker(self, segment_name):
-        return self._segment_linker(self, segment_name)
+        link = self.segment_manager.link_to(self, segment_name)
+        if link is None:
+            raise NotImplementedError(link)
+        return link
 
     def _on_input(self, caller, item, tag_item):
         _debug = isinstance(tag_item, dict) and tag_item.get("_debug", False)
