@@ -1,0 +1,16 @@
+start:
+    - insert: abc d z
+    - send to segment:
+        - default_test
+        - sep_test
+
+default_test:
+    - split:
+    - assert:
+        - [abc, d, z]
+
+sep_test:
+    - split:
+        separator: b
+    - assert:
+        - [a, "c d z"]

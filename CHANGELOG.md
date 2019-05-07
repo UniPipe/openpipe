@@ -17,3 +17,4 @@ This minor release brings the following improvements:
 * Add 'join' action to join elements from an input list item (closes #21)
 * Add action 'tag as' to use the input item as a tag key value (closes #22)
 * Support for setting segment features, using 'enable:' (closes #23)
+* Add action "split" (closes #25)
