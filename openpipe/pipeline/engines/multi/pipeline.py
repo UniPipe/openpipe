@@ -10,6 +10,7 @@ from .segment import SegmentController
 from pprint import pprint
 from wasabi import Printer
 
+DEBUG = environ.get("DEBUG")
 
 printer = Printer()
 
@@ -102,16 +103,19 @@ class PipelineManager:
         print(msg, file=sys.stderr)
 
     def _handle_started(self, segment_name, thread_number):
-        printer.good(f"Segment {segment_name} was started")
+        if DEBUG:
+            printer.good(f"Segment {segment_name} was started")
         if segment_name == self.start_segment_name:
             self.start_completed = True
         self.running_segments += 1
 
     def _handle_completed(self, segment_name):
-        printer.good(f"Segment {segment_name} input processing completed")
+        if DEBUG:
+            printer.good(f"Segment {segment_name} input processing completed")
 
     def _handle_finished(self, segment_name):
-        printer.good(f"Segment {segment_name} finished")
+        if DEBUG:
+            printer.good(f"Segment {segment_name} finished")
         self.running_segments -= 1
 
     def _handle_debug(self, msg):

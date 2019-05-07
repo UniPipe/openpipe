@@ -1,4 +1,5 @@
 start:
+    - print: Running openpipe-$environment.OPENPIPE_ENGINE$
     - generate: 10
     - tag as: count
     - send to segment: other

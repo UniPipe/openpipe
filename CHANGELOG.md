@@ -16,3 +16,4 @@ This minor release brings the following improvements:
 * Add 'queue' action to queue input items into a list (closes #20)
 * Add 'join' action to join elements from an input list item (closes #21)
 * Add action 'tag as' to use the input item as a tag key value (closes #22)
+* Support for setting segment features, using 'enable:' (closes #23)

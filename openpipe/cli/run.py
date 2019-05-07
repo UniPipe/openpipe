@@ -1,7 +1,6 @@
 import click
 
 from openpipe.client import PipelineFileLoader
-from openpipe.pipeline.engine import PipelineManager
 from openpipe.utils import get_platform_info
 from os.path import exists, abspath, dirname
 from os import environ
@@ -18,11 +17,13 @@ msg = Printer()
     default=False,
     help="automatically download libraries from https",
 )
+@click.option("--engine", "-e", type=str, default="multi")
 @click.option("--start-segment", "-s", type=str, default="start")
 @click.argument("filename", type=click.Path(exists=False), required=True)
 @click.argument("pipeline_arguments", nargs=-1)
-def cmd_run(filename, pipeline_arguments, network_enable, start_segment):
+def cmd_run(filename, pipeline_arguments, network_enable, start_segment, engine):
     """ Run a pipeline  """
+    environ["OPENPIPE_ENGINE"] = engine
     if not exists(filename):
         msg.fail(f"File '{filename}' does not exist.")
         exit(1)
@@ -31,6 +32,7 @@ def cmd_run(filename, pipeline_arguments, network_enable, start_segment):
 
 
 def pipeline_run(filename, pipeline_arguments=(), start_segment="start"):
+    from openpipe.pipeline.engine import PipelineManager
 
     # Fetch and validate the pipeline
     pipeline_loader = PipelineFileLoader()
