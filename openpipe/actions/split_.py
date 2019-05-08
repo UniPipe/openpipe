@@ -25,5 +25,6 @@ class Action(ActionRuntime):
             new_dict_item = {}
             for i, key in enumerate(self.field_list):
                 new_dict_item[key] = new_item[i]
+            self.put(new_dict_item)
         else:
             self.put(new_item)
