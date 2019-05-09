@@ -1,0 +1,19 @@
+start:
+    - generate: 100
+    - send to segment:
+        - random_len
+        - fixed_len
+
+random_len:
+    - read from random string:
+        charset: a..z
+        length: 10..30
+    - assert: $len(_) >= 10 and len(_) <= 30$
+    - print:
+
+fixed_len:
+    - read from random string:
+        charset: a..z
+        length: 40
+    - assert: $len(_) == 40$
+    - print:

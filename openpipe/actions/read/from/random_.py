@@ -42,4 +42,12 @@ class Action(ActionRuntime):
             return partial(randint, 0, random_spec)
         if isinstance(random_spec, str):
             start, end = random_spec.split("..")
-            return partial(randint, int(start), int(end))
+            if start.isdigit():
+                return partial(randint, int(start), int(end))
+            else:
+                return partial(random_char, ord(start), ord(end))
+
+
+def random_char(start, end):
+    char_code = randint(start, end)
+    return chr(char_code)
