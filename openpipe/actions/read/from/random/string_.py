@@ -16,12 +16,12 @@ class Action(ActionRuntime):
 
     def on_start(self, config):
         seed()
-        charset = config['charset']
-        length = config['length']
-        if '..' in charset:
+        charset = config["charset"]
+        length = config["length"]
+        if ".." in charset:
             start_char, end_char = charset.split("..")
             charset = [chr(x) for x in range(ord(start_char), ord(end_char))]
-        if isinstance(length, str) and '..' in length:
+        if isinstance(length, str) and ".." in length:
             min_len, max_len = length.split("..")
             min_len, max_len = int(min_len), int(max_len)
         else:
@@ -32,7 +32,7 @@ class Action(ActionRuntime):
 
     # Output a random string
     def on_input(self, item):
-        random_str = ''
+        random_str = ""
         length = randint(self.min_len, self.max_len)
         for _ in range(length):
             random_str += choice(self.charset)
