@@ -1,15 +1,16 @@
 """
 Produce the system clock time at regular intervals
 """
-from time import time, sleep
+from time import time, sleep, strftime
 from openpipe.pipeline.engine import ActionRuntime
 
 
 class Action(ActionRuntime):
 
     optional_config = """
-    interval:   0   # Pause time between insertions, 0 means forever
-    max_count:  1     # Max number of item insertions
+    interval:   0     # Pause time between insertions
+    max_count:  1     # Max number of item insertions, 0 means forever
+    format:     ""    # Time output format (strftime)
     """
 
     category = "Data Sourcing"
@@ -19,11 +20,16 @@ class Action(ActionRuntime):
         interval = time2seconds(interval)
         count = self.config["max_count"]
         repeat_forever = count == 0
+        str_format = self.config["format"]
 
         while repeat_forever or count > 0:
             if interval:
                 sleep(interval)
-            self.put(time())
+            if str_format == "":
+                new_item = time()
+            else:
+                new_item = strftime(str_format)
+            self.put(new_item)
             if not repeat_forever:
                 count -= 1
 

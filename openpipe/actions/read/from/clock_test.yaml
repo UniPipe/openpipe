@@ -1,6 +1,14 @@
 start:
+    - send to segment: formated_clock
     - read from clock:
         interval: 1s
         max_count: 1
     - insert: ok
     - assert: ok
+
+formated_clock:
+    - read from clock:
+        interval: 1s
+        max_count: 1
+        format: "%Y"
+    - assert: $_[:2] == '20'$

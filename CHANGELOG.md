@@ -19,3 +19,4 @@ This minor release brings the following improvements:
 * Support for setting segment features, using 'enable:' (closes #23)
 * Add action 'split' (closes #25)
 * Add action 'read from random string' (closes #26)
+* Add 'format' option to 'read from clock' (closes #27) 
