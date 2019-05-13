@@ -1,5 +1,4 @@
 import threading
-from traceback import format_exc
 from os import environ
 from queue import Queue
 from openpipe.utils import create_action_instance
@@ -37,7 +36,7 @@ class SegmentRunner(threading.Thread):
                 try:
                     on_start_func(action.initial_config)
                 except:  # NOQA: E722
-                    detail = format_exc()
+                    detail = "exception"
                     self.submit_message(cmd="error", where="on_start", msg=detail)
                     return
         self.submit_message(

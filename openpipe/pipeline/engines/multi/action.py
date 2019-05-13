@@ -1,13 +1,16 @@
 """ This module provides the action runtime classes """
 
 from dinterpol import Template
-from sys import stderr
 from os import environ, sep
 from traceback import print_exc
 from pprint import pformat
 from os.path import join, dirname
 from importlib import import_module
 from glob import glob
+from sys import stderr
+import sys
+import traceback
+
 
 DEBUG = environ.get("DEBUG")
 
@@ -28,7 +31,7 @@ class ActionRuntimeBase:
             raise NotImplementedError(link)
         return link
 
-    def _on_input(self, item, tag_item):
+    def _on_input(self, item, tag_item):  # NOQA: C901
         _debug = isinstance(tag_item, dict) and tag_item.get("_debug", False)
         if DEBUG or _debug:
             self.controller.submit_message(
@@ -63,7 +66,22 @@ class ActionRuntimeBase:
                         cmd="debug",
                         msg="on_finish %s [Tag: %s]" % (self.action_label, self._tag),
                     )
-                on_finish_func(True)
+                try:
+                    on_finish_func(True)
+                except:  # NOQA: E722
+                    ex_type, ex_value, ex_tb = sys.exc_info()
+                    ex_msg = "".join(
+                        traceback.format_exception(ex_type, ex_value, ex_tb)
+                    )
+                    if isinstance(item, bytes) and len(item) > 256:
+                        item = item[:255]
+                    self.controller.submit_message(
+                        cmd="error",
+                        msg="on_finish %s: \n\tInput: %s\n\tTag: %s"
+                        % (self.action_label, item, tag_item)
+                        + ex_msg,
+                        where="on_finish",
+                    )
             self.put(item)
         else:
             try:

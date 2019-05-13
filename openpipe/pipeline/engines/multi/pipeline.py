@@ -96,10 +96,11 @@ class PipelineManager:
     def plan(self, pipeline_document):
         pass
 
-    def _handle_error(self, where, msg):
+    def _handle_error(self, where, msg, action_label=None):
         if where == "module load":
             self.load_error = True
         printer.fail(f"Error during {where}")
+        print(action_label, file=sys.stderr)
         print(msg, file=sys.stderr)
 
     def _handle_started(self, segment_name, thread_number):
