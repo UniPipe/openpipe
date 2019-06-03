@@ -20,3 +20,4 @@ This minor release brings the following improvements:
 * Add action 'split' (closes #25)
 * Add action 'read from random string' (closes #26)
 * Add 'format' option to 'read from clock' (closes #27) 
+* Add action "drop tag" to drop field from tags (closes #28)

@@ -1,0 +1,9 @@
+start:
+  - insert:
+      name: John
+      age: 99
+  - tag: $_$
+  - drop tag: age
+  - assert: $'name' in _tag$
+  - assert: $'age' not in _tag$
+  - pprint: $_tag$
