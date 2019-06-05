@@ -21,3 +21,4 @@ This minor release brings the following improvements:
 * Add action 'read from random string' (closes #26)
 * Add 'format' option to 'read from clock' (closes #27) 
 * Add action "drop tag" to drop field from tags (closes #28)
+* Add 'to_tmp_file' option to the 'read from url' action (closes #29)

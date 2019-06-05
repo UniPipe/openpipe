@@ -93,3 +93,4 @@ class Action(ActionRuntime):
         else:
             data = fileobj.read()
             self.put(data)
+            fileobj.close()

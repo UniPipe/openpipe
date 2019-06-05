@@ -6,6 +6,7 @@ import lzma
 import zlib
 import mimetypes
 import urllib.request as urlreq
+from tempfile import NamedTemporaryFile
 from io import BytesIO, StringIO
 from re import findall
 from urllib.error import HTTPError
@@ -33,6 +34,7 @@ class Action(ActionRuntime):
     timeout: 30                 # Global timeout (in secs) for the operation
     ignore_http_errors: False   # Ignore HTTP errors replies
     user_agent: curl/7.64.0     # User-agent to use on HTTP requests
+    to_tmp_file: False          # Save content to a temporary file
     """
 
     def on_start(self, config):
@@ -42,7 +44,6 @@ class Action(ActionRuntime):
 
     def on_input(self, item):
         url = self.config["url"]
-        mime_type = mimetypes.guess_type(url)[0]
         ext_map = {
             ".gz": lambda x: zlib.decompress(x, 16 + zlib.MAX_WBITS),
             ".xz": lambda x: lzma.decompress(x),
@@ -56,6 +57,16 @@ class Action(ActionRuntime):
             if self.config["ignore_http_errors"]:
                 return
             raise
+        if self.config["to_tmp_file"]:
+            CHUNK = 16 * 1024
+            with NamedTemporaryFile(delete=False) as tmp_file:
+                while True:
+                    chunk = reply.read(CHUNK)
+                    if not chunk:
+                        break
+                    tmp_file.write(chunk)
+            self.put(tmp_file.name)
+            return
         file_data = reply.read()
         mime_type = mimetypes.guess_type(url)[0]
         encoding = None
