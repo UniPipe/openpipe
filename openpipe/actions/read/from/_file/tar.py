@@ -8,6 +8,7 @@ from ..file_ import Action
 
 def decode_file(fileobj, action):
 
+    selected_file = action.config.get("select", "")
     with tarfile.open(fileobj=fileobj) as tar:
         while True:
             file_info = tar.next()
@@ -15,13 +16,16 @@ def decode_file(fileobj, action):
                 break
             if not file_info.isfile():
                 continue
+            if selected_file and selected_file != file_info.name:
+                continue
             single_file = tar.extractfile(file_info)
             new_item = {}
             new_item["filename"] = file_info.name
             new_item["content"] = single_file.read()
-            single_file.close()
             action.put(new_item)
-
+            single_file.close()
+            if selected_file:  # Found the file was searching for
+                break
     return True
 
 

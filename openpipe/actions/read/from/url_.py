@@ -6,6 +6,7 @@ import lzma
 import zlib
 import mimetypes
 import urllib.request as urlreq
+from urllib.parse import urlparse
 from tempfile import NamedTemporaryFile
 from io import BytesIO, StringIO
 from re import findall
@@ -59,7 +60,9 @@ class Action(ActionRuntime):
             raise
         if self.config["to_tmp_file"]:
             CHUNK = 16 * 1024
-            with NamedTemporaryFile(delete=False) as tmp_file:
+            path = urlparse(url).path
+            suffix = splitext(path)[1]
+            with NamedTemporaryFile(delete=False, suffix=suffix) as tmp_file:
                 while True:
                     chunk = reply.read(CHUNK)
                     if not chunk:

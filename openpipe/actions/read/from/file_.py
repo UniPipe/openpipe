@@ -27,6 +27,9 @@ class Action(ActionRuntime):
 
     # The following option is only applicable to local filenames
     auto_expand_home: True      # Expand '~' on path to user home dir
+
+    # The following option is only applicable to archive files
+    select: ''                  # Name of the file to be extracted
     """
 
     """

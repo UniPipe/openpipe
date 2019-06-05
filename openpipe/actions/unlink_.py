@@ -14,5 +14,5 @@ class Action(ActionRuntime):
     """
 
     def on_input(self, item):
-        unlink(self.config['path'])
+        unlink(self.config["path"])
         self.put(item)
