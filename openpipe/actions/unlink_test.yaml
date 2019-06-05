@@ -1,0 +1,6 @@
+start:
+    - read from url:
+        url: https://raw.githubusercontent.com/Openpipe/openpipe/master/LICENSE
+        to_tmp_file: True
+    - print:
+    - unlink: $_$

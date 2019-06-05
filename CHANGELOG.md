@@ -22,3 +22,4 @@ This minor release brings the following improvements:
 * Add 'format' option to 'read from clock' (closes #27) 
 * Add action "drop tag" to drop field from tags (closes #28)
 * Add 'to_tmp_file' option to the 'read from url' action (closes #29)
+* Add 'unlink' action to remove file (closes 30)
