@@ -1,0 +1,7 @@
+start:
+    - insert:
+        Good signature from "João Pinto <lamego.pinto@gmail.com>"
+    - transform from regex group:
+        signer: Good signature from "([^"]*)'
+    - assert:
+        signoer: João Pinto <lamego.pinto@gmail.com>

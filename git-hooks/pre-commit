@@ -2,6 +2,9 @@
 
 set -eu
 
+branch=$(git rev-parse --abbrev-ref HEAD)
+[[ "$branch" == "master" ]] || exit 0
+
 black openpipe
 ENGINES="single multi"
 for engine in $ENGINES; do
