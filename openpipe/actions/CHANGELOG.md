@@ -1,3 +1,9 @@
+## 1.2.0 (2019-12-01)
+
+This minor release brings the following improvements:
+
+* Add action 'queue'
+
 ## 1.1.0 (2019-11-29)
 
 This minor release brings the following improvements:
