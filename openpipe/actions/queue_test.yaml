@@ -1,0 +1,17 @@
+    start:
+        - iterate: [a, b, c]
+        - queue: 0
+        - assert: [[a, b, c]]
+
+        - iterate: [a, b, c]
+        - queue: 3
+        - assert: [[a, b, c]]
+
+        - iterate: [a, b, c]
+        - queue: 2
+        - assert: [[a, b], [c]]
+
+        - queue: 2
+        - iterate: [a,b,c,d,e,f]
+        - queue: 3
+        - assert: [[a, b, c], [d, e,f]]
