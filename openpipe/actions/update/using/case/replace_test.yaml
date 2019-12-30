@@ -13,7 +13,7 @@ start:
             Nginx: $ exe.endswith('/nginx') and 'master' in basecmd $
             Other: True
     - assert:
-        - {'basecmd': 'master', 'exe': '/usr/sbin/nginx', 'tecnhology': 'Apache'}
+        - {'basecmd': 'master', 'exe': '/usr/sbin/nginx', 'technology': 'Apache'}
         - {'basecmd': '', 'exe': 'node', 'technology': 'Node'}
         - {'basecmd': 'java', 'exe': '', 'technology': 'Java'}
     - pprint:
