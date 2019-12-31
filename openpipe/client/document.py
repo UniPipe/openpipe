@@ -90,8 +90,6 @@ class PipelineLoader:
             for library in libraries:
                 pipeline_manager.load_library(library)
 
-        pipeline_manager.plan(self._document_dict)
-
         for segment_name, action_list in self._document_dict.items():
             # segments with a leading _ can be used as config placeholders
             if segment_name[0] == "_":
