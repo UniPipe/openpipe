@@ -13,15 +13,21 @@ class PipelineLoader:
         self._document_data = self.get(pipeline_name)
         self._document_dict = {}
 
-    def validate(self, start_segment="start"):
+    def validate(self, start_segment="start", document_name=None):
         """
         1. Transform document text to YAML
         2. Validate the YAML matches the pipeline document format
         """
-        python_data = load_yaml(self._document_data)
+        if document_name:
+            document_data = self.get(document_name)
+        else:
+            document_data = self._document_data
+        python_data = load_yaml(document_data)
         self.start_segment = start_segment
 
         if not isinstance(python_data, dict):
+            if document_name:
+                print("Loading file %s" % document_name, file=stderr)
             print(
                 "Pipeline YAML must start with a dictionary !\n"
                 "Instead got:\n{}\n".format(pformat(python_data))
@@ -37,6 +43,8 @@ class PipelineLoader:
         # A single segment was provided
         if start_segment not in python_data:
             available_segment_names = list(python_data.keys())
+            if document_name:
+                print("Loading file %s" % document_name, file=stderr)
             print(
                 "Start segment '{}' was not found\n"
                 "The following segment names were found:\n{}\n\n".format(
@@ -53,6 +61,8 @@ class PipelineLoader:
                 continue
 
             if not isinstance(action_sequence, list):
+                if document_name:
+                    print("Loading file %s" % document_name, file=stderr)
                 print(
                     "The content of segment '{}' is not a sequence as expected.\n".format(
                         segment_name
@@ -66,6 +76,8 @@ class PipelineLoader:
 
             for action in action_sequence:
                 if not isinstance(action, dict):
+                    if document_name:
+                        print("Loading file %s" % document_name, file=stderr)
                     print(
                         "ERROR on file \"{}\", segment '{}:'\n".format(
                             self._name, segment_name
@@ -79,30 +91,55 @@ class PipelineLoader:
                     )
                     exit(2)
 
-        self._document_dict = python_data
+        if document_name:
+            return python_data
+        else:
+            self._document_dict = python_data
 
-    def load(self, pipeline_manager):
+    def load(self, pipeline_manager, document_dict=None, calling_id=None):
+        document_dict = document_dict or self._document_dict
         """ Load the document into a pipeline runtime """
-
-        libraries = self._document_dict.get("_libraries")
+        libraries = document_dict.get("_libraries")
         if libraries:
-            del self._document_dict["_libraries"]
+            del document_dict["_libraries"]
             for library in libraries:
                 pipeline_manager.load_library(library)
 
-        for segment_name, action_list in self._document_dict.items():
+        for segment_name, action_list in document_dict.items():
+            if calling_id:
+                segment_name += "_" + calling_id
             # segments with a leading _ can be used as config placeholders
             if segment_name[0] == "_":
                 continue
+
             segment_manager = pipeline_manager.create_segment(segment_name)
             for action in action_list:
                 line_nr = action["__line__"]
                 remove_line_info(action)
                 action_name, action_config = next(iter(action.items()))
+                caller_id = 'file "{}", line {}'.format(self._name, line_nr)
+                if action_name == "send to pipeline":
+                    pipeline_name = action_config
+                    sub_document_dict = self.validate("start", pipeline_name)
+                    self.load(pipeline_manager, sub_document_dict, caller_id)
+                    sub_start_segment = "start" + "_" + caller_id
+                    action_name = "send to segment"
+                    action_config = sub_start_segment
+                elif calling_id and action_name == "send to segment":
+                    action_config = self._rename_segments(action_config, calling_id)
                 action_label = "'{}', file \"{}\", line {}".format(
                     action_name, self._name, line_nr
                 )
                 segment_manager.add(action_name, action_config, action_label)
+
+    def _rename_segments(self, action_config, calling_id):
+        """ return segment names postfixed with the callind_id """
+
+        if isinstance(action_config, str):
+            return action_config + "_" + calling_id
+        if isinstance(action_config, list):
+            return [segment_name + "_" + calling_id for segment_name in action_config]
+        raise NotImplementedError
 
     def get(self, document_name):
         """ Get a document content by name """
