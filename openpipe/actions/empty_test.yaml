@@ -1,0 +1,4 @@
+start:
+    - iterate: [a, b, c]
+    - empty:
+    - assert: True
