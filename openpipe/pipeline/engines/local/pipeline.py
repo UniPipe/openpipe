@@ -37,6 +37,3 @@ class PipelineManager:
         if environ.get("DEBUG"):
             print("Adding library path", library_path)
         sys.path.append(normpath(library_path))
-
-    def plan(self, pipeline_document):
-        pass

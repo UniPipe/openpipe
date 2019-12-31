@@ -4,6 +4,7 @@ Produce a list by queuing items
 from openpipe.pipeline.engine import ActionRuntime
 from copy import copy
 
+
 class Action(ActionRuntime):
 
     category = "Data Sourcing"
