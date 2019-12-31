@@ -39,7 +39,7 @@ def pipeline_run(filename, pipeline_arguments=(), start_segment="start"):
 
     # Create a pipeline manager
     pipeline_manager = PipelineManager(start_segment)
-    pipeline_loader.load(pipeline_manager, start_segment=start_segment)
+    pipeline_loader.load(pipeline_manager)
 
     # Runs the start method of all actions
     pipeline_manager.start()

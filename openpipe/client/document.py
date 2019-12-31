@@ -19,6 +19,7 @@ class PipelineLoader:
         2. Validate the YAML matches the pipeline document format
         """
         python_data = load_yaml(self._document_data)
+        self.start_segment = start_segment
 
         if not isinstance(python_data, dict):
             print(
@@ -80,10 +81,9 @@ class PipelineLoader:
 
         self._document_dict = python_data
 
-    def load(self, pipeline_manager, start_segment="start"):
+    def load(self, pipeline_manager):
         """ Load the document into a pipeline runtime """
 
-        pipeline_manager.start_segment = start_segment
         libraries = self._document_dict.get("_libraries")
         if libraries:
             del self._document_dict["_libraries"]
