@@ -3,7 +3,6 @@ start:
 
     - send to segment:
         - test_http_json_file
-        - test_http_xml_file
         - test_ftp_json_file
 
 # Test automatic parsing of remote json data (HTTPS)
@@ -19,9 +18,3 @@ test_ftp_json_file:
     - assert: $ 'responseHeader' in  _ $
     - print: "OK"
 
-
-# Test automatic parsing of remote XML data
-test_http_xml_file:
-    - read from url: http://data.consumerfinance.gov/api/views.xml
-    - assert: $'response' in _.keys()$
-    - print: "OK"

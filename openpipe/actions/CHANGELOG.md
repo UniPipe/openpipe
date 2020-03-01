@@ -1,3 +1,9 @@
+## 1.3.1 (2020-04-01)
+
+This minor release brings the following improvements:
+
+* Explicitely set "_" / "_tag" planning for new dinterpol
+
 ## 1.3.0 (2019-12-31)
 
 This minor release brings the following improvements:
