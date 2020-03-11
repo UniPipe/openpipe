@@ -15,6 +15,6 @@ test_http_json_file:
 # Test automatic parsing of remote json data (FTP)
 test_ftp_json_file:
     - read from url: ftp://ftp.ebi.ac.uk/pub/databases/genenames/new/json/alternative_loci_chr_1.json
-    - assert: $ 'responseHeader' in  _ $
+    - assert: "{ 'responseHeader' in  _  }"
     - print: "OK"
 

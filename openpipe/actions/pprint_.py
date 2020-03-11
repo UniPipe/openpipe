@@ -12,7 +12,7 @@ class Action(ActionRuntime):
 
     # The default behavior is to print the input item
     optional_config = """
-    $_$     # The content to be pretty printed
+    '{ _ }'     # The content to be pretty printed
     """
 
     def on_input(self, item):

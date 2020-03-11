@@ -1,6 +1,6 @@
 start:
     # First we check for a file not found
     - read from file status: samples/non_existent
-    - assert: $ _ == {} $
+    - assert: "{ _ == {} }"
     - read from file status: samples/test.txt
-    - assert: { "$size in [27, 29]$" }  # Linux / Win Size
+    - assert: "{ size in [27, 29] }"  # Linux / Win Size

@@ -4,9 +4,9 @@ start:
     - read from file list:
     - iterate:  # Iterate over every file
     - iterate:  # Iterate over local and remote
-        - https://raw.githubusercontent.com/Openpipe/openpipe/master/$_$
-    - print: Testing read from $_$
-    - tag: $_$
-    - read from url: $_$
+        - https://raw.githubusercontent.com/Openpipe/openpipe/master/'{ _ }'
+    - print: Testing read from '{ _ }'
+    - tag: '{ _ }'
+    - read from url: '{ _ }'
     - insert: $'note' in _.keys()$
     - assert: True

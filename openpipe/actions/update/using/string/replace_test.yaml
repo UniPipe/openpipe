@@ -4,7 +4,7 @@ start:
     - update using string replace: { dog: cat, brown: yellow }
     - print:
     - assert: The cat is yellow
-    - insert: { phrase: $_$ , extra: This is nice }
+    - insert: { phrase: "{_}" , extra: This is nice }
     # Update multiple words oinn a dictionary item
     - update using string replace:
         phrase: { cat: bird, yellow: blue }

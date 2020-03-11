@@ -1,0 +1,19 @@
+[[source]]
+name = "pypi"
+url = "https://pypi.org/simple"
+verify_ssl = true
+
+[dev-packages]
+
+[packages]
+dinterpol = ">=0.3.1"
+click = "*"
+xmltodict = "*"
+terminaltables = "*"
+wasabi = "*"
+colorama = "*"
+PyYAML = "*"
+Pygments = "*"
+
+[requires]
+python_version = "3.8"

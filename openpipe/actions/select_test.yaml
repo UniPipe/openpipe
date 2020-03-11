@@ -10,13 +10,13 @@ start:
 
 filter in test:
     # Select lines with "1"
-    - select: $ "Good" in _ $
+    - select: "{ 'Good' in _ }"
     - assert: [Good line 1, Good word X]
-    - print: "Good Result : $_$"
+    - print: "Good Result : {_}"
 
 filter out test:
     # Remove lines with "Broken"
-    - select: $ "Broken" not in _ $
+    - select: "{ 'Broken' not in _ }"
     - assert: [Good line 1, Good word X, Something Else]
-    - print: "Not Broken: $_$"
+    - print: "Not Broken: {_}"
 

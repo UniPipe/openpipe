@@ -11,7 +11,7 @@ class Action(ActionRuntime):
     category = "Data Sourcing"
 
     optional_config = """
-    $_$         # Path of the file to be checked
+    '{ _ }'         # Path of the file to be checked
     """
 
     def on_input(self, item):

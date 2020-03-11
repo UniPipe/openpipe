@@ -92,7 +92,7 @@ Before invoking the action input handling, any config text found between consecu
 During expression evaluation, the "_" symbol is a reference to the full input item. When the input item is a dict, it's keys values will be mapped to variable names so that you can refer to them easily by providing $key$.
 
 !!! Important
-    Several actions use a default configuration of `$_$` which means the full input item will be used as the configuration item. It is the case of the `print` and `assert` actions.
+    Several actions use a default configuration of `'{ _ }'` which means the full input item will be used as the configuration item. It is the case of the `print` and `assert` actions.
 
 
 Examples:
@@ -112,7 +112,7 @@ Examples:
     start:
         - insert:
             place: zoo
-        - print: $_$    # Print the full  input item
+        - print: '{ _ }'    # Print the full  input item
     ```
 
 > input_field.yaml
@@ -138,7 +138,7 @@ Let's assume as example that we want to produce the count of 'a' letters from a 
 ```yaml
 start:
     - iterate: [/etc/passwd, /etc/group]
-    - read from file: $_$
+    - read from file: '{ _ }'
     # The read from file outputs only the file content, we can't refer to
     # the file name anymore
     - print: The number of 'a's in file is $ _.count(b'a') $
@@ -147,8 +147,8 @@ In order to persist the file name, we need to tag it before the the _read from f
 ```yaml
 start:
     - iterate: [/etc/passwd, /etc/group]
-    - tag: $_$ # The filename is tagged, tag is available on every next action
-    - read from file: $_$
+    - tag: '{ _ }' # The filename is tagged, tag is available on every next action
+    - read from file: '{ _ }'
     # We can now use $_tag_
     - print: The number of 'a's in file $_tag$ is $ _.count(b'a') $
 ```
@@ -157,9 +157,9 @@ When more than two items need to be tagged, a dictionary based tag needs to be u
 
 ```yaml
     # do some action
-    tag: { animal_type: $_$ }   # Tag it as animal type
+    tag: { animal_type: '{ _ }' }   # Tag it as animal type
     # do some other action
-    tag: { animal_size: $_$ }   # Tag it as animal size
+    tag: { animal_size: '{ _ }' }   # Tag it as animal size
     # We can now use $_tag['animal_type']$ and $_tag['animal_size']$
 ```
 

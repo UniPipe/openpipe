@@ -8,7 +8,7 @@ class Action(ActionRuntime):
 
     category = "Data Transformation"
     optional_config = """
-    $_$     # The target reduction format
+    '{ _ }'     # The target reduction format
     """
 
     def on_input(self, item):

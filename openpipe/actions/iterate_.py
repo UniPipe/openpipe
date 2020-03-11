@@ -9,7 +9,7 @@ class Action(ActionRuntime):
     category = "Data Sourcing"
 
     optional_config = """
-    $_$     # The item to be iterated over
+    '{ _ }'     # The item to be iterated over
     """
 
     def on_input(self, item):

@@ -4,7 +4,7 @@ start:
         mime_type: binary
     - decompress:
         type: gzip
-    - iterate: $_.decode().splitlines() $
+    - iterate: "{_.decode().splitlines()}"
     - assert:
         - Line in file
         - One more line

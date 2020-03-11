@@ -10,7 +10,7 @@ class Action(ActionRuntime):
     category = "Data Sourcing"
 
     optional_config = """
-    $_$     # The item to be printed, the default is the input item
+    '{ _ }'     # The item to be printed, the default is the input item
     """
 
     def on_input(self, item):

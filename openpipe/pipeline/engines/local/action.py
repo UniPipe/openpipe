@@ -27,9 +27,9 @@ class ActionRuntimeBase:
 
     def generate_render_mapping(self, item):
         if isinstance(item, dict):
-            return {**item, **{"_": item}, "_tag": tag_item}
+            return {**item, **{"_": item}, "_tag": self._tag}
         else:
-            return = {"_": item, "_tag": tag_item}
+            return {"_": item, "_tag": self._tag}
 
     def _on_input(self, caller, item, tag_item):
         _debug = isinstance(tag_item, dict) and tag_item.get("_debug", False)
@@ -41,7 +41,7 @@ class ActionRuntimeBase:
         if item is not None:
             self._tag = tag_item
             try:
-                self.config = self.config_template.render(generate_render_mapping(item))
+                self.config = self.config_template.render(self.generate_render_mapping(item))
             except:  # NOQA: E722
                 if isinstance(item, bytes) and len(item) > 256:
                     item = item[:255]
@@ -57,7 +57,6 @@ class ActionRuntimeBase:
                 #  raise(
                 self.failed_count += 1
                 exit(1)
-
         if item is None:
             self.input_sources.remove(caller)
             reference_count = len(self.input_sources)

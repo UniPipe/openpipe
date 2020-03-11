@@ -12,7 +12,7 @@ linux echo:
         stdout: ok
 
 windows echo:
-    - select: $platform['system'] == 'Windows'$
+    - select: "{ platform['system'] == 'Windows' }"
     - execute: echo ok
     - pprint:
     - assert:

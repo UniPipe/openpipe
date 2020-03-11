@@ -14,10 +14,10 @@ start:
         - branch b
 
 is_good:
-    - print: 'Found something good: $_$'
+    - print: 'Found something good: '{ _ }''
 
 branch a:
-    - print: Branch A received $_$
+    - print: Branch A received '{ _ }'
 
 branch b:
-    - print: Branch B received $_$
+    - print: Branch B received '{ _ }'

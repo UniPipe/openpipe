@@ -10,7 +10,7 @@ class Action(ActionRuntime):
     category = "Data Sourcing"
 
     optional_config = """
-    $_$     # The pattern to be used for matching
+    '{ _ }'     # The pattern to be used for matching
     """
 
     def on_input(self, item):

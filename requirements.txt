@@ -1,9 +1,9 @@
-dinterpol >= 0.3.1
-pip > 10
-pyyaml
-click
-xmltodict
-pygments
-terminaltables
-wasabi
-colorama
+click==7.1.1
+colorama==0.4.3
+dinterpol==0.3.4
+enclosed==0.0.2
+Pygments==2.6.1
+PyYAML==5.3
+terminaltables==3.1.0
+wasabi==0.6.0
+xmltodict==0.12.0

@@ -3,6 +3,6 @@ start:
     - tag:
     - insert: New input
     - assert: New input
-    - insert: $ _tag $
+    - insert: "{ _tag }"
     - assert: This will be stored as the tag
 

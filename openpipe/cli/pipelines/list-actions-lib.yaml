@@ -4,4 +4,4 @@ start:
     - transform using terminaltables:
         header: [Library, Description]
         keys: [name, description]
-    - print: $_$
+    - print: '{ _ }'

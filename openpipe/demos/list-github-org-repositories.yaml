@@ -11,4 +11,4 @@ start:
     - transform using terminaltables:
         header: [Library, Description]
         keys: [name, description]     # Trim description to 120 chars
-    - print: $_$
+    - print: '{ _ }'

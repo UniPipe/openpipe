@@ -1,6 +1,6 @@
 start:
     - read from openpipe actions:
-    - print: $name$
-    - select: $ name == "read from openpipe actions" $
+    - print: "{name}"
+    - select: "{ name == 'read from openpipe actions' }"
     - assert:
         purpose: 'Produce the list of available action actions'

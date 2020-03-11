@@ -6,11 +6,11 @@ start:
 
     - send to segment:
         name: test_good
-        when: $'good' in _$
+        when: "{ 'good' in _}"
 
     - send to segment:
         name: test_bad
-        when: $'bad' in _$
+        when: "{ 'bad' in _}"
 
     - assert: somethng else
     - send to segment: test_good

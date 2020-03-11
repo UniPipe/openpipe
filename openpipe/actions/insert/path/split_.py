@@ -11,7 +11,7 @@ class Action(ActionRuntime):
 
     # The default behavior is to print the input item
     optional_config = """
-    $_$     # The path to produce the director name from
+    '{ _ }'     # The path to produce the director name from
     """
 
     def on_input(self, item):

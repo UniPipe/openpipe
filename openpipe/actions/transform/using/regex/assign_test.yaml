@@ -2,7 +2,7 @@ start:
     - insert: |
         name = dog
         color=blue
-    - transform using regex assign: '^\s*(\S*)\s*=\s*(.*)\$'
-    - print:
+    - transform using regex assign: '^\s*(\S*)\s*=\s*(.*)$'
+    - print: "{_}"
     - assert:
         {'name': 'dog', 'color': 'blue'}

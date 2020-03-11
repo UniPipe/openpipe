@@ -10,7 +10,7 @@ class Action(ActionRuntime):
     category = "Data Control"
 
     optional_config = """
-    $_$     #  Default is to tag the entire input item
+    '{ _ }'     #  Default is to tag the entire input item
     """
 
     def on_input(self, item):

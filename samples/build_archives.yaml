@@ -11,7 +11,7 @@ create individual files:
     - tag:
     - read from file list:  test.*
     - iterate:  # Iterate over the file list
-    - insert: { filename: $_$ }
+    - insert: { filename: '{ _ }' }
     # Merge with the tag to create a per compressor iteration
     - merge:
     - execute: $cmd$ -c $filename$ > archives/$filename$$ext$

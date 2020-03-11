@@ -22,7 +22,7 @@ group by test:
         - {name: cat}
 
     - count:
-        group_by: $name$
+        group_by: "{name}"
     - print:
     - assert:
         fish: 2

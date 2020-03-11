@@ -13,7 +13,7 @@ from openpipe.pipeline.engine import ActionRuntime
 class Action(ActionRuntime):
 
     optional_config = """
-    $_$     # The content to be printed, default is the input item ($_$)
+    '{ _ }'     # The content to be printed, default is the input item ('{ _ }')
     """
 
     def on_input(self, item):

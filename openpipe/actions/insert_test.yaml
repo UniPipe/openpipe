@@ -7,7 +7,7 @@ start:
     - assert: 12
     - pprint:
 
-    - insert: $ 5 * 5 $
+    - insert: "{ 5 * 5 }"
     - assert: 25
     - pprint:
 

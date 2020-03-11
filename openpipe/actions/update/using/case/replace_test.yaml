@@ -5,12 +5,12 @@ start:
         - { basecmd: "java", exe: "" }
     - update using case replace:
         technology:
-            Apache: $ exe.endswith('/nginx') and 'master' in basecmd $
-            Ruby: $ exe == 'ruby' or exe.endswith('/ruby')$
-            Node: $ exe == 'node' or exe.endswith('/node')$
-            Python: $ basecmd.endswith('python') $
-            Java: $ basecmd == 'java' $
-            Nginx: $ exe.endswith('/nginx') and 'master' in basecmd $
+            Apache: "{ exe.endswith('/nginx') and 'master' in basecmd }"
+            Ruby: "{ exe == 'ruby' or exe.endswith('/ruby') }"
+            Node: "{ exe == 'node' or exe.endswith('/node') }"
+            Python: "{ basecmd.endswith('python') }"
+            Java: "{ basecmd == 'java' }"
+            Nginx: "{ exe.endswith('/nginx') and 'master' in basecmd }"
             Other: True
     - assert:
         - {'basecmd': 'master', 'exe': '/usr/sbin/nginx', 'technology': 'Apache'}

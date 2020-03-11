@@ -15,7 +15,7 @@ class Action(ActionRuntime):
     """
 
     optional_config = """
-    content: $_$            # Content to be written to the file
+    content: '{ _ }'            # Content to be written to the file
     mode: "w"               # Open file mode (write/append)
     close_on_item: False    # Force file close after each received item
     """

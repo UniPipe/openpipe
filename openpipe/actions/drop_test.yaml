@@ -2,4 +2,4 @@ start:
     - insert:   # Select from a list of dictionaries
         { name: Rose, gender: female, age: 21}
     - drop: age
-    - assert: $ 'age' not in _ $
+    - assert: "{ 'age' not in _ }"
