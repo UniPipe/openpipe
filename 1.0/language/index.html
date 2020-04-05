@@ -1,0 +1,863 @@
+
+
+
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      <meta http-equiv="x-ua-compatible" content="ie=edge">
+      
+        <meta name="description" content="A human friendly data-oriented integration toolkit">
+      
+      
+        <link rel="canonical" href="https://www.openpipe.org/1.0/language/">
+      
+      
+        <meta name="author" content="João Pinto">
+      
+      
+        <meta name="lang:clipboard.copy" content="Copy to clipboard">
+      
+        <meta name="lang:clipboard.copied" content="Copied to clipboard">
+      
+        <meta name="lang:search.language" content="en">
+      
+        <meta name="lang:search.pipeline.stopwords" content="True">
+      
+        <meta name="lang:search.pipeline.trimmer" content="True">
+      
+        <meta name="lang:search.result.none" content="No matching documents">
+      
+        <meta name="lang:search.result.one" content="1 matching document">
+      
+        <meta name="lang:search.result.other" content="# matching documents">
+      
+        <meta name="lang:search.tokenizer" content="[\s\-]+">
+      
+      <link rel="shortcut icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.1, mkdocs-material-4.6.3">
+    
+    
+      
+        <title>Language - Openpipe</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/application.adb8469c.css">
+      
+        <link rel="stylesheet" href="../../assets/stylesheets/application-palette.a8b3c06d.css">
+      
+      
+        
+        
+        <meta name="theme-color" content="#2196f3">
+      
+    
+    
+      <script src="../../assets/javascripts/modernizr.86422ebf.js"></script>
+    
+    
+      
+        <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700%7CRoboto+Mono&display=fallback">
+        <style>body,input{font-family:"Roboto","Helvetica Neue",Helvetica,Arial,sans-serif}code,kbd,pre{font-family:"Roboto Mono","Courier New",Courier,monospace}</style>
+      
+    
+    <link rel="stylesheet" href="../../assets/fonts/material-icons.css">
+    
+    
+      <link rel="stylesheet" href="../../css/extra.css">
+    
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.1.0/cookieconsent.min.css">
+    
+    
+      
+    
+    
+  </head>
+  
+    
+    
+    <body dir="ltr" data-md-color-primary="blue" data-md-color-accent="green">
+  
+    <svg class="md-svg">
+      <defs>
+        
+        
+          <svg xmlns="http://www.w3.org/2000/svg" width="416" height="448" viewBox="0 0 416 448" id="__github"><path fill="currentColor" d="M160 304q0 10-3.125 20.5t-10.75 19T128 352t-18.125-8.5-10.75-19T96 304t3.125-20.5 10.75-19T128 256t18.125 8.5 10.75 19T160 304zm160 0q0 10-3.125 20.5t-10.75 19T288 352t-18.125-8.5-10.75-19T256 304t3.125-20.5 10.75-19T288 256t18.125 8.5 10.75 19T320 304zm40 0q0-30-17.25-51T296 232q-10.25 0-48.75 5.25Q229.5 240 208 240t-39.25-2.75Q130.75 232 120 232q-29.5 0-46.75 21T56 304q0 22 8 38.375t20.25 25.75 30.5 15 35 7.375 37.25 1.75h42q20.5 0 37.25-1.75t35-7.375 30.5-15 20.25-25.75T360 304zm56-44q0 51.75-15.25 82.75-9.5 19.25-26.375 33.25t-35.25 21.5-42.5 11.875-42.875 5.5T212 416q-19.5 0-35.5-.75t-36.875-3.125-38.125-7.5-34.25-12.875T37 371.5t-21.5-28.75Q0 312 0 260q0-59.25 34-99-6.75-20.5-6.75-42.5 0-29 12.75-54.5 27 0 47.5 9.875t47.25 30.875Q171.5 96 212 96q37 0 70 8 26.25-20.5 46.75-30.25T376 64q12.75 25.5 12.75 54.5 0 21.75-6.75 42 34 40 34 99.5z"/></svg>
+        
+      </defs>
+    </svg>
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" data-md-component="overlay" for="__drawer"></label>
+    
+      <a href="#data-pipeline-language" tabindex="0" class="md-skip">
+        Skip to content
+      </a>
+    
+    
+      <header class="md-header" data-md-component="header">
+  <nav class="md-header-nav md-grid">
+    <div class="md-flex">
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <a href="https://www.openpipe.org/" title="Openpipe" aria-label="Openpipe" class="md-header-nav__button md-logo">
+          
+            <i class="md-icon"></i>
+          
+        </a>
+      </div>
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <label class="md-icon md-icon--menu md-header-nav__button" for="__drawer"></label>
+      </div>
+      <div class="md-flex__cell md-flex__cell--stretch">
+        <div class="md-flex__ellipsis md-header-nav__title" data-md-component="title">
+          
+            <span class="md-header-nav__topic">
+              Openpipe
+            </span>
+            <span class="md-header-nav__topic">
+              
+                Language
+              
+            </span>
+          
+        </div>
+      </div>
+      <div class="md-flex__cell md-flex__cell--shrink">
+        
+          <label class="md-icon md-icon--search md-header-nav__button" for="__search"></label>
+          
+<div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" aria-label="search" name="query" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="query" data-md-state="active">
+      <label class="md-icon md-search__icon" for="__search"></label>
+      <button type="reset" class="md-icon md-search__icon" data-md-component="reset" tabindex="-1">
+        &#xE5CD;
+      </button>
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="result">
+          <div class="md-search-result__meta">
+            Type to start searching
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+        
+      </div>
+      
+        <div class="md-flex__cell md-flex__cell--shrink">
+          <div class="md-header-nav__source">
+            
+
+
+  
+
+<a href="https://github.com/Openpipe/openpipe/" title="Go to repository" class="md-source" data-md-source="github">
+  
+    <div class="md-source__icon">
+      <svg viewBox="0 0 24 24" width="24" height="24">
+        <use xlink:href="#__github" width="24" height="24"></use>
+      </svg>
+    </div>
+  
+  <div class="md-source__repository">
+    The Openpipe Tool
+  </div>
+</a>
+          </div>
+        </div>
+      
+    </div>
+  </nav>
+</header>
+    
+    <div class="md-container">
+      
+        
+      
+      
+      <main class="md-main" role="main">
+        <div class="md-main__inner md-grid" data-md-component="container">
+          
+            
+              <div class="md-sidebar md-sidebar--primary" data-md-component="navigation">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    <nav class="md-nav md-nav--primary" data-md-level="0">
+  <label class="md-nav__title md-nav__title--site" for="__drawer">
+    <a href="https://www.openpipe.org/" title="Openpipe" class="md-nav__button md-logo">
+      
+        <i class="md-icon"></i>
+      
+    </a>
+    Openpipe
+  </label>
+  
+    <div class="md-nav__source">
+      
+
+
+  
+
+<a href="https://github.com/Openpipe/openpipe/" title="Go to repository" class="md-source" data-md-source="github">
+  
+    <div class="md-source__icon">
+      <svg viewBox="0 0 24 24" width="24" height="24">
+        <use xlink:href="#__github" width="24" height="24"></use>
+      </svg>
+    </div>
+  
+  <div class="md-source__repository">
+    The Openpipe Tool
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../.." title="Home" class="md-nav__link">
+      Home
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active">
+    
+    <input class="md-toggle md-nav__toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+    
+      
+    
+    
+      <label class="md-nav__link md-nav__link--active" for="__toc">
+        Language
+      </label>
+    
+    <a href="./" title="Language" class="md-nav__link md-nav__link--active">
+      Language
+    </a>
+    
+      
+<nav class="md-nav md-nav--secondary">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">Table of contents</label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#introduction" class="md-nav__link">
+    Introduction
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#prerequisites" class="md-nav__link">
+    Prerequisites
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#concepts" class="md-nav__link">
+    Concepts
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#pipeline" class="md-nav__link">
+    Pipeline
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#segments" class="md-nav__link">
+    Segments
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#actions" class="md-nav__link">
+    Actions
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#example" class="md-nav__link">
+    Example
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#multiple-segments" class="md-nav__link">
+    Multiple Segments
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#integrated-development-environment" class="md-nav__link">
+    Integrated Development Environment
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#workflow-execution" class="md-nav__link">
+    Workflow Execution
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#document-loading" class="md-nav__link">
+    Document Loading
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#action-modules" class="md-nav__link">
+    Action Modules
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#data-items" class="md-nav__link">
+    Data Items
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#data-flow" class="md-nav__link">
+    Data Flow
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dynamic-configuration" class="md-nav__link">
+    Dynamic Configuration
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#data-tagging" class="md-nav__link">
+    Data Tagging
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#action-libraries" class="md-nav__link">
+    Action Libraries
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#copyright-and-license" class="md-nav__link">
+    Copyright and License
+  </a>
+  
+</li>
+      
+      
+      
+      
+      
+    </ul>
+  
+</nav>
+    
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../tool/" title="Tool" class="md-nav__link">
+      Tool
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../actions/" title="Actions" class="md-nav__link">
+      Actions
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../action-devel/" title="Actions Development" class="md-nav__link">
+      Actions Development
+    </a>
+  </li>
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="toc">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+<nav class="md-nav md-nav--secondary">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">Table of contents</label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#introduction" class="md-nav__link">
+    Introduction
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#prerequisites" class="md-nav__link">
+    Prerequisites
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#concepts" class="md-nav__link">
+    Concepts
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#pipeline" class="md-nav__link">
+    Pipeline
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#segments" class="md-nav__link">
+    Segments
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#actions" class="md-nav__link">
+    Actions
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#example" class="md-nav__link">
+    Example
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#multiple-segments" class="md-nav__link">
+    Multiple Segments
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#integrated-development-environment" class="md-nav__link">
+    Integrated Development Environment
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#workflow-execution" class="md-nav__link">
+    Workflow Execution
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#document-loading" class="md-nav__link">
+    Document Loading
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#action-modules" class="md-nav__link">
+    Action Modules
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#data-items" class="md-nav__link">
+    Data Items
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#data-flow" class="md-nav__link">
+    Data Flow
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dynamic-configuration" class="md-nav__link">
+    Dynamic Configuration
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#data-tagging" class="md-nav__link">
+    Data Tagging
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#action-libraries" class="md-nav__link">
+    Action Libraries
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#copyright-and-license" class="md-nav__link">
+    Copyright and License
+  </a>
+  
+</li>
+      
+      
+      
+      
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content">
+            <article class="md-content__inner md-typeset">
+              
+                
+                
+                <h1 id="data-pipeline-language">Data Pipeline Language</h1>
+<h2 id="introduction">Introduction</h2>
+<hr />
+<p>This page describes the syntax and core concepts of the <em>data pipeline language</em>, an human friendly data-oriented language that can be used to describe data transformation workflows for both structured and unstructured data. DPL does not replace technology specific languages (e.g. SQL), instead it  provides an higher level computable language capable of integrating data from diverse formats, sources and technology.</p>
+<h2 id="prerequisites">Prerequisites</h2>
+<p>DPL is entirely based on the <a href="http://yaml.org/spec/1.1/">YAML</a> format. The knowledge of YAML is fundamental for the proper understanding of the material in this document. While in general the data processing operations will be described using markup language, when calculations and transformations are needed, a good understanding of <a href="https://docs.python.org/3/library/stdtypes.html">Python's Standard Data Types and Operations</a> is required.</p>
+<h2 id="concepts">Concepts</h2>
+<h3 id="pipeline">Pipeline</h3>
+<p>DPL follows the data pipeline design pattern: a set of data processing elements connected in series, where the output of one element is the input of the next one.
+In DPL the elements are referred as <strong>actions*<em>, and a sequence of actions is referred as a </em></strong>segment***. A pipeline document is a single YAML document that contains one or more segments.</p>
+<h4 id="segments">Segments</h4>
+<p>A segment must be represented by a dictionary, where the key is the segment name and the value is a sequence of actions.</p>
+<div class="admonition warning">
+<p class="admonition-title">_segment name </p>
+<p>Segment names started with "_" will not be loaded. They can be used to store configuration to be referenced with YAML anchors. The <code>_libraries</code> segment name has a special purpose explained later on this document.</p>
+</div>
+<h4 id="actions">Actions</h4>
+<p>An action must be represented by a dictionary, where the key is an action name and the value contains the action config, config may be of any of the YAML supported data types.</p>
+<h4 id="example">Example</h4>
+<blockquote>
+<p>pipeline.yaml
+    <div class="codehilite"><pre><span></span><code><span class="c1"># This is the &#39;start&#39; segment</span>
+<span class="nt">start</span><span class="p">:</span>
+    <span class="c1"># Call the &quot;print&quot; action with the config string Hello World!</span>
+    <span class="p p-Indicator">-</span> <span class="nt">print</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Hello World!</span>
+</code></pre></div></p>
+<p>Output:
+    <div class="codehilite"><pre><span></span><code><span class="err">Hello World!</span>
+</code></pre></div></p>
+</blockquote>
+<div class="admonition important">
+<p class="admonition-title">The start segment</p>
+<p>Runnable pipelines must contain a segment named <strong><em>start</em></strong> . The first operation in that segment will receive a single input item with openpipe run arguments.</p>
+</div>
+<h4 id="multiple-segments">Multiple Segments</h4>
+<p>A single pipeline may need to produce distinct outputs from the same input data, in order to support this some actions can send data to other segments.</p>
+<h3 id="integrated-development-environment">Integrated Development Environment</h3>
+<p>At this time there is no specialized IDE for pipeline editing, any general purpose IDE with a good support for YAML is suitable.</p>
+<h2 id="workflow-execution">Workflow Execution</h2>
+<h3 id="document-loading">Document Loading</h3>
+<p>The command line tool <code>openpipe</code> is the software that reads a pipeline document file, loads it into the execution engine and activates the workflow.</p>
+<h3 id="action-modules">Action Modules</h3>
+<p>The execution engine loads the action modules associated with  action names, and creates action instances for every action defined in the pipeline. Action modules can provide a wide range of action types: collection, filtering, exporting, etc.</p>
+<p>You can get the list of available actions with:
+<div class="codehilite"><pre><span></span><code>openpipe <span class="nb">help</span>
+</code></pre></div></p>
+<p>You can get the help for an action with:
+<div class="codehilite"><pre><span></span><code><span class="err">openpipe help «action»</span>
+</code></pre></div></p>
+<h3 id="data-items">Data Items</h3>
+<p>In DPL any kind of workflow managed data is referred as an <em>item</em>, in openpipe <em>items</em> are stored in memory and transmitted as Python object references, as such, items can be of any data type or class available with Python.</p>
+<h3 id="data-flow">Data Flow</h3>
+<p>Action instances should be observed as independent processing units, the following items will be available to them:</p>
+<ul>
+<li>Input Item: the input data provided to the action</li>
+<li>Config Item: the config data that is based on the user provided config</li>
+<li>Output Item: output data produced by the action execution</li>
+<li>Tag Item: the tag</li>
+</ul>
+<div class="admonition information">
+<p class="admonition-title">Output -&gt; Input</p>
+<p>As a general rule the output item of a action will be the input item of the next action in the same segment, with the exception of the <code>send to</code> action that can deliver items to the first action of other segments.</p>
+</div>
+<div class="admonition information">
+<p class="admonition-title">Last Action Output Items</p>
+<p>Output items from the last action in a segment will be silently discarded.</p>
+</div>
+<h3 id="dynamic-configuration">Dynamic Configuration</h3>
+<p>Action configuration items provided in the pipeline document, can include dynamic components. When an action is executed due to the reception of an input item, it's configuration is updated to reflect any changes in the input. This feature provides the ability to embed python expressions and action input data on it's configuration.</p>
+<p>Before invoking the action input handling, any config text found between consecutive dollar signs ($) will be evaluated as a python expression and replaced with it's result. If you need to have '$' in your string, you will need to escape it using \$ .</p>
+<p>During expression evaluation, the "_" symbol is a reference to the full input item. When the input item is a dict, it's keys values will be mapped to variable names so that you can refer to them easily by providing $key$.</p>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>Several actions use a default configuration of <code>'{ _ }'</code> which means the full input item will be used as the configuration item. It is the case of the <code>print</code> and <code>assert</code> actions.</p>
+</div>
+<p>Examples:</p>
+<blockquote>
+<p>calc.yaml
+    <div class="codehilite"><pre><span></span><code><span class="nt">start</span><span class="p">:</span>
+    <span class="p p-Indicator">-</span> <span class="nt">print</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">2 + 1 = $2 + 1$</span>    <span class="c1"># Print a sum result</span>
+</code></pre></div></p>
+<p>Output:
+    <div class="codehilite"><pre><span></span><code><span class="err">2 + 1 = 3</span>
+</code></pre></div></p>
+<p>input_item.yaml
+    <div class="codehilite"><pre><span></span><code><span class="nt">start</span><span class="p">:</span>
+    <span class="p p-Indicator">-</span> <span class="nt">insert</span><span class="p">:</span>
+        <span class="nt">place</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">zoo</span>
+    <span class="p p-Indicator">-</span> <span class="nt">print</span><span class="p">:</span> <span class="s">&#39;{</span><span class="nv"> </span><span class="s">_</span><span class="nv"> </span><span class="s">}&#39;</span>    <span class="c1"># Print the full  input item</span>
+</code></pre></div></p>
+<p>input_field.yaml
+    <div class="codehilite"><pre><span></span><code><span class="nt">start</span><span class="p">:</span>
+    <span class="p p-Indicator">-</span> <span class="nt">insert</span><span class="p">:</span>
+        <span class="nt">animal</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Elephant</span>
+        <span class="nt">size</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">big</span>
+    <span class="p p-Indicator">-</span> <span class="nt">print</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">The $animal$ is $size$.</span> <span class="c1"># Print some fields</span>
+</code></pre></div></p>
+<p>Output:
+    <div class="codehilite"><pre><span></span><code><span class="err">The Elephant is big.</span>
+</code></pre></div></p>
+</blockquote>
+<h3 id="data-tagging">Data Tagging</h3>
+<p>One of the challenges of using independent pipeline actions with a strict input/output pattern is the need to correlate/aggregate outputs from different actions. Openpipe addresses this with the support for data tagging. Items flowing through a pipeline can be tagged, a tag is a piece of information that will be transmitted with every item as it is sent to the _after tagging actions in the pipeline.</p>
+<p>Let's assume as example that we want to produce the count of 'a' letters from a list of files:
+<div class="codehilite"><pre><span></span><code><span class="nt">start</span><span class="p">:</span>
+    <span class="p p-Indicator">-</span> <span class="nt">iterate</span><span class="p">:</span> <span class="p p-Indicator">[</span><span class="nv">/etc/passwd</span><span class="p p-Indicator">,</span> <span class="nv">/etc/group</span><span class="p p-Indicator">]</span>
+    <span class="p p-Indicator">-</span> <span class="nt">read from file</span><span class="p">:</span> <span class="s">&#39;{</span><span class="nv"> </span><span class="s">_</span><span class="nv"> </span><span class="s">}&#39;</span>
+    <span class="c1"># The read from file outputs only the file content, we can&#39;t refer to</span>
+    <span class="c1"># the file name anymore</span>
+    <span class="p p-Indicator">-</span> <span class="nt">print</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">The number of &#39;a&#39;s in file is $ _.count(b&#39;a&#39;) $</span>
+</code></pre></div>
+In order to persist the file name, we need to tag it before the the <em>read from file</em> action.  After being tagged, we can refer to it with the special reference <code>$_tag$</code> :
+<div class="codehilite"><pre><span></span><code><span class="nt">start</span><span class="p">:</span>
+    <span class="p p-Indicator">-</span> <span class="nt">iterate</span><span class="p">:</span> <span class="p p-Indicator">[</span><span class="nv">/etc/passwd</span><span class="p p-Indicator">,</span> <span class="nv">/etc/group</span><span class="p p-Indicator">]</span>
+    <span class="p p-Indicator">-</span> <span class="nt">tag</span><span class="p">:</span> <span class="s">&#39;{</span><span class="nv"> </span><span class="s">_</span><span class="nv"> </span><span class="s">}&#39;</span> <span class="c1"># The filename is tagged, tag is available on every next action</span>
+    <span class="p p-Indicator">-</span> <span class="nt">read from file</span><span class="p">:</span> <span class="s">&#39;{</span><span class="nv"> </span><span class="s">_</span><span class="nv"> </span><span class="s">}&#39;</span>
+    <span class="c1"># We can now use $_tag_</span>
+    <span class="p p-Indicator">-</span> <span class="nt">print</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">The number of &#39;a&#39;s in file $_tag$ is $ _.count(b&#39;a&#39;) $</span>
+</code></pre></div></p>
+<p>When more than two items need to be tagged, a dictionary based tag needs to be used, every tag will be merged into the tag dict.</p>
+<div class="codehilite"><pre><span></span><code>    <span class="c1"># do some action</span>
+    <span class="nt">tag</span><span class="p">:</span> <span class="p p-Indicator">{</span><span class="nt"> animal_type</span><span class="p">:</span> <span class="s">&#39;{</span><span class="nv"> </span><span class="s">_</span><span class="nv"> </span><span class="s">}&#39;</span> <span class="p p-Indicator">}</span>   <span class="c1"># Tag it as animal type</span>
+    <span class="c1"># do some other action</span>
+    <span class="nt">tag</span><span class="p">:</span> <span class="p p-Indicator">{</span><span class="nt"> animal_size</span><span class="p">:</span> <span class="s">&#39;{</span><span class="nv"> </span><span class="s">_</span><span class="nv"> </span><span class="s">}&#39;</span> <span class="p p-Indicator">}</span>   <span class="c1"># Tag it as animal size</span>
+    <span class="c1"># We can now use $_tag[&#39;animal_type&#39;]$ and $_tag[&#39;animal_size&#39;]$</span>
+</code></pre></div>
+
+<h2 id="action-libraries">Action Libraries</h2>
+<p>A pipeline may contain a special segment named <code>_libraries</code>. This segment must contain a list of local directories or urls for libraries containing additional actions.</p>
+<h2 id="copyright-and-license">Copyright and License</h2>
+<p>© 2019 CCS Group International</p>
+<p>This document is distributed under the <a href="https://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.</p>
+                
+                  
+                
+                
+              
+              
+                
+
+
+              
+            </article>
+          </div>
+        </div>
+      </main>
+      
+        
+<footer class="md-footer">
+  
+    <div class="md-footer-nav">
+      <nav class="md-footer-nav__inner md-grid">
+        
+          <a href="../.." title="Home" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+            <div class="md-flex__cell md-flex__cell--shrink">
+              <i class="md-icon md-icon--arrow-back md-footer-nav__button"></i>
+            </div>
+            <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+              <span class="md-flex__ellipsis">
+                <span class="md-footer-nav__direction">
+                  Previous
+                </span>
+                Home
+              </span>
+            </div>
+          </a>
+        
+        
+          <a href="../tool/" title="Tool" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
+            <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+              <span class="md-flex__ellipsis">
+                <span class="md-footer-nav__direction">
+                  Next
+                </span>
+                Tool
+              </span>
+            </div>
+            <div class="md-flex__cell md-flex__cell--shrink">
+              <i class="md-icon md-icon--arrow-forward md-footer-nav__button"></i>
+            </div>
+          </a>
+        
+      </nav>
+    </div>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-footer-copyright">
+        
+          <div class="md-footer-copyright__highlight">
+            This site content is licensed under a <A HREF="https://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</A>
+          </div>
+        
+        powered by
+        <a href="https://www.mkdocs.org" target="_blank" rel="noopener">MkDocs</a>
+        and
+        <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+          Material for MkDocs</a>
+      </div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    
+      <script src="../../assets/javascripts/application.c33a9706.js"></script>
+      
+      <script>app.initialize({version:"1.1",url:{base:"../.."}})</script>
+      
+        <script src="../../js/autoexpand.js"></script>
+      
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.1.0/cookieconsent.min.js"></script>
+      
+        <script src="../../js/consentinit.js"></script>
+      
+    
+  </body>
+</html>

@@ -1,0 +1,1755 @@
+
+
+
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      <meta http-equiv="x-ua-compatible" content="ie=edge">
+      
+        <meta name="description" content="A human friendly data-oriented integration toolkit">
+      
+      
+        <link rel="canonical" href="https://www.openpipe.org/1.0/actions/">
+      
+      
+        <meta name="author" content="João Pinto">
+      
+      
+        <meta name="lang:clipboard.copy" content="Copy to clipboard">
+      
+        <meta name="lang:clipboard.copied" content="Copied to clipboard">
+      
+        <meta name="lang:search.language" content="en">
+      
+        <meta name="lang:search.pipeline.stopwords" content="True">
+      
+        <meta name="lang:search.pipeline.trimmer" content="True">
+      
+        <meta name="lang:search.result.none" content="No matching documents">
+      
+        <meta name="lang:search.result.one" content="1 matching document">
+      
+        <meta name="lang:search.result.other" content="# matching documents">
+      
+        <meta name="lang:search.tokenizer" content="[\s\-]+">
+      
+      <link rel="shortcut icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.1, mkdocs-material-4.6.3">
+    
+    
+      
+        <title>Actions - Openpipe</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/application.adb8469c.css">
+      
+        <link rel="stylesheet" href="../../assets/stylesheets/application-palette.a8b3c06d.css">
+      
+      
+        
+        
+        <meta name="theme-color" content="#2196f3">
+      
+    
+    
+      <script src="../../assets/javascripts/modernizr.86422ebf.js"></script>
+    
+    
+      
+        <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700%7CRoboto+Mono&display=fallback">
+        <style>body,input{font-family:"Roboto","Helvetica Neue",Helvetica,Arial,sans-serif}code,kbd,pre{font-family:"Roboto Mono","Courier New",Courier,monospace}</style>
+      
+    
+    <link rel="stylesheet" href="../../assets/fonts/material-icons.css">
+    
+    
+      <link rel="stylesheet" href="../../css/extra.css">
+    
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.1.0/cookieconsent.min.css">
+    
+    
+      
+    
+    
+  </head>
+  
+    
+    
+    <body dir="ltr" data-md-color-primary="blue" data-md-color-accent="green">
+  
+    <svg class="md-svg">
+      <defs>
+        
+        
+          <svg xmlns="http://www.w3.org/2000/svg" width="416" height="448" viewBox="0 0 416 448" id="__github"><path fill="currentColor" d="M160 304q0 10-3.125 20.5t-10.75 19T128 352t-18.125-8.5-10.75-19T96 304t3.125-20.5 10.75-19T128 256t18.125 8.5 10.75 19T160 304zm160 0q0 10-3.125 20.5t-10.75 19T288 352t-18.125-8.5-10.75-19T256 304t3.125-20.5 10.75-19T288 256t18.125 8.5 10.75 19T320 304zm40 0q0-30-17.25-51T296 232q-10.25 0-48.75 5.25Q229.5 240 208 240t-39.25-2.75Q130.75 232 120 232q-29.5 0-46.75 21T56 304q0 22 8 38.375t20.25 25.75 30.5 15 35 7.375 37.25 1.75h42q20.5 0 37.25-1.75t35-7.375 30.5-15 20.25-25.75T360 304zm56-44q0 51.75-15.25 82.75-9.5 19.25-26.375 33.25t-35.25 21.5-42.5 11.875-42.875 5.5T212 416q-19.5 0-35.5-.75t-36.875-3.125-38.125-7.5-34.25-12.875T37 371.5t-21.5-28.75Q0 312 0 260q0-59.25 34-99-6.75-20.5-6.75-42.5 0-29 12.75-54.5 27 0 47.5 9.875t47.25 30.875Q171.5 96 212 96q37 0 70 8 26.25-20.5 46.75-30.25T376 64q12.75 25.5 12.75 54.5 0 21.75-6.75 42 34 40 34 99.5z"/></svg>
+        
+      </defs>
+    </svg>
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" data-md-component="overlay" for="__drawer"></label>
+    
+      <a href="#data-sourcing" tabindex="0" class="md-skip">
+        Skip to content
+      </a>
+    
+    
+      <header class="md-header" data-md-component="header">
+  <nav class="md-header-nav md-grid">
+    <div class="md-flex">
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <a href="https://www.openpipe.org/" title="Openpipe" aria-label="Openpipe" class="md-header-nav__button md-logo">
+          
+            <i class="md-icon"></i>
+          
+        </a>
+      </div>
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <label class="md-icon md-icon--menu md-header-nav__button" for="__drawer"></label>
+      </div>
+      <div class="md-flex__cell md-flex__cell--stretch">
+        <div class="md-flex__ellipsis md-header-nav__title" data-md-component="title">
+          
+            <span class="md-header-nav__topic">
+              Openpipe
+            </span>
+            <span class="md-header-nav__topic">
+              
+                Actions
+              
+            </span>
+          
+        </div>
+      </div>
+      <div class="md-flex__cell md-flex__cell--shrink">
+        
+          <label class="md-icon md-icon--search md-header-nav__button" for="__search"></label>
+          
+<div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" aria-label="search" name="query" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="query" data-md-state="active">
+      <label class="md-icon md-search__icon" for="__search"></label>
+      <button type="reset" class="md-icon md-search__icon" data-md-component="reset" tabindex="-1">
+        &#xE5CD;
+      </button>
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="result">
+          <div class="md-search-result__meta">
+            Type to start searching
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+        
+      </div>
+      
+        <div class="md-flex__cell md-flex__cell--shrink">
+          <div class="md-header-nav__source">
+            
+
+
+  
+
+<a href="https://github.com/Openpipe/openpipe/" title="Go to repository" class="md-source" data-md-source="github">
+  
+    <div class="md-source__icon">
+      <svg viewBox="0 0 24 24" width="24" height="24">
+        <use xlink:href="#__github" width="24" height="24"></use>
+      </svg>
+    </div>
+  
+  <div class="md-source__repository">
+    The Openpipe Tool
+  </div>
+</a>
+          </div>
+        </div>
+      
+    </div>
+  </nav>
+</header>
+    
+    <div class="md-container">
+      
+        
+      
+      
+      <main class="md-main" role="main">
+        <div class="md-main__inner md-grid" data-md-component="container">
+          
+            
+              <div class="md-sidebar md-sidebar--primary" data-md-component="navigation">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    <nav class="md-nav md-nav--primary" data-md-level="0">
+  <label class="md-nav__title md-nav__title--site" for="__drawer">
+    <a href="https://www.openpipe.org/" title="Openpipe" class="md-nav__button md-logo">
+      
+        <i class="md-icon"></i>
+      
+    </a>
+    Openpipe
+  </label>
+  
+    <div class="md-nav__source">
+      
+
+
+  
+
+<a href="https://github.com/Openpipe/openpipe/" title="Go to repository" class="md-source" data-md-source="github">
+  
+    <div class="md-source__icon">
+      <svg viewBox="0 0 24 24" width="24" height="24">
+        <use xlink:href="#__github" width="24" height="24"></use>
+      </svg>
+    </div>
+  
+  <div class="md-source__repository">
+    The Openpipe Tool
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../.." title="Home" class="md-nav__link">
+      Home
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../language/" title="Language" class="md-nav__link">
+      Language
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../tool/" title="Tool" class="md-nav__link">
+      Tool
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active">
+    
+    <input class="md-toggle md-nav__toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+    
+    
+      <label class="md-nav__link md-nav__link--active" for="__toc">
+        Actions
+      </label>
+    
+    <a href="./" title="Actions" class="md-nav__link md-nav__link--active">
+      Actions
+    </a>
+    
+      
+<nav class="md-nav md-nav--secondary">
+  
+  
+  
+    <label class="md-nav__title" for="__toc">Table of contents</label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#data-sourcing" class="md-nav__link">
+    Data Sourcing
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#empty" class="md-nav__link">
+    empty
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#execute" class="md-nav__link">
+    execute
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#insert" class="md-nav__link">
+    insert
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#insert-path-split" class="md-nav__link">
+    insert path split
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#iterate" class="md-nav__link">
+    iterate
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#merge" class="md-nav__link">
+    merge
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#queue" class="md-nav__link">
+    queue
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#read-from-clock" class="md-nav__link">
+    read from clock
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#read-from-file" class="md-nav__link">
+    read from file
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#read-from-file-list" class="md-nav__link">
+    read from file list
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#read-from-file-status" class="md-nav__link">
+    read from file status
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#read-from-openpipe-actions" class="md-nav__link">
+    read from openpipe actions
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#read-from-url" class="md-nav__link">
+    read from url
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#data-selection" class="md-nav__link">
+    Data Selection
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#select" class="md-nav__link">
+    select
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#select-subset" class="md-nav__link">
+    select subset
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#data-transformation" class="md-nav__link">
+    Data Transformation
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#decompress" class="md-nav__link">
+    decompress
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#reduce" class="md-nav__link">
+    reduce
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#transform-using-csv" class="md-nav__link">
+    transform using csv
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#transform-using-regex-assign" class="md-nav__link">
+    transform using regex assign
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#data-analysis" class="md-nav__link">
+    Data Analysis
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#count" class="md-nav__link">
+    count
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#group-by-stats" class="md-nav__link">
+    group by stats
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pprint" class="md-nav__link">
+    pprint
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#print" class="md-nav__link">
+    print
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#transform-using-terminaltables" class="md-nav__link">
+    transform using terminaltables
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#data-control" class="md-nav__link">
+    Data Control
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#limit" class="md-nav__link">
+    limit
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#send-to-segment" class="md-nav__link">
+    send to segment
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tag" class="md-nav__link">
+    tag
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tag-key" class="md-nav__link">
+    tag key
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#data-export" class="md-nav__link">
+    Data Export
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#write-to-file" class="md-nav__link">
+    write to file
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#data-manipulation" class="md-nav__link">
+    Data Manipulation
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#drop" class="md-nav__link">
+    drop
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sort" class="md-nav__link">
+    sort
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#update" class="md-nav__link">
+    update
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#update-using-case-replace" class="md-nav__link">
+    update using case replace
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#update-using-key-mapping" class="md-nav__link">
+    update using key mapping
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#update-using-string-replace" class="md-nav__link">
+    update using string replace
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#data-validation" class="md-nav__link">
+    Data Validation
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#assert" class="md-nav__link">
+    assert
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+      
+      
+      
+      
+    </ul>
+  
+</nav>
+    
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../action-devel/" title="Actions Development" class="md-nav__link">
+      Actions Development
+    </a>
+  </li>
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="toc">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+<nav class="md-nav md-nav--secondary">
+  
+  
+  
+    <label class="md-nav__title" for="__toc">Table of contents</label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#data-sourcing" class="md-nav__link">
+    Data Sourcing
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#empty" class="md-nav__link">
+    empty
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#execute" class="md-nav__link">
+    execute
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#insert" class="md-nav__link">
+    insert
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#insert-path-split" class="md-nav__link">
+    insert path split
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#iterate" class="md-nav__link">
+    iterate
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#merge" class="md-nav__link">
+    merge
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#queue" class="md-nav__link">
+    queue
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#read-from-clock" class="md-nav__link">
+    read from clock
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#read-from-file" class="md-nav__link">
+    read from file
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#read-from-file-list" class="md-nav__link">
+    read from file list
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#read-from-file-status" class="md-nav__link">
+    read from file status
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#read-from-openpipe-actions" class="md-nav__link">
+    read from openpipe actions
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#read-from-url" class="md-nav__link">
+    read from url
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#data-selection" class="md-nav__link">
+    Data Selection
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#select" class="md-nav__link">
+    select
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#select-subset" class="md-nav__link">
+    select subset
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#data-transformation" class="md-nav__link">
+    Data Transformation
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#decompress" class="md-nav__link">
+    decompress
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#reduce" class="md-nav__link">
+    reduce
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#transform-using-csv" class="md-nav__link">
+    transform using csv
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#transform-using-regex-assign" class="md-nav__link">
+    transform using regex assign
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#data-analysis" class="md-nav__link">
+    Data Analysis
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#count" class="md-nav__link">
+    count
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#group-by-stats" class="md-nav__link">
+    group by stats
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pprint" class="md-nav__link">
+    pprint
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#print" class="md-nav__link">
+    print
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#transform-using-terminaltables" class="md-nav__link">
+    transform using terminaltables
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#data-control" class="md-nav__link">
+    Data Control
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#limit" class="md-nav__link">
+    limit
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#send-to-segment" class="md-nav__link">
+    send to segment
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tag" class="md-nav__link">
+    tag
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tag-key" class="md-nav__link">
+    tag key
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#data-export" class="md-nav__link">
+    Data Export
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#write-to-file" class="md-nav__link">
+    write to file
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#data-manipulation" class="md-nav__link">
+    Data Manipulation
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#drop" class="md-nav__link">
+    drop
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sort" class="md-nav__link">
+    sort
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#update" class="md-nav__link">
+    update
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#update-using-case-replace" class="md-nav__link">
+    update using case replace
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#update-using-key-mapping" class="md-nav__link">
+    update using key mapping
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#update-using-string-replace" class="md-nav__link">
+    update using string replace
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#data-validation" class="md-nav__link">
+    Data Validation
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#assert" class="md-nav__link">
+    assert
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+      
+      
+      
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content">
+            <article class="md-content__inner md-typeset">
+              
+                
+                
+                  <h1>Actions</h1>
+                
+                <p><strong>Data Sourcing</strong></p>
+<table>
+<thead>
+<tr>
+<th>Action</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="#empty">empty</a></td>
+<td>Produce "True" when the input is empty</td>
+</tr>
+<tr>
+<td><a href="#execute">execute</a></td>
+<td>Execute a command and produce the execution result</td>
+</tr>
+<tr>
+<td><a href="#insert">insert</a></td>
+<td>Insert an item</td>
+</tr>
+<tr>
+<td><a href="#insert-path-split">insert path split</a></td>
+<td>Split a path to 'directory' and 'file' components</td>
+</tr>
+<tr>
+<td><a href="#iterate">iterate</a></td>
+<td>Iterate the configuration item producing each element</td>
+</tr>
+<tr>
+<td><a href="#merge">merge</a></td>
+<td>Merge input and configuration items</td>
+</tr>
+<tr>
+<td><a href="#queue">queue</a></td>
+<td>Produce a list by queuing items</td>
+</tr>
+<tr>
+<td><a href="#read-from-clock">read from clock</a></td>
+<td>Produce the system clock time at regular intervals</td>
+</tr>
+<tr>
+<td><a href="#read-from-file">read from file</a></td>
+<td>Produce metadata/content from a local or remote file</td>
+</tr>
+<tr>
+<td><a href="#read-from-file-list">read from file list</a></td>
+<td>Produce the list of files matching a pattern</td>
+</tr>
+<tr>
+<td><a href="#read-from-file-status">read from file status</a></td>
+<td>Get path status information</td>
+</tr>
+<tr>
+<td><a href="#read-from-openpipe-actions">read from openpipe actions</a></td>
+<td>Produce the list of available action actions</td>
+</tr>
+<tr>
+<td><a href="#read-from-url">read from url</a></td>
+<td>Produce metadata/content from an URL</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Data Selection</strong></p>
+<table>
+<thead>
+<tr>
+<th>Action</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="#select">select</a></td>
+<td>Select input items based on a conditional expression</td>
+</tr>
+<tr>
+<td><a href="#select-subset">select subset</a></td>
+<td>Select a subset of data from a dictionary input</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Data Transformation</strong></p>
+<table>
+<thead>
+<tr>
+<th>Action</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="#decompress">decompress</a></td>
+<td>Decompress gzip input item</td>
+</tr>
+<tr>
+<td><a href="#reduce">reduce</a></td>
+<td>Reduce a complex item type into a simpler structure</td>
+</tr>
+<tr>
+<td><a href="#transform-using-csv">transform using csv</a></td>
+<td>Produce dictionary from CSV line based input</td>
+</tr>
+<tr>
+<td><a href="#transform-using-regex-assign">transform using regex assign</a></td>
+<td>Build a dictionary from a key/map regex group expression</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Data Analysis</strong></p>
+<table>
+<thead>
+<tr>
+<th>Action</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="#count">count</a></td>
+<td>Count the number of elements received</td>
+</tr>
+<tr>
+<td><a href="#group-by-stats">group by stats</a></td>
+<td>Produce statistics by grouping input items by keys</td>
+</tr>
+<tr>
+<td><a href="#pprint">pprint</a></td>
+<td>Pretty print an item</td>
+</tr>
+<tr>
+<td><a href="#print">print</a></td>
+<td>Print an item</td>
+</tr>
+<tr>
+<td><a href="#transform-using-terminaltables">transform using terminaltables</a></td>
+<td>Produce a text table</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Data Control</strong></p>
+<table>
+<thead>
+<tr>
+<th>Action</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="#limit">limit</a></td>
+<td>Limit the max number of items sent to the next action</td>
+</tr>
+<tr>
+<td><a href="#send-to-segment">send to segment</a></td>
+<td>Send a copy of the input item to other segment(s)</td>
+</tr>
+<tr>
+<td><a href="#tag">tag</a></td>
+<td>Tag input item with the provided configuration tag item</td>
+</tr>
+<tr>
+<td><a href="#tag-key">tag key</a></td>
+<td>Tag a key or list of keys</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Data Export</strong></p>
+<table>
+<thead>
+<tr>
+<th>Action</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="#write-to-file">write to file</a></td>
+<td>Write item to a file</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Data Manipulation</strong></p>
+<table>
+<thead>
+<tr>
+<th>Action</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="#drop">drop</a></td>
+<td>Remove some keys from the input item</td>
+</tr>
+<tr>
+<td><a href="#sort">sort</a></td>
+<td>Sort items by keys</td>
+</tr>
+<tr>
+<td><a href="#update">update</a></td>
+<td>Update values depending on conditional expressions</td>
+</tr>
+<tr>
+<td><a href="#update-using-case-replace">update using case replace</a></td>
+<td>Update field values using case match</td>
+</tr>
+<tr>
+<td><a href="#update-using-key-mapping">update using key mapping</a></td>
+<td>Map values from source keys to values on target keys</td>
+</tr>
+<tr>
+<td><a href="#update-using-string-replace">update using string replace</a></td>
+<td>Replace some phrase with other phrase</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Data Validation</strong></p>
+<table>
+<thead>
+<tr>
+<th>Action</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="#assert">assert</a></td>
+<td>Asserts that input matches the config provided item</td>
+</tr>
+</tbody>
+</table>
+<h2 id="data-sourcing">Data Sourcing</h2>
+<h3 id="empty">empty</h3>
+<p>Produce "True" when the input is empty</p>
+<p>Module source: <a href="https://github.com/Openpipe/openpipe/blob/master/openpipe/actions/empty_.py">openpipe/actions/empty_.py</a></p>
+<hr />
+<h3 id="execute">execute</h3>
+<p>Execute a command and produce the execution result</p>
+<p><strong>Required Configuration</strong>
+<div class="codehilite"><pre><span></span><code>    <span class="p p-Indicator">-</span> <span class="nt">execute</span><span class="p">:</span>
+        <span class="nt">cmd</span><span class="p">:</span>    <span class="c1"># The command to be executed</span>
+</code></pre></div></p>
+<p><strong>Optional Configuration</strong>
+<div class="codehilite"><pre><span></span><code>        <span class="nt">shell</span><span class="p">:</span>  <span class="l l-Scalar l-Scalar-Plain">True</span>    <span class="c1"># Execute the command as parameters to a system shell</span>
+        <span class="nt">output_as_text</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">True</span> <span class="c1"># Output the command output as text</span>
+        <span class="nt">fail_on_error</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">True</span>  <span class="c1"># Abort pipeline if exit code is not zero</span>
+</code></pre></div></p>
+<p>Module source: <a href="https://github.com/Openpipe/openpipe/blob/master/openpipe/actions/execute_.py">openpipe/actions/execute_.py</a></p>
+<hr />
+<h3 id="insert">insert</h3>
+<p>Insert an item</p>
+<p><strong>Required Configuration</strong>
+<div class="codehilite"><pre><span></span><code>    <span class="p p-Indicator">-</span> <span class="nt">insert</span><span class="p">:</span>         <span class="c1"># Item to be produced as an output</span>
+</code></pre></div></p>
+<p>Module source: <a href="https://github.com/Openpipe/openpipe/blob/master/openpipe/actions/insert_.py">openpipe/actions/insert_.py</a></p>
+<hr />
+<h3 id="insert-path-split">insert path split</h3>
+<p>Split a path to 'directory' and 'file' components</p>
+<p><strong>Optional Configuration</strong>
+<div class="codehilite"><pre><span></span><code>    <span class="p p-Indicator">-</span> <span class="nt">insert path split</span><span class="p">:</span>
+        <span class="s">&#39;{</span><span class="nv"> </span><span class="s">_</span><span class="nv"> </span><span class="s">}&#39;</span>     <span class="c1"># The path to produce the director name from</span>
+</code></pre></div></p>
+<p>Module source: <a href="https://github.com/Openpipe/openpipe/blob/master/openpipe/actions/insert/path/split_.py">openpipe/actions/insert/path/split_.py</a></p>
+<hr />
+<h3 id="iterate">iterate</h3>
+<p>Iterate the configuration item producing each element</p>
+<p><strong>Optional Configuration</strong>
+<div class="codehilite"><pre><span></span><code>    <span class="p p-Indicator">-</span> <span class="nt">iterate</span><span class="p">:</span>
+        <span class="s">&#39;{</span><span class="nv"> </span><span class="s">_</span><span class="nv"> </span><span class="s">}&#39;</span>     <span class="c1"># The item to be iterated over</span>
+</code></pre></div></p>
+<p>Module source: <a href="https://github.com/Openpipe/openpipe/blob/master/openpipe/actions/iterate_.py">openpipe/actions/iterate_.py</a></p>
+<hr />
+<h3 id="merge">merge</h3>
+<p>Merge input and configuration items</p>
+<p><strong>Optional Configuration</strong>
+<div class="codehilite"><pre><span></span><code>    <span class="p p-Indicator">-</span> <span class="nt">merge</span><span class="p">:</span>
+        <span class="l l-Scalar l-Scalar-Plain">$_tag$</span> <span class="c1"># The item to merge with</span>
+</code></pre></div></p>
+<p>Module source: <a href="https://github.com/Openpipe/openpipe/blob/master/openpipe/actions/merge_.py">openpipe/actions/merge_.py</a></p>
+<hr />
+<h3 id="queue">queue</h3>
+<p>Produce a list by queuing items</p>
+<p><strong>Required Configuration</strong>
+<div class="codehilite"><pre><span></span><code>    <span class="p p-Indicator">-</span> <span class="nt">queue</span><span class="p">:</span>         <span class="l l-Scalar l-Scalar-Plain">The count of items to be queued before producing a list.</span>
+        <span class="l l-Scalar l-Scalar-Plain">If set to 0 all items are queued until the input ends</span>
+</code></pre></div></p>
+<p>Module source: <a href="https://github.com/Openpipe/openpipe/blob/master/openpipe/actions/queue_.py">openpipe/actions/queue_.py</a></p>
+<hr />
+<h3 id="read-from-clock">read from clock</h3>
+<p>Produce the system clock time at regular intervals</p>
+<p><strong>Optional Configuration</strong>
+<div class="codehilite"><pre><span></span><code>    <span class="p p-Indicator">-</span> <span class="nt">read from clock</span><span class="p">:</span>
+        <span class="nt">interval</span><span class="p">:</span>   <span class="l l-Scalar l-Scalar-Plain">0</span>   <span class="c1"># Pause time between insertions, 0 means forever</span>
+        <span class="nt">max_count</span><span class="p">:</span>  <span class="l l-Scalar l-Scalar-Plain">1</span>     <span class="c1"># Max number of item insertions</span>
+</code></pre></div></p>
+<p>Module source: <a href="https://github.com/Openpipe/openpipe/blob/master/openpipe/actions/read/from/clock_.py">openpipe/actions/read/from/clock_.py</a></p>
+<hr />
+<h3 id="read-from-file">read from file</h3>
+<p>Produce metadata/content from a local or remote file</p>
+<p><strong>Required Configuration</strong>
+<div class="codehilite"><pre><span></span><code>    <span class="p p-Indicator">-</span> <span class="nt">read from file</span><span class="p">:</span>
+        <span class="nt">path</span><span class="p">:</span>                       <span class="c1"># Local path or HTTP/HTTPS/FTP url</span>
+</code></pre></div></p>
+<p><strong>Optional Configuration</strong>
+<div class="codehilite"><pre><span></span><code>        <span class="c1"># The mime_type will be used by the action to identify and automatically</span>
+        <span class="c1"># decode the file content.</span>
+        <span class="c1"># With the default value of &#39;auto&#39; the action will try to guess the</span>
+        <span class="c1"># mime type based on the content header or file extension.</span>
+        <span class="nt">mime_type</span><span class="p">:</span>  <span class="l l-Scalar l-Scalar-Plain">auto</span>
+
+        <span class="c1"># The following option is only applicable to local filenames</span>
+        <span class="nt">auto_expand_home</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">True</span>      <span class="c1"># Expand &#39;~&#39; on path to user home dir</span>
+</code></pre></div></p>
+<p>Module source: <a href="https://github.com/Openpipe/openpipe/blob/master/openpipe/actions/read/from/file_.py">openpipe/actions/read/from/file_.py</a></p>
+<hr />
+<h3 id="read-from-file-list">read from file list</h3>
+<p>Produce the list of files matching a pattern</p>
+<p><strong>Optional Configuration</strong>
+<div class="codehilite"><pre><span></span><code>    <span class="p p-Indicator">-</span> <span class="nt">read from file list</span><span class="p">:</span>
+        <span class="s">&#39;{</span><span class="nv"> </span><span class="s">_</span><span class="nv"> </span><span class="s">}&#39;</span>     <span class="c1"># The pattern to be used for matching</span>
+</code></pre></div></p>
+<p>Module source: <a href="https://github.com/Openpipe/openpipe/blob/master/openpipe/actions/read/from/file/list_.py">openpipe/actions/read/from/file/list_.py</a></p>
+<hr />
+<h3 id="read-from-file-status">read from file status</h3>
+<p>Get path status information</p>
+<p><strong>Optional Configuration</strong>
+<div class="codehilite"><pre><span></span><code>    <span class="p p-Indicator">-</span> <span class="nt">read from file status</span><span class="p">:</span>
+        <span class="s">&#39;{</span><span class="nv"> </span><span class="s">_</span><span class="nv"> </span><span class="s">}&#39;</span>         <span class="c1"># Path of the file to be checked</span>
+</code></pre></div></p>
+<p>Module source: <a href="https://github.com/Openpipe/openpipe/blob/master/openpipe/actions/read/from/file/status_.py">openpipe/actions/read/from/file/status_.py</a></p>
+<hr />
+<h3 id="read-from-openpipe-actions">read from openpipe actions</h3>
+<p>Produce the list of available action actions</p>
+<p><strong>Optional Configuration</strong>
+<div class="codehilite"><pre><span></span><code>    <span class="p p-Indicator">-</span> <span class="nt">read from openpipe actions</span><span class="p">:</span>
+        <span class="s">&#39;{</span><span class="nv"> </span><span class="s">_</span><span class="nv"> </span><span class="s">}&#39;</span>     <span class="c1"># The item to be printed, the default is the input item</span>
+</code></pre></div></p>
+<p>Module source: <a href="https://github.com/Openpipe/openpipe/blob/master/openpipe/actions/read/from/openpipe/actions_.py">openpipe/actions/read/from/openpipe/actions_.py</a></p>
+<hr />
+<h3 id="read-from-url">read from url</h3>
+<p>Produce metadata/content from an URL</p>
+<p><strong>Required Configuration</strong>
+<div class="codehilite"><pre><span></span><code>    <span class="p p-Indicator">-</span> <span class="nt">read from url</span><span class="p">:</span>
+        <span class="nt">url</span><span class="p">:</span>                       <span class="c1"># HTTP/HTTPS/FTP url</span>
+</code></pre></div></p>
+<p><strong>Optional Configuration</strong>
+<div class="codehilite"><pre><span></span><code>        <span class="c1"># The mime_type will be used by the action to identify and automatically</span>
+        <span class="c1"># decode the file content.</span>
+        <span class="c1"># With the default value of &#39;auto&#39; the action will try to guess the</span>
+        <span class="c1"># mime type based on the content header or file extension.</span>
+        <span class="nt">mime_type</span><span class="p">:</span>  <span class="l l-Scalar l-Scalar-Plain">auto</span>
+
+        <span class="c1"># The following options are only relevant for HTTP/HTTPS/FTP paths</span>
+        <span class="nt">timeout</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">30</span>                 <span class="c1"># Global timeout (in secs) for the operation</span>
+        <span class="nt">ignore_http_errors</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">False</span>   <span class="c1"># Ignore HTTP errors replies</span>
+        <span class="nt">user_agent</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">curl/7.64.0</span>     <span class="c1"># User-agent to use on HTTP requests</span>
+</code></pre></div></p>
+<p>Module source: <a href="https://github.com/Openpipe/openpipe/blob/master/openpipe/actions/read/from/url_.py">openpipe/actions/read/from/url_.py</a></p>
+<hr />
+<h2 id="data-selection">Data Selection</h2>
+<h3 id="select">select</h3>
+<p>Select input items based on a conditional expression</p>
+<p><strong>Required Configuration</strong>
+<div class="codehilite"><pre><span></span><code>    <span class="p p-Indicator">-</span> <span class="nt">select</span><span class="p">:</span>  <span class="c1"># Boolean Expression</span>
+        <span class="c1"># Items are only copied to next action only when the expression evaluates</span>
+        <span class="c1"># to True</span>
+</code></pre></div></p>
+<p>Module source: <a href="https://github.com/Openpipe/openpipe/blob/master/openpipe/actions/select_.py">openpipe/actions/select_.py</a></p>
+<hr />
+<h3 id="select-subset">select subset</h3>
+<p>Select a subset of data from a dictionary input</p>
+<p><strong>Required Configuration</strong>
+<div class="codehilite"><pre><span></span><code>    <span class="p p-Indicator">-</span> <span class="nt">select subset</span><span class="p">:</span>         <span class="c1"># YAML describing the elements to be retrieved</span>
+</code></pre></div></p>
+<p>Module source: <a href="https://github.com/Openpipe/openpipe/blob/master/openpipe/actions/select/subset_.py">openpipe/actions/select/subset_.py</a></p>
+<hr />
+<h2 id="data-transformation">Data Transformation</h2>
+<h3 id="decompress">decompress</h3>
+<p>Decompress gzip input item</p>
+<p><strong>Optional Configuration</strong>
+<div class="codehilite"><pre><span></span><code>    <span class="p p-Indicator">-</span> <span class="nt">decompress</span><span class="p">:</span>
+        <span class="nt">path</span><span class="p">:</span>   <span class="s">&quot;&quot;</span>      <span class="c1"># If not provided the input item is used</span>
+        <span class="nt">type</span><span class="p">:</span>   <span class="l l-Scalar l-Scalar-Plain">gzip</span>    <span class="c1"># the type to decompress</span>
+</code></pre></div></p>
+<p>Module source: <a href="https://github.com/Openpipe/openpipe/blob/master/openpipe/actions/decompress_.py">openpipe/actions/decompress_.py</a></p>
+<hr />
+<h3 id="reduce">reduce</h3>
+<p>Reduce a complex item type into a simpler structure</p>
+<p><strong>Optional Configuration</strong>
+<div class="codehilite"><pre><span></span><code>    <span class="p p-Indicator">-</span> <span class="nt">reduce</span><span class="p">:</span>
+        <span class="s">&#39;{</span><span class="nv"> </span><span class="s">_</span><span class="nv"> </span><span class="s">}&#39;</span>     <span class="c1"># The target reduction format</span>
+</code></pre></div></p>
+<p>Module source: <a href="https://github.com/Openpipe/openpipe/blob/master/openpipe/actions/reduce_.py">openpipe/actions/reduce_.py</a></p>
+<hr />
+<h3 id="transform-using-csv">transform using csv</h3>
+<p>Produce dictionary from CSV line based input</p>
+<p><strong>Optional Configuration</strong>
+<div class="codehilite"><pre><span></span><code>    <span class="p p-Indicator">-</span> <span class="nt">transform using csv</span><span class="p">:</span>
+            <span class="nt">delimiter</span><span class="p">:</span> <span class="s">&quot;,&quot;</span>          <span class="c1"># One-character string used to separate fields</span>
+            <span class="nt">quotechar</span><span class="p">:</span> <span class="s">&#39;&quot;&#39;</span>          <span class="c1"># One-character to wrap string values</span>
+            <span class="nt">auto_number</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">False</span>      <span class="c1"># Attempt to convert fields to numbers</span>
+            <span class="nt">ignore_errors</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">False</span>    <span class="c1"># Ignore conversion errors</span>
+            <span class="nt">field_list</span><span class="p">:</span> <span class="p p-Indicator">[]</span>          <span class="c1"># Optional list of fields to be used as headers</span>
+</code></pre></div></p>
+<p>Module source: <a href="https://github.com/Openpipe/openpipe/blob/master/openpipe/actions/transform/using/csv_.py">openpipe/actions/transform/using/csv_.py</a></p>
+<hr />
+<h3 id="transform-using-regex-assign">transform using regex assign</h3>
+<p>Build a dictionary from a key/map regex group expression</p>
+<p><strong>Required Configuration</strong>
+<div class="codehilite"><pre><span></span><code>    <span class="p p-Indicator">-</span> <span class="nt">transform using regex assign</span><span class="p">:</span>
+        <span class="nt">regex</span><span class="p">:</span>      <span class="c1"># A regex expression that must match two groups:</span>
+                    <span class="c1"># (group1) (group2)</span>
+</code></pre></div></p>
+<p>Module source: <a href="https://github.com/Openpipe/openpipe/blob/master/openpipe/actions/transform/using/regex/assign_.py">openpipe/actions/transform/using/regex/assign_.py</a></p>
+<hr />
+<h2 id="data-analysis">Data Analysis</h2>
+<h3 id="count">count</h3>
+<p>Count the number of elements received</p>
+<p><strong>Optional Configuration</strong>
+<div class="codehilite"><pre><span></span><code>    <span class="p p-Indicator">-</span> <span class="nt">count</span><span class="p">:</span>
+        <span class="nt">group_by</span><span class="p">:</span>   <span class="s">&quot;&quot;</span>  <span class="c1"># Expression to use for count aggregation</span>
+</code></pre></div></p>
+<p>Module source: <a href="https://github.com/Openpipe/openpipe/blob/master/openpipe/actions/count_.py">openpipe/actions/count_.py</a></p>
+<hr />
+<h3 id="group-by-stats">group by stats</h3>
+<p>Produce statistics by grouping input items by keys</p>
+<p><strong>Required Configuration</strong>
+<div class="codehilite"><pre><span></span><code>    <span class="p p-Indicator">-</span> <span class="nt">group by stats</span><span class="p">:</span>
+        <span class="nt">keys</span><span class="p">:</span>         <span class="c1"># List of keys to be used for grouping</span>
+</code></pre></div></p>
+<p><strong>Optional Configuration</strong>
+<div class="codehilite"><pre><span></span><code>        <span class="nt">stats</span><span class="p">:</span> <span class="p p-Indicator">[</span><span class="nv">sum</span><span class="p p-Indicator">,</span> <span class="nv">count</span><span class="p p-Indicator">,</span> <span class="nv">max</span><span class="p p-Indicator">,</span> <span class="nv">min</span><span class="p p-Indicator">]</span>   <span class="c1"># List of stats to obtain</span>
+        <span class="nt">sorted_fields</span><span class="p">:</span> <span class="p p-Indicator">[]</span>               <span class="c1"># When these fields change, produce the sort</span>
+</code></pre></div></p>
+<p>Module source: <a href="https://github.com/Openpipe/openpipe/blob/master/openpipe/actions/group/by/stats_.py">openpipe/actions/group/by/stats_.py</a></p>
+<hr />
+<h3 id="pprint">pprint</h3>
+<p>Pretty print an item</p>
+<p><strong>Optional Configuration</strong>
+<div class="codehilite"><pre><span></span><code>    <span class="p p-Indicator">-</span> <span class="nt">pprint</span><span class="p">:</span>
+        <span class="s">&#39;{</span><span class="nv"> </span><span class="s">_</span><span class="nv"> </span><span class="s">}&#39;</span>     <span class="c1"># The content to be pretty printed</span>
+</code></pre></div></p>
+<p>Module source: <a href="https://github.com/Openpipe/openpipe/blob/master/openpipe/actions/pprint_.py">openpipe/actions/pprint_.py</a></p>
+<hr />
+<h3 id="print">print</h3>
+<p>Print an item</p>
+<p><strong>Optional Configuration</strong>
+<div class="codehilite"><pre><span></span><code>    <span class="p p-Indicator">-</span> <span class="nt">print</span><span class="p">:</span>
+        <span class="s">&quot;{_}&quot;</span>     <span class="c1"># The item to be printed, the default is the input item</span>
+</code></pre></div></p>
+<p>Module source: <a href="https://github.com/Openpipe/openpipe/blob/master/openpipe/actions/print_.py">openpipe/actions/print_.py</a></p>
+<hr />
+<h3 id="transform-using-terminaltables">transform using terminaltables</h3>
+<p>Produce a text table</p>
+<p><strong>Required Configuration</strong>
+<div class="codehilite"><pre><span></span><code>    <span class="p p-Indicator">-</span> <span class="nt">transform using terminaltables</span><span class="p">:</span>
+        <span class="nt">header</span><span class="p">:</span>     <span class="c1"># List of labels to be used as column headers</span>
+        <span class="nt">keys</span><span class="p">:</span>       <span class="c1"># List of keys to be used or row elements</span>
+</code></pre></div></p>
+<p>Module source: <a href="https://github.com/Openpipe/openpipe/blob/master/openpipe/actions/transform/using/terminaltables_.py">openpipe/actions/transform/using/terminaltables_.py</a></p>
+<hr />
+<h2 id="data-control">Data Control</h2>
+<h3 id="limit">limit</h3>
+<p>Limit the max number of items sent to the next action</p>
+<p><strong>Required Configuration</strong>
+<div class="codehilite"><pre><span></span><code>    <span class="p p-Indicator">-</span> <span class="nt">limit</span><span class="p">:</span>
+        <span class="nt">max</span><span class="p">:</span>    <span class="c1"># The max number of items sent to next action</span>
+</code></pre></div></p>
+<p>Module source: <a href="https://github.com/Openpipe/openpipe/blob/master/openpipe/actions/limit_.py">openpipe/actions/limit_.py</a></p>
+<hr />
+<h3 id="send-to-segment">send to segment</h3>
+<p>Send a copy of the input item to other segment(s)</p>
+<p><strong>Required Configuration</strong>
+<div class="codehilite"><pre><span></span><code>    <span class="p p-Indicator">-</span> <span class="nt">send to segment</span><span class="p">:</span>
+        <span class="nt">name</span><span class="p">:</span>               <span class="c1"># Name or list of of segments to receive the item</span>
+</code></pre></div></p>
+<p><strong>Optional Configuration</strong>
+<div class="codehilite"><pre><span></span><code>        <span class="nt">when</span><span class="p">:</span>   <span class="s">&quot;&quot;</span>  <span class="c1"># An expression that should result in a boolean</span>
+
+        <span class="c1"># If `when` is set, item will only be copied to the segment(s)</span>
+        <span class="c1"># when it evaluates to True. And sent to next action when it evaluates</span>
+        <span class="c1"># to False</span>
+</code></pre></div></p>
+<p>Module source: <a href="https://github.com/Openpipe/openpipe/blob/master/openpipe/actions/send/to/segment_.py">openpipe/actions/send/to/segment_.py</a></p>
+<hr />
+<h3 id="tag">tag</h3>
+<p>Tag input item with the provided configuration tag item</p>
+<p><strong>Optional Configuration</strong>
+<div class="codehilite"><pre><span></span><code>    <span class="p p-Indicator">-</span> <span class="nt">tag</span><span class="p">:</span>
+        <span class="s">&#39;{</span><span class="nv"> </span><span class="s">_</span><span class="nv"> </span><span class="s">}&#39;</span>     <span class="c1">#  Default is to tag the entire input item</span>
+</code></pre></div></p>
+<p>Module source: <a href="https://github.com/Openpipe/openpipe/blob/master/openpipe/actions/tag_.py">openpipe/actions/tag_.py</a></p>
+<hr />
+<h3 id="tag-key">tag key</h3>
+<p>Tag a key or list of keys</p>
+<p><strong>Required Configuration</strong>
+<div class="codehilite"><pre><span></span><code>    <span class="p p-Indicator">-</span> <span class="nt">tag key</span><span class="p">:</span>
+        <span class="nt">name</span><span class="p">:</span>   <span class="c1">#  The name or list of names for the keys to be tagged</span>
+</code></pre></div></p>
+<p>Module source: <a href="https://github.com/Openpipe/openpipe/blob/master/openpipe/actions/tag/key_.py">openpipe/actions/tag/key_.py</a></p>
+<hr />
+<h2 id="data-export">Data Export</h2>
+<h3 id="write-to-file">write to file</h3>
+<p>Write item to a file</p>
+<p><strong>Required Configuration</strong>
+<div class="codehilite"><pre><span></span><code>    <span class="p p-Indicator">-</span> <span class="nt">write to file</span><span class="p">:</span>
+        <span class="nt">path</span><span class="p">:</span>                   <span class="c1"># Filename of the file to create/overwrite/append</span>
+</code></pre></div></p>
+<p><strong>Optional Configuration</strong>
+<div class="codehilite"><pre><span></span><code>        <span class="nt">content</span><span class="p">:</span> <span class="s">&#39;{</span><span class="nv"> </span><span class="s">_</span><span class="nv"> </span><span class="s">}&#39;</span>            <span class="c1"># Content to be written to the file</span>
+        <span class="nt">mode</span><span class="p">:</span> <span class="s">&quot;w&quot;</span>               <span class="c1"># Open file mode (write/append)</span>
+        <span class="nt">close_on_item</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">False</span>    <span class="c1"># Force file close after each received item</span>
+</code></pre></div></p>
+<p>Module source: <a href="https://github.com/Openpipe/openpipe/blob/master/openpipe/actions/write/to/file_.py">openpipe/actions/write/to/file_.py</a></p>
+<hr />
+<h2 id="data-manipulation">Data Manipulation</h2>
+<h3 id="drop">drop</h3>
+<p>Remove some keys from the input item</p>
+<p><strong>Required Configuration</strong>
+<div class="codehilite"><pre><span></span><code>    <span class="p p-Indicator">-</span> <span class="nt">drop</span><span class="p">:</span> <span class="c1"># name or list of names of the keys to be removed</span>
+</code></pre></div></p>
+<p>Module source: <a href="https://github.com/Openpipe/openpipe/blob/master/openpipe/actions/drop_.py">openpipe/actions/drop_.py</a></p>
+<hr />
+<h3 id="sort">sort</h3>
+<p>Sort items by keys</p>
+<p><strong>Required Configuration</strong>
+<div class="codehilite"><pre><span></span><code>    <span class="p p-Indicator">-</span> <span class="nt">sort</span><span class="p">:</span>
+        <span class="nt">key</span><span class="p">:</span>                    <span class="c1"># Name or list of names to use a group key</span>
+</code></pre></div></p>
+<p><strong>Optional Configuration</strong>
+<div class="codehilite"><pre><span></span><code>        <span class="nt">descendent</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">False</span>       <span class="c1"># Use descendent order ?</span>
+
+        <span class="c1"># It is possible to identify groups of repeated keys by setting</span>
+        <span class="c1"># key_on_first. When it&#39;s set, the key will only be present on the</span>
+        <span class="c1"># first item of a group items with the repeated key</span>
+        <span class="nt">key_on_first</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">False</span>
+</code></pre></div></p>
+<p>Module source: <a href="https://github.com/Openpipe/openpipe/blob/master/openpipe/actions/sort_.py">openpipe/actions/sort_.py</a></p>
+<hr />
+<h3 id="update">update</h3>
+<p>Update values depending on conditional expressions</p>
+<p><strong>Required Configuration</strong>
+<div class="codehilite"><pre><span></span><code>    <span class="p p-Indicator">-</span> <span class="nt">update</span><span class="p">:</span>
+        <span class="nt">set</span><span class="p">:</span>            <span class="c1"># Dictionary with keys/values to be updated</span>
+</code></pre></div></p>
+<p><strong>Optional Configuration</strong>
+<div class="codehilite"><pre><span></span><code>        <span class="nt">where</span><span class="p">:</span>  <span class="l l-Scalar l-Scalar-Plain">True</span>    <span class="c1"># Expression to select items to be updated</span>
+        <span class="nt">else</span><span class="p">:</span>   <span class="p p-Indicator">{}</span>      <span class="c1"># Dictionary with keys/values to be updated when &#39;where&#39; is False</span>
+</code></pre></div></p>
+<p>Module source: <a href="https://github.com/Openpipe/openpipe/blob/master/openpipe/actions/update_.py">openpipe/actions/update_.py</a></p>
+<hr />
+<h3 id="update-using-case-replace">update using case replace</h3>
+<p>Update field values using case match</p>
+<p><strong>Required Configuration</strong>
+<div class="codehilite"><pre><span></span><code>    <span class="p p-Indicator">-</span> <span class="nt">update using case replace</span><span class="p">:</span>  <span class="c1"># Dictionary with the updates rules:</span>
+        <span class="c1">#</span>
+        <span class="c1">#   target_key_name:</span>
+        <span class="c1">#       target_key_value: expression</span>
+        <span class="c1">#</span>
+        <span class="c1">#  Set target_key_name to target_key_value when expression evaluates</span>
+        <span class="c1">#  to True</span>
+</code></pre></div></p>
+<p>Module source: <a href="https://github.com/Openpipe/openpipe/blob/master/openpipe/actions/update/using/case/replace_.py">openpipe/actions/update/using/case/replace_.py</a></p>
+<hr />
+<h3 id="update-using-key-mapping">update using key mapping</h3>
+<p>Map values from source keys to values on target keys</p>
+<p><strong>Required Configuration</strong>
+<div class="codehilite"><pre><span></span><code>    <span class="p p-Indicator">-</span> <span class="nt">update using key mapping</span><span class="p">:</span>  <span class="c1"># Dictionary with the key mapping :</span>
+        <span class="c1">#</span>
+        <span class="c1">#   target_key_name:</span>
+        <span class="c1">#       source_key_name:</span>
+        <span class="c1">#           old_value: new_value</span>
+        <span class="c1">#</span>
+        <span class="c1">#  The action will set the &quot;target_key_name&quot; to &quot;new_value&quot; when the value</span>
+        <span class="c1">#  at source_key_name is equal to &quot;old_value&quot;</span>
+</code></pre></div></p>
+<p>Module source: <a href="https://github.com/Openpipe/openpipe/blob/master/openpipe/actions/update/using/key/mapping_.py">openpipe/actions/update/using/key/mapping_.py</a></p>
+<hr />
+<h3 id="update-using-string-replace">update using string replace</h3>
+<p>Replace some phrase with other phrase</p>
+<p><strong>Required Configuration</strong>
+<div class="codehilite"><pre><span></span><code>    <span class="p p-Indicator">-</span> <span class="nt">update using string replace</span><span class="p">:</span>  <span class="c1"># Dictionary with the replacement rules:</span>
+        <span class="c1"># Replacement rules for a single string input item:</span>
+        <span class="c1">#</span>
+        <span class="c1">#   { &quot;search_string&quot; : &quot;replace_string&quot;, ... }</span>
+        <span class="c1">#   Replaces all occurrences of search_string with replace_string</span>
+        <span class="c1">#</span>
+        <span class="c1">#   source_key_name:</span>
+        <span class="c1">#       &quot;search_string&quot; : &quot;replace_string&quot;</span>
+        <span class="c1">#</span>
+        <span class="c1">#  In the &#39;source_key_name&#39; value replaces all occurrences of</span>
+        <span class="c1"># &#39;search_string&#39; with &#39;replace_string&#39; in the</span>
+</code></pre></div></p>
+<p>Module source: <a href="https://github.com/Openpipe/openpipe/blob/master/openpipe/actions/update/using/string/replace_.py">openpipe/actions/update/using/string/replace_.py</a></p>
+<hr />
+<h2 id="data-validation">Data Validation</h2>
+<h3 id="assert">assert</h3>
+<p>Asserts that input matches the config provided item</p>
+<p><strong>Required Configuration</strong>
+<div class="codehilite"><pre><span></span><code>    <span class="p p-Indicator">-</span> <span class="nt">assert</span><span class="p">:</span>         <span class="c1"># The item with the expected value(s)</span>
+</code></pre></div></p>
+<p>Module source: <a href="https://github.com/Openpipe/openpipe/blob/master/openpipe/actions/assert_.py">openpipe/actions/assert_.py</a></p>
+<hr />
+                
+                  
+                
+                
+              
+              
+                
+
+
+              
+            </article>
+          </div>
+        </div>
+      </main>
+      
+        
+<footer class="md-footer">
+  
+    <div class="md-footer-nav">
+      <nav class="md-footer-nav__inner md-grid">
+        
+          <a href="../tool/" title="Tool" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+            <div class="md-flex__cell md-flex__cell--shrink">
+              <i class="md-icon md-icon--arrow-back md-footer-nav__button"></i>
+            </div>
+            <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+              <span class="md-flex__ellipsis">
+                <span class="md-footer-nav__direction">
+                  Previous
+                </span>
+                Tool
+              </span>
+            </div>
+          </a>
+        
+        
+          <a href="../action-devel/" title="Actions Development" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
+            <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+              <span class="md-flex__ellipsis">
+                <span class="md-footer-nav__direction">
+                  Next
+                </span>
+                Actions Development
+              </span>
+            </div>
+            <div class="md-flex__cell md-flex__cell--shrink">
+              <i class="md-icon md-icon--arrow-forward md-footer-nav__button"></i>
+            </div>
+          </a>
+        
+      </nav>
+    </div>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-footer-copyright">
+        
+          <div class="md-footer-copyright__highlight">
+            This site content is licensed under a <A HREF="https://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</A>
+          </div>
+        
+        powered by
+        <a href="https://www.mkdocs.org" target="_blank" rel="noopener">MkDocs</a>
+        and
+        <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+          Material for MkDocs</a>
+      </div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    
+      <script src="../../assets/javascripts/application.c33a9706.js"></script>
+      
+      <script>app.initialize({version:"1.1",url:{base:"../.."}})</script>
+      
+        <script src="../../js/autoexpand.js"></script>
+      
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.1.0/cookieconsent.min.js"></script>
+      
+        <script src="../../js/consentinit.js"></script>
+      
+    
+  </body>
+</html>

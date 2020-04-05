@@ -1,0 +1,58 @@
+{% for action in items %}
+{% if action.new_category %}
+
+**{{ action.new_category }}**
+
+Action | Purpose
+--- | ---
+{%endif %}
+[{{ action.name }}](#{{ action.name.replace(' ', '-') }})|{{ action.purpose }}
+{% endfor %}
+
+{% for action in items %}
+
+{% if action.new_category %}
+## {{ action.new_category }}
+{%endif %}
+
+### {{ action.name }}
+{{ action.purpose }}
+
+
+{% if action.required_some_config %}
+**Required Configuration**
+```yaml
+    - {{action.name}}: {{ action.required_some_config }}
+```
+{%endif %}
+
+{% if action.required_config %}
+**Required Configuration**
+```yaml
+    - {{action.name}}:
+{{ action.required_config }}
+```
+{%endif %}
+
+{% if  action.optional_config %}
+**Optional Configuration**
+```yaml
+{% if not action.required_config %}
+    - {{action.name}}:
+{%endif %}
+{{ action.optional_config }}
+```
+{%endif %}
+
+{% if action.examples_file_content %}
+*Examples:*
+```yaml
+{{ action.examples_file_content }}
+```
+{%endif %}
+
+
+Module source: [{{ action.module_name }}](https://github.com/Openpipe/openpipe/blob/master/{{ action.module_name }})
+
+----
+{% endfor %}
