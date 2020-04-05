@@ -3,6 +3,7 @@ site_name: Openpipe
 site_description: A human friendly data-oriented integration toolkit
 site_author: João Pinto
 site_url: https://www.openpipe.org/
+docs_dir: docs.in/
 
 # Repository
 repo_name: The Openpipe Tool

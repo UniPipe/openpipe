@@ -73,4 +73,5 @@ target/
 site/
 tmp/
 
-docs/*/actions.md
+docs.in/*/actions.md
+docs/
